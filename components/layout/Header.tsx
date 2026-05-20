@@ -3,14 +3,13 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Menu, X, Sparkles, Sun, Moon } from "lucide-react";
-import { Button } from "../ui/Button";
 
 type ThemeMode = "brutalist" | "singular-light" | "singular-dark";
 
 export const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [themeMode, setThemeMode] = useState<ThemeMode>("brutalist");
+  const [themeMode, setThemeMode] = useState<ThemeMode>("singular-light");
 
   const handleThemeSwitch = (mode: ThemeMode) => {
     setThemeMode(mode);
@@ -160,19 +159,18 @@ export const Header: React.FC = () => {
 
           {/* Audit Button */}
           <div className="hidden md:block">
-            <Button
+            <a
               href="#contact"
-              variant="primary"
-              className={
+              className={`inline-flex items-center justify-center font-body font-extrabold uppercase tracking-wider text-[11px] py-2.5 px-6 transition-all duration-300 select-none cursor-pointer border-2 hover:scale-[1.03] ${
                 isLight
-                  ? "bg-brand-accent border-brand-accent text-black hover:bg-black hover:text-brand-accent hover:border-black rounded-full shadow-lg shadow-brand-accent/15 hover:shadow-black/10"
+                  ? "bg-brand-accent text-black border-black hover:bg-black hover:text-brand-accent hover:border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] rounded-full"
                   : isDarkSingular
-                    ? "bg-brand-accent border-brand-accent text-black hover:bg-white hover:text-black hover:border-white rounded-full shadow-lg shadow-brand-accent/15 hover:shadow-white/10"
-                    : ""
-              }
+                    ? "bg-brand-accent text-black border-brand-accent hover:bg-white hover:text-black hover:border-white shadow-[3px_3px_0px_rgba(255,255,255,0.2)] rounded-full"
+                    : "bg-brand-accent text-background hover:bg-white border-brand-accent hover:border-white rounded-sm shadow-[0_4px_16px_rgba(245,194,0,0.18)]"
+              }`}
             >
               Get a Free Audit
-            </Button>
+            </a>
           </div>
 
           {/* Mobile Toggle */}
@@ -217,20 +215,19 @@ export const Header: React.FC = () => {
             </a>
           ))}
           <div className="mt-4">
-            <Button
+            <a
               href="#contact"
-              variant="primary"
               onClick={() => setIsOpen(false)}
-              className={
+              className={`inline-flex items-center justify-center font-body font-extrabold uppercase tracking-wider text-xs py-3.5 px-8 transition-all duration-300 select-none cursor-pointer border-2 hover:scale-[1.02] ${
                 isLight
-                  ? "bg-brand-accent border-brand-accent text-black hover:bg-black hover:text-brand-accent hover:border-black rounded-full shadow-lg shadow-brand-accent/15 hover:shadow-black/10"
+                  ? "bg-brand-accent text-black border-black hover:bg-black hover:text-brand-accent hover:border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] rounded-full"
                   : isDarkSingular
-                    ? "bg-brand-accent border-brand-accent text-black hover:bg-white hover:text-black hover:border-white rounded-full shadow-lg shadow-brand-accent/15 hover:shadow-white/10"
-                    : ""
-              }
+                    ? "bg-brand-accent text-black border-brand-accent hover:bg-white hover:text-black hover:border-white shadow-[4px_4px_0px_rgba(255,255,255,0.2)] rounded-full"
+                    : "bg-brand-accent text-background hover:bg-white border-brand-accent hover:border-white rounded-sm shadow-[0_6px_20px_rgba(245,194,0,0.2)]"
+              }`}
             >
               Get a Free Audit
-            </Button>
+            </a>
           </div>
         </div>
       )}

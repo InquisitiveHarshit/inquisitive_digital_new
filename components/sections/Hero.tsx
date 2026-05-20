@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 type ThemeMode = "brutalist" | "singular-light" | "singular-dark";
 
 export const Hero: React.FC = () => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>("brutalist");
+  const [themeMode, setThemeMode] = useState<ThemeMode>("singular-light");
 
   // Sync the theme class with body element
   useEffect(() => {

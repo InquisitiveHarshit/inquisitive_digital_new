@@ -7,7 +7,7 @@ import { ShieldCheck } from "lucide-react";
 type ThemeMode = "brutalist" | "singular-light" | "singular-dark";
 
 export const TrustBar: React.FC = () => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>("brutalist");
+  const [themeMode, setThemeMode] = useState<ThemeMode>("singular-light");
 
   useEffect(() => {
     if (typeof window !== "undefined") {

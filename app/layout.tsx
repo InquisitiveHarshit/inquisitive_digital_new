@@ -44,7 +44,7 @@ export default function RootLayout({
       lang="en"
       className={`${beVietnam.variable} h-full antialiased scroll-smooth dark`}
     >
-      <body className="min-h-full flex flex-col bg-background text-on-surface" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col bg-background text-on-surface singular-theme" suppressHydrationWarning>
         <div className="noise-overlay" />
         {children}
       </body>
