@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Moon, Sun } from "lucide-react";
 
 type ThemeMode = "brutalist" | "singular-light" | "singular-dark";
 
@@ -27,6 +26,21 @@ export const Hero: React.FC = () => {
     };
   }, [themeMode]);
 
+  // Listen to external theme changes (like from the Header)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleExternalThemeChange = (e: any) => {
+        if (e.detail !== themeMode) {
+          setThemeMode(e.detail);
+        }
+      };
+      window.addEventListener("theme-change" as any, handleExternalThemeChange);
+      return () => {
+        window.removeEventListener("theme-change" as any, handleExternalThemeChange);
+      };
+    }
+  }, [themeMode]);
+
   return (
     <section
       className={`relative w-full min-h-screen flex items-center justify-center pt-32 pb-24 px-6 md:px-margin-desktop transition-colors duration-700 overflow-hidden border-b ${themeMode === "singular-light"
@@ -37,40 +51,6 @@ export const Hero: React.FC = () => {
         }`}
       id="hero"
     >
-      {/* ----------------- THEME SWITCHER TOGGLE (SEGMENTED) ----------------- */}
-      <div className="absolute top-28 right-6 md:right-margin-desktop z-30 flex items-center bg-black/40 backdrop-blur-md border border-white/10 rounded-full p-1 shadow-2xl">
-        <button
-          onClick={() => setThemeMode("brutalist")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full text-[10px] sm:text-xs font-body font-bold tracking-wider uppercase transition-all duration-300 ${themeMode === "brutalist"
-            ? "bg-[#1c1b1b] text-brand-accent shadow-md border border-outline-variant/40"
-            : "text-white/50 hover:text-white"
-            }`}
-        >
-          <Sparkles className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Brutalist</span>
-        </button>
-        <button
-          onClick={() => setThemeMode("singular-light")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full text-[10px] sm:text-xs font-body font-bold tracking-wider uppercase transition-all duration-300 ${themeMode === "singular-light"
-            ? "bg-white text-black shadow-md border border-slate-200"
-            : "text-white/50 hover:text-white"
-            }`}
-        >
-          <Sun className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Light</span>
-        </button>
-        <button
-          onClick={() => setThemeMode("singular-dark")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full text-[10px] sm:text-xs font-body font-bold tracking-wider uppercase transition-all duration-300 ${themeMode === "singular-dark"
-            ? "bg-brand-accent text-black shadow-md border border-brand-accent"
-            : "text-white/50 hover:text-white"
-            }`}
-        >
-          <Moon className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Dark</span>
-        </button>
-      </div>
-
       {/* ----------------- BACKGROUND VISUAL LAYERS ----------------- */}
       <AnimatePresence mode="wait">
         {themeMode === "brutalist" ? (
@@ -210,7 +190,7 @@ export const Hero: React.FC = () => {
         <div className="md:col-span-12 flex flex-col items-center text-center">
 
           {/* Trust Badge Banner / Subheader */}
-          <AnimatePresence mode="wait">
+          {/* <AnimatePresence mode="wait">
             {themeMode === "brutalist" ? (
               <motion.div
                 key="dark-badge"
@@ -237,7 +217,7 @@ export const Hero: React.FC = () => {
                 ⭐ 500+ Clients Served | 8+ Years of Excellence
               </motion.div>
             )}
-          </AnimatePresence>
+          </AnimatePresence> */}
 
           {/* Animated Headline with Custom Copy & Black-Yellow styling */}
           <AnimatePresence mode="wait">

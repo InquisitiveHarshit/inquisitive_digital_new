@@ -29,8 +29,8 @@ export default function Home() {
         {/* Hero Section */}
         <Hero />
 
-        {/* Trust Strip / Social Proof Ribbon */}
-        <TrustStrip />
+        {/* Trust Strip / Social Proof Ribbon
+        <TrustStrip /> */}
 
         {/* About the Agency & Stats Counter Section */}
         <Metrics />
@@ -79,7 +79,7 @@ export default function Home() {
       <FloatingWhatsApp />
 
       {/* Floating Bottom Left Trust & Social Bar */}
-      <TrustBar />
+      {/* <TrustBar /> */}
     </>
   );
 }

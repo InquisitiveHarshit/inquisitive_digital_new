@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles, Sun, Moon } from "lucide-react";
 import { Button } from "../ui/Button";
 
 type ThemeMode = "brutalist" | "singular-light" | "singular-dark";
@@ -11,6 +11,19 @@ export const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [themeMode, setThemeMode] = useState<ThemeMode>("brutalist");
+
+  const handleThemeSwitch = (mode: ThemeMode) => {
+    setThemeMode(mode);
+    if (typeof window !== "undefined") {
+      document.body.classList.remove("singular-theme", "singular-dark-theme");
+      if (mode === "singular-light") {
+        document.body.classList.add("singular-theme");
+      } else if (mode === "singular-dark") {
+        document.body.classList.add("singular-dark-theme");
+      }
+      window.dispatchEvent(new CustomEvent("theme-change", { detail: mode }));
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -70,8 +83,8 @@ export const Header: React.FC = () => {
         <a href="#" className="flex items-center group cursor-pointer">
           <Image
             alt="Inquisitive Digital Logo"
-            className={`h-14 w-40 object-contain ${isLight ? "scale-[1.5]" : ""}   transition-transform duration-300
-`} src={isLight ? "/logo_without_name.png" : "/logo_without_name.png"}
+            className={`h-14 w-40 object-contain ${isLight ? "scale-[2.8]" : ""}   transition-transform duration-300
+`} src={isLight ? "/logo_black_name.png" : "/logo_white_name.png"}
             width={240}
             height={64}
             priority
@@ -96,36 +109,86 @@ export const Header: React.FC = () => {
           ))}
         </nav>
 
-        {/* Audit Button */}
-        <div className="hidden md:block">
-          <Button
-            href="#contact"
-            variant="primary"
-            className={
-              isLight
-                ? "bg-brand-accent border-brand-accent text-black hover:bg-black hover:text-brand-accent hover:border-black rounded-full shadow-lg shadow-brand-accent/15 hover:shadow-black/10"
-                : isDarkSingular
-                  ? "bg-brand-accent border-brand-accent text-black hover:bg-white hover:text-black hover:border-white rounded-full shadow-lg shadow-brand-accent/15 hover:shadow-white/10"
-                  : ""
-            }
-          >
-            Get a Free Audit
-          </Button>
-        </div>
+        {/* Actions & Theme Switcher */}
+        <div className="flex items-center gap-4">
+          {/* Dynamic Theme Switcher (Icon-only) */}
+          <div className={`flex items-center rounded-full p-0.5 border transition-all duration-300 ${
+            isLight
+              ? "bg-slate-100 border-slate-200"
+              : "bg-black/40 backdrop-blur-md border-white/10"
+          }`}>
+            <button
+              onClick={() => handleThemeSwitch("brutalist")}
+              className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ${
+                themeMode === "brutalist"
+                  ? "bg-[#1c1b1b] text-brand-accent border border-outline-variant/40 shadow-sm"
+                  : isLight
+                    ? "text-slate-400 hover:text-slate-700"
+                    : "text-white/50 hover:text-white"
+              }`}
+              title="Brutalist Mode"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={() => handleThemeSwitch("singular-light")}
+              className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ${
+                themeMode === "singular-light"
+                  ? "bg-white text-black border border-slate-200 shadow-sm"
+                  : isLight
+                    ? "text-slate-400 hover:text-slate-700"
+                    : "text-white/50 hover:text-white"
+              }`}
+              title="Light Mode"
+            >
+              <Sun className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={() => handleThemeSwitch("singular-dark")}
+              className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ${
+                themeMode === "singular-dark"
+                  ? "bg-brand-accent text-black border border-brand-accent shadow-sm"
+                  : isLight
+                    ? "text-slate-400 hover:text-slate-700"
+                    : "text-white/50 hover:text-white"
+              }`}
+              title="Dark Mode"
+            >
+              <Moon className="w-3.5 h-3.5" />
+            </button>
+          </div>
 
-        {/* Mobile Toggle */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={`md:hidden p-2 transition-colors focus:outline-none ${isLight
-            ? "text-slate-800 hover:text-brand-accent"
-            : isDarkSingular
-              ? "text-white hover:text-brand-accent"
-              : "text-on-surface hover:text-brand-accent"
-            }`}
-          aria-label="Toggle Menu"
-        >
-          {isOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
-        </button>
+          {/* Audit Button */}
+          <div className="hidden md:block">
+            <Button
+              href="#contact"
+              variant="primary"
+              className={
+                isLight
+                  ? "bg-brand-accent border-brand-accent text-black hover:bg-black hover:text-brand-accent hover:border-black rounded-full shadow-lg shadow-brand-accent/15 hover:shadow-black/10"
+                  : isDarkSingular
+                    ? "bg-brand-accent border-brand-accent text-black hover:bg-white hover:text-black hover:border-white rounded-full shadow-lg shadow-brand-accent/15 hover:shadow-white/10"
+                    : ""
+              }
+            >
+              Get a Free Audit
+            </Button>
+          </div>
+
+          {/* Mobile Toggle */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className={`md:hidden p-2 transition-colors focus:outline-none ${isLight
+              ? "text-slate-800 hover:text-brand-accent"
+              : isDarkSingular
+                ? "text-white hover:text-brand-accent"
+                : "text-on-surface hover:text-brand-accent"
+              }`}
+            aria-label="Toggle Menu"
+          >
+            {isOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Nav Drawer */}
