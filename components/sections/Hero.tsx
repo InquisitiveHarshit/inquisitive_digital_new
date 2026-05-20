@@ -43,7 +43,7 @@ export const Hero: React.FC = () => {
 
   return (
     <section
-      className={`relative w-full min-h-screen flex items-center justify-center pt-32 pb-24 px-6 md:px-margin-desktop transition-colors duration-700 overflow-hidden border-b ${themeMode === "singular-light"
+      className={`relative w-full min-h-screen flex items-center justify-center pt-24 md:pt-32 pb-16 md:pb-24 px-6 md:px-margin-desktop transition-colors duration-700 overflow-hidden border-b ${themeMode === "singular-light"
         ? "bg-white border-slate-100"
         : themeMode === "singular-dark"
           ? "bg-[#0a0a0a] border-white/10"
@@ -127,7 +127,7 @@ export const Hero: React.FC = () => {
             transition={{ duration: 0.5 }}
           >
             {/* Top-Right Yellow Brand Fluid Blob */}
-            <div className="absolute top-0 right-0 w-[60%] md:w-[35%] h-[70%] pointer-events-none opacity-90">
+            <div className="hidden md:block absolute top-0 right-0 w-[35%] h-[70%] pointer-events-none opacity-90">
               <svg className="w-full h-full" viewBox="0 0 500 500" preserveAspectRatio="xMaxYMin slice" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <motion.path
                   d="M 500 0 C 400 0, 310 80, 310 200 C 310 330, 430 380, 500 320 Z"
@@ -224,7 +224,7 @@ export const Hero: React.FC = () => {
             {themeMode === "brutalist" ? (
               <motion.h1
                 key="brutalist-headline"
-                className="font-display text-4xl sm:text-6xl md:text-7xl lg:text-[80px] font-extrabold uppercase mb-6 leading-[1.05] tracking-tighter w-full"
+                className="font-display text-[32px] sm:text-6xl md:text-7xl lg:text-[80px] font-extrabold uppercase mb-6 leading-[1.1] sm:leading-[1.05] tracking-tighter w-full"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -30 }}
@@ -242,7 +242,7 @@ export const Hero: React.FC = () => {
             ) : (
               <motion.h1
                 key="singular-headline"
-                className={`font-body text-4xl sm:text-6xl md:text-7xl lg:text-[82px] font-black leading-[1.05] tracking-tight w-full uppercase mb-8 select-none ${themeMode === "singular-dark" ? "text-white" : "text-[#111111]"
+                className={`font-body text-[32px] sm:text-6xl md:text-7xl lg:text-[82px] font-black leading-[1.1] sm:leading-[1.05] tracking-tight w-full uppercase mb-6 sm:mb-8 select-none ${themeMode === "singular-dark" ? "text-white" : "text-[#111111]"
                   }`}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -250,9 +250,9 @@ export const Hero: React.FC = () => {
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               >
                 Digital Marketing <br />
-                <span className={`relative inline-block mt-3 px-6 py-2 rounded-sm transform -rotate-1 select-none ${themeMode === "singular-dark"
-                  ? "bg-brand-accent text-[#111111] border-2 border-brand-accent shadow-[6px_6px_0px_rgba(255,255,255,0.1)]"
-                  : "bg-[#111111] text-brand-accent border-2 border-black shadow-[6px_6px_0px_rgba(245,194,0,1)]"
+                <span className={`relative inline-block mt-3 px-4 sm:px-6 py-1.5 sm:py-2 rounded-sm transform -rotate-1 select-none ${themeMode === "singular-dark"
+                  ? "bg-brand-accent text-[#111111] border-2 border-brand-accent shadow-[4px_4px_0px_rgba(255,255,255,0.1)] sm:shadow-[6px_6px_0px_rgba(255,255,255,0.1)]"
+                  : "bg-[#111111] text-brand-accent border-2 border-black shadow-[4px_4px_0px_rgba(245,194,0,1)] sm:shadow-[6px_6px_0px_rgba(245,194,0,1)]"
                   }`}>
                   That Delivers.
                 </span>
@@ -263,7 +263,7 @@ export const Hero: React.FC = () => {
           {/* Animated Description */}
           <motion.p
             key={`desc-${themeMode}`}
-            className={`font-body text-base sm:text-lg md:text-xl max-w-4xl mx-auto mb-12 leading-relaxed ${themeMode === "singular-light"
+            className={`font-body text-sm sm:text-lg md:text-xl max-w-4xl mx-auto mb-10 sm:mb-12 leading-relaxed px-4 sm:px-0 ${themeMode === "singular-light"
               ? "text-slate-700 font-medium"
               : themeMode === "singular-dark"
                 ? "text-slate-300 font-medium"
@@ -281,7 +281,7 @@ export const Hero: React.FC = () => {
             {themeMode === "brutalist" ? (
               <motion.div
                 key="dark-ctas"
-                className="flex flex-col sm:flex-row gap-6 justify-center w-full sm:w-auto"
+                className="flex flex-row gap-3 sm:gap-6 justify-center w-full sm:w-auto px-4 sm:px-0"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
@@ -289,13 +289,13 @@ export const Hero: React.FC = () => {
               >
                 <a
                   href="#contact"
-                  className="bg-brand-accent text-background hover:bg-white border-2 border-brand-accent hover:border-white font-body font-bold text-xs py-4.5 px-10 rounded-sm transition-all duration-300 shadow-[0_6px_24px_rgba(245,194,0,0.22)] hover:shadow-[0_6px_30px_rgba(255,255,255,0.25)] select-none uppercase flex items-center justify-center"
+                  className="bg-brand-accent text-background hover:bg-white border-2 border-brand-accent hover:border-white font-body font-bold text-[10px] sm:text-xs py-3 sm:py-4.5 px-3 sm:px-10 rounded-sm transition-all duration-300 shadow-[0_6px_24px_rgba(245,194,0,0.22)] hover:shadow-[0_6px_30px_rgba(255,255,255,0.25)] select-none uppercase flex items-center justify-center flex-1 sm:flex-none"
                 >
                   Get Free Consultation
                 </a>
                 <a
                   href="#contact"
-                  className="bg-transparent text-brand-accent border-2 border-brand-accent/60 hover:border-brand-accent hover:bg-brand-accent/5 font-body font-bold text-xs py-4.5 px-10 rounded-sm transition-all duration-300 select-none uppercase flex items-center justify-center"
+                  className="bg-transparent text-brand-accent border-2 border-brand-accent/60 hover:border-brand-accent hover:bg-brand-accent/5 font-body font-bold text-[10px] sm:text-xs py-3 sm:py-4.5 px-3 sm:px-10 rounded-sm transition-all duration-300 select-none uppercase flex items-center justify-center flex-1 sm:flex-none"
                 >
                   Free Website Audit
                 </a>
@@ -303,7 +303,7 @@ export const Hero: React.FC = () => {
             ) : (
               <motion.div
                 key="light-ctas"
-                className="flex flex-col sm:flex-row gap-6 justify-center w-full sm:w-auto z-10"
+                className="flex flex-row gap-3 sm:gap-6 justify-center w-full sm:w-auto z-10 px-4 sm:px-0"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
@@ -312,9 +312,9 @@ export const Hero: React.FC = () => {
                 {/* Primary Button */}
                 <a
                   href="#contact"
-                  className={`font-body font-extrabold text-sm py-4 px-10 rounded-full transition-all duration-300 select-none cursor-pointer flex items-center justify-center border-2 ${themeMode === "singular-dark"
-                    ? "bg-brand-accent text-black border-brand-accent hover:bg-white hover:text-black hover:border-white shadow-[4px_4px_0px_rgba(255,255,255,0.2)]"
-                    : "bg-brand-accent text-black border-black hover:bg-black hover:text-brand-accent hover:border-brand-accent shadow-[4px_4px_0px_rgba(0,0,0,1)]"
+                  className={`font-body font-extrabold text-[10px] sm:text-sm py-3 sm:py-4 px-3 sm:px-10 rounded-full transition-all duration-300 select-none cursor-pointer flex items-center justify-center border-2 flex-1 sm:flex-none hover:scale-[1.02] ${themeMode === "singular-dark"
+                    ? "bg-brand-accent text-black border-brand-accent hover:bg-white hover:text-black hover:border-white shadow-[3px_3px_0px_rgba(255,255,255,0.2)] sm:shadow-[4px_4px_0px_rgba(255,255,255,0.2)]"
+                    : "bg-brand-accent text-black border-black hover:bg-black hover:text-brand-accent hover:border-brand-accent shadow-[3px_3px_0px_rgba(0,0,0,1)] sm:shadow-[4px_4px_0px_rgba(0,0,0,1)]"
                     }`}
                 >
                   Get Free Consultation
@@ -322,9 +322,9 @@ export const Hero: React.FC = () => {
                 {/* Secondary Button */}
                 <a
                   href="#contact"
-                  className={`font-body font-extrabold text-sm py-4 px-10 rounded-full transition-all duration-300 select-none cursor-pointer flex items-center justify-center border-2 ${themeMode === "singular-dark"
-                    ? "bg-transparent text-white border-white hover:bg-brand-accent hover:text-black hover:border-brand-accent shadow-[4px_4px_0px_rgba(245,194,0,0.5)]"
-                    : "bg-black text-white border-black hover:bg-white hover:text-black shadow-[4px_4px_0px_rgba(245,194,0,1)]"
+                  className={`font-body font-extrabold text-[10px] sm:text-sm py-3 sm:py-4 px-3 sm:px-10 rounded-full transition-all duration-300 select-none cursor-pointer flex items-center justify-center border-2 flex-1 sm:flex-none hover:scale-[1.02] ${themeMode === "singular-dark"
+                    ? "bg-transparent text-white border-white hover:bg-brand-accent hover:text-black hover:border-brand-accent shadow-[3px_3px_0px_rgba(245,194,0,0.5)] sm:shadow-[4px_4px_0px_rgba(245,194,0,0.5)]"
+                    : "bg-black text-white border-black hover:bg-white hover:text-black shadow-[3px_3px_0px_rgba(245,194,0,1)] sm:shadow-[4px_4px_0px_rgba(245,194,0,1)]"
                     }`}
                 >
                   Free Website Audit
@@ -332,6 +332,72 @@ export const Hero: React.FC = () => {
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* Dual Stat Trust Pill (High-Fidelity) */}
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className={`mt-12 w-full max-w-lg mx-auto p-4 sm:p-5 rounded-2xl border flex items-center justify-between shadow-lg transition-colors duration-500 z-10 relative ${
+              themeMode === "singular-dark"
+                ? "bg-[#141414] border-white/10 text-white shadow-black/40"
+                : themeMode === "singular-light"
+                  ? "bg-white border-slate-100 text-[#111111] shadow-slate-100/50"
+                  : "bg-surface border-outline-variant text-on-surface shadow-[4px_4px_0px_rgba(0,0,0,1)]"
+            }`}
+          >
+            {/* Stat 1 */}
+            <div className="flex-1 flex items-center gap-3 justify-center pr-3 sm:pr-4">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                themeMode === "singular-dark" ? "bg-brand-accent/20" : "bg-[#f5c200]/10"
+              }`}>
+                <svg className="w-5 h-5 text-brand-accent stroke-[2.5]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 20V10" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 20V4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M6 20V14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <div className="text-left">
+                <div className="font-display font-black text-base sm:text-xl leading-none">
+                  ₹50Cr+
+                </div>
+                <div className={`font-body text-[10px] sm:text-xs mt-1 font-semibold ${
+                  themeMode === "singular-dark" ? "text-slate-400" : "text-slate-500"
+                }`}>
+                  Ad Spend Managed
+                </div>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className={`h-8 w-[1px] shrink-0 ${
+              themeMode === "singular-dark" ? "bg-white/10" : "bg-slate-200"
+            }`} />
+
+            {/* Stat 2 */}
+            <div className="flex-1 flex items-center gap-3 justify-center pl-3 sm:pl-4">
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                themeMode === "singular-dark" ? "bg-brand-accent/20" : "bg-[#f5c200]/10"
+              }`}>
+                <svg className="w-5 h-5 text-brand-accent stroke-[2.5]" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <div className="text-left">
+                <div className="font-display font-black text-base sm:text-xl leading-none">
+                  100+
+                </div>
+                <div className={`font-body text-[10px] sm:text-xs mt-1 font-semibold ${
+                  themeMode === "singular-dark" ? "text-slate-400" : "text-slate-500"
+                }`}>
+                  Brands Scaled
+                </div>
+              </div>
+            </div>
+          </motion.div>
 
         </div>
       </div>
