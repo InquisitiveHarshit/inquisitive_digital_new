@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #ffe299;
+  --color-primary-container: #f5c200;
+  --color-brand-accent: #f5c200;
+  --color-background: #111111;
+  --color-surface: #111111;
+  --color-on-surface: #e5e2e1;
+  --color-on-surface-variant: #d2c5ab;
+  --color-outline-variant: #4e4632;
+  --color-surface-container-low: #1c1b1b;
+  --color-surface-container-high: #2a2a2a;
+  
+  --spacing-base: 8px;
+  --spacing-margin-desktop: 80px;
+  --spacing-margin-mobile: 32px;
+  --spacing-gutter: 32px;
+  --spacing-section-gap: 160px;
+  --spacing-container-max: 1440px;
+
+  --font-display: var(--font-be-vietnam), sans-serif;
+  --font-body: var(--font-be-vietnam), sans-serif;
+}
+
+:root {
+  --background: #111111;
+  --foreground: #e5e2e1;
+}
+
+/* Singular Light Theme Overrides */
+.singular-theme {
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+  --color-on-surface: #111111;
+  --color-on-surface-variant: #334155;
+  --color-outline-variant: #e2e8f0;
+  --color-surface-container-low: #f8fafc;
+  --color-surface-container-high: #f1f5f9;
+  
+  /* Expand the entire website's container to full width */
+  --spacing-container-max: 100%;
+  
+  --background: #ffffff;
+  --foreground: #111111;
+}
+
+/* Singular Dark Theme Overrides */
+.singular-dark-theme {
+  --color-background: #0a0a0a;
+  --color-surface: #0a0a0a;
+  --color-on-surface: #ffffff;
+  --color-on-surface-variant: #cbd5e1;
+  --color-outline-variant: #333333;
+  --color-surface-container-low: #111111;
+  --color-surface-container-high: #1a1a1a;
+  
+  /* Expand the entire website's container to full width */
+  --spacing-container-max: 100%;
+  
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+}
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.hero-pattern {
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(245, 194, 0, 0.05) 0%, transparent 35%),
+    radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.03) 0%, transparent 30%);
+}
+
+@keyframes goldGlowPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 12px rgba(245, 194, 0, 0.4)) drop-shadow(0 0 2px rgba(245, 194, 0, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 24px rgba(245, 194, 0, 0.75)) drop-shadow(0 0 5px rgba(245, 194, 0, 0.4));
+  }
+}
+
+.gold-glow-pulse {
+  animation: goldGlowPulse 4s infinite ease-in-out;
+}
