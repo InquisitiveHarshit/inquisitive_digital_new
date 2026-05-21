@@ -130,7 +130,7 @@ export const Header: React.FC = () => {
         <a href="/" className="flex items-center group cursor-pointer relative z-10">
           <Image
             alt="Inquisitive Digital Logo"
-            className={`h-14 w-32 md:w-40 object-contain ${isLight ? "scale-[1.8] md:scale-[2.8] origin-left" : ""} transition-transform duration-300`}
+            className={`h-14 w-auto aspect-[1080/480] object-cover transition-transform duration-300 ${isLight ? "scale-[1.15]" : ""}`}
             src={isLight ? "/logo_black_name.png" : "/logo_white_name.png"}
             width={240}
             height={64}

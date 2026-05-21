@@ -70,7 +70,7 @@ export const Industries: React.FC = () => {
             return (
               <motion.div
                 key={ind.id}
-                className="border border-outline-variant/20 px-6 py-8 rounded-sm bg-gradient-to-br from-[#1c1b1b]/50 to-transparent hover:border-brand-accent hover:bg-[#1a1919] transition-all duration-300 flex flex-col items-center justify-center text-center group cursor-pointer"
+                className="border border-outline-variant/20 px-6 py-8 rounded-sm bg-gradient-to-br from-surface-container-low/50 to-transparent hover:border-brand-accent hover:bg-surface-container-high transition-all duration-300 flex flex-col items-center justify-center text-center group cursor-pointer"
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}

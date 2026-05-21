@@ -67,7 +67,7 @@ export const FAQ: React.FC = () => {
             return (
               <motion.div
                 key={index}
-                className={`border transition-colors duration-300 ${isOpen ? 'border-brand-accent/50 bg-[#1c1b1b]/30' : 'border-outline-variant/30 bg-surface'}`}
+                className={`border transition-colors duration-300 ${isOpen ? 'border-brand-accent/50 bg-surface-container-low/30' : 'border-outline-variant/30 bg-surface'}`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

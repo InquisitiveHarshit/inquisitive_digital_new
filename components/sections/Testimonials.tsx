@@ -39,7 +39,7 @@ export const Testimonials: React.FC = () => {
   ];
 
   return (
-    <section className="w-full py-section-gap px-6 md:px-margin-desktop bg-[#161515] border-b border-outline-variant/30 relative overflow-hidden" id="testimonials">
+    <section className="w-full py-section-gap px-6 md:px-margin-desktop bg-surface-container-low/30 border-b border-outline-variant/30 relative overflow-hidden" id="testimonials">
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full bg-brand-accent/3 blur-[120px] pointer-events-none" />
 
