@@ -1,17 +1,38 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
+type ThemeMode = "brutalist" | "singular-light" | "singular-dark";
 import Image from "next/image";
 
 export const Footer: React.FC = () => {
+  const [themeMode, setThemeMode] = useState<ThemeMode>("singular-light");
+  const isLight = themeMode === "singular-light";
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (document.body.classList.contains("singular-theme")) {
+        setThemeMode("singular-light");
+      } else if (document.body.classList.contains("singular-dark-theme")) {
+        setThemeMode("singular-dark");
+      }
+      const handleThemeChange = (e: any) => {
+        setThemeMode(e.detail);
+      };
+      window.addEventListener("theme-change" as any, handleThemeChange);
+      return () => {
+        window.removeEventListener("theme-change" as any, handleThemeChange);
+      };
+    }
+  }, []);
   return (
     <footer className="bg-background w-full border-t border-outline-variant/30 py-20 px-6 md:px-margin-desktop">
       <div className="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
         {/* Info Column */}
         <div className="md:col-span-5 flex flex-col gap-8">
-          <a href="#" className="flex items-center group cursor-pointer animate-pulse-subtle">
+          <a href="/" className="flex items-center group cursor-pointer animate-pulse-subtle">
             <Image
               alt="Inquisitive Digital Logo"
               className="h-25 w-auto object-contain group-hover:scale-[1.03] transition-transform duration-300"
-              src="/3 (1).png"
+              src={isLight ? "/logo_black_name.png" : "/logo_white_name.png"}
               width={240}
               height={100}
             />
@@ -43,7 +64,7 @@ export const Footer: React.FC = () => {
               Social Media Strategy
             </a>
           </div>
-          
+
           <div className="flex flex-col gap-4">
             <h4 className="font-display text-xs text-brand-accent uppercase border-b border-outline-variant/30 pb-4 mb-2 tracking-widest">
               Company

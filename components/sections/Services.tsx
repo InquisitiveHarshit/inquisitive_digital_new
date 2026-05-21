@@ -29,7 +29,7 @@ export const Services: React.FC = () => {
       id: 1,
       title: "SEO / AEO / GEO",
       shortDesc: "Rank higher on Google and AI search with advanced optimization strategies.",
-      detailedDesc: "Our SEO campaigns focus on high-intent search terms that drive transactions. We optimize site architecture, build authority, and structure content to build permanent organic market share across search and AI engines.",
+      detailedDesc: "Our strategic SEO campaigns target lucrative, high-intent keywords that drive immediate transactions and revenue. We completely optimize your site architecture, fix technical elements, and build high-quality authority back links. By structuring your content for maximum relevance, we ensure your business dominates organic search results. Our ultimate goal is to secure permanent, long-term market share for your brand across all traditional search networks as well as the latest AI-driven discovery engines.",
       icon: Search,
       spanClass: "lg:col-span-2",
     },
@@ -69,7 +69,7 @@ export const Services: React.FC = () => {
       id: 7,
       title: "Graphic Design & Branding",
       shortDesc: "Create a strong visual identity that stands out.",
-      detailedDesc: "From custom typography and high-end design assets to unique market positioning, we construct premium visual ecosystems that demand attention.",
+      detailedDesc: "Our premium graphic design services focus on creating high-impact visual assets that instantly capture customer attention and drive engagement. We design stunning, custom graphics that align with your brand identity, from social media creatives to professional website visuals. By balancing aesthetics with marketing psychology, we structure every design to convert viewers into clients. We build a powerful, permanent visual presence that makes your business stand out across digital platforms and print media.",
       icon: Award,
       spanClass: "lg:col-span-2",
     },
@@ -86,7 +86,7 @@ export const Services: React.FC = () => {
   return (
     <section className="w-full py-section-gap px-6 md:px-margin-desktop bg-surface-container-low/30 relative border-b border-outline-variant/30" id="services">
       <div className="max-w-container-max mx-auto">
-        
+
         {/* Section Header */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-20">
           <div className="md:col-span-8">
@@ -128,7 +128,7 @@ export const Services: React.FC = () => {
                 transition={{ duration: 0.5, delay: index * 0.05 }}
               >
                 {/* Icon */}
-                <div className="text-brand-accent mb-6 block">
+                <div className="text-brand-accent mb0 block">
                   <IconComponent className="w-8 h-8 stroke-[2]" />
                 </div>
 
@@ -143,7 +143,7 @@ export const Services: React.FC = () => {
                 </p>
 
                 {/* Detailed description (always visible now) */}
-                <div className="font-body text-sm text-on-surface-variant/80 leading-relaxed border-t border-outline-variant/30 pt-4 mt-auto">
+                <div className="font-body text-sm text-on-surface-variant/80 leading-relaxed border-t border-outline-variant/30 pt-1 mt-auto">
                   {service.detailedDesc}
                 </div>
               </motion.div>
