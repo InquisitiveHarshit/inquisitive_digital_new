@@ -43,7 +43,7 @@ export const Hero: React.FC = () => {
 
   return (
     <section
-      className={`relative w-full min-h-screen flex items-center justify-center pt-24 md:pt-32 pb-16 md:pb-24 px-6 md:px-margin-desktop transition-colors duration-700 overflow-hidden border-b ${themeMode === "singular-light"
+      className={`relative w-full min-h-screen flex items-center justify-center pt-24 md:pt-32 pb-section-gap px-6 md:px-margin-desktop transition-colors duration-700 overflow-hidden border-b ${themeMode === "singular-light"
         ? "bg-white border-slate-100"
         : themeMode === "singular-dark"
           ? "bg-[#0a0a0a] border-white/10"

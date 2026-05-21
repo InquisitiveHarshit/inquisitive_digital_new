@@ -6,7 +6,7 @@ import { Button } from "../ui/Button";
 
 export const CTA: React.FC = () => {
   return (
-    <section className="w-full py-32 px-6 md:px-margin-desktop bg-brand-accent text-black text-center relative overflow-hidden">
+    <section className="w-full py-section-gap px-6 md:px-margin-desktop bg-brand-accent text-black text-center relative overflow-hidden">
       {/* Decorative vector shape background */}
       <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]" />
 

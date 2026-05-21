@@ -153,7 +153,7 @@ export const Services: React.FC = () => {
 
         {/* View All Services CTA Button */}
         <div className="flex justify-center">
-          <Button href="#contact" variant="outline" className="px-8 py-4">
+          <Button href="/services" variant="outline" className="px-8 py-4">
             View All Services →
           </Button>
         </div>

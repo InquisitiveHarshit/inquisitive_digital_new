@@ -16,7 +16,7 @@
   --spacing-margin-desktop: 80px;
   --spacing-margin-mobile: 32px;
   --spacing-gutter: 32px;
-  --spacing-section-gap: 160px;
+  --spacing-section-gap: clamp(48px, 6vw, 80px);
   --spacing-container-max: 1440px;
 
   --font-display: var(--font-be-vietnam), sans-serif;

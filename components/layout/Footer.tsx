@@ -30,16 +30,16 @@ export const Footer: React.FC = () => {
             <h4 className="font-display text-xs text-brand-accent uppercase border-b border-outline-variant/30 pb-4 mb-2 tracking-widest">
               Expertise
             </h4>
-            <a className="font-body text-on-surface-variant hover:text-brand-accent transition-colors text-base" href="#services">
+            <a className="font-body text-on-surface-variant hover:text-brand-accent transition-colors text-base" href="/services#seo">
               SEO (Search Engine Optimization)
             </a>
-            <a className="font-body text-on-surface-variant hover:text-brand-accent transition-colors text-base" href="#services">
+            <a className="font-body text-on-surface-variant hover:text-brand-accent transition-colors text-base" href="/services#performance-marketing">
               SEM & PPC Ads
             </a>
-            <a className="font-body text-on-surface-variant hover:text-brand-accent transition-colors text-base" href="#services">
+            <a className="font-body text-on-surface-variant hover:text-brand-accent transition-colors text-base" href="/services#content-writing">
               Content Marketing
             </a>
-            <a className="font-body text-on-surface-variant hover:text-brand-accent transition-colors text-base" href="#services">
+            <a className="font-body text-on-surface-variant hover:text-brand-accent transition-colors text-base" href="/services#social-media">
               Social Media Strategy
             </a>
           </div>
