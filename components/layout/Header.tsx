@@ -68,43 +68,43 @@ export const Header: React.FC = () => {
     { 
       title: "SEO / AEO / GEO", 
       desc: "Rank higher on Google and AI search", 
-      href: "/services#seo",
+      href: "/services/seo",
       icon: Search 
     },
     { 
       title: "Social Media", 
       desc: "Build brand awareness & engagement", 
-      href: "/services#social-media",
+      href: "/services/social-media",
       icon: Share2 
     },
     { 
       title: "Performance Ads", 
       desc: "Data-driven ROI campaigns", 
-      href: "/services#performance-marketing",
+      href: "/services/performance-marketing",
       icon: TrendingUp 
     },
     { 
       title: "Web Development", 
       desc: "Blazing fast Next.js & React sites", 
-      href: "/services#web-development",
+      href: "/services/web-development",
       icon: Code 
     },
     { 
       title: "Content & Blogs", 
       desc: "SEO optimized authoritative copy", 
-      href: "/services#content-writing",
+      href: "/services/content-writing",
       icon: FileText 
     },
     { 
       title: "Branding & Design", 
       desc: "Premium visual identity ecosystems", 
-      href: "/services#branding",
+      href: "/services/branding",
       icon: Award 
     },
     { 
       title: "Lead Generation", 
       desc: "High quality transactional leads", 
-      href: "/services#lead-gen",
+      href: "/services/lead-gen",
       icon: Megaphone 
     },
   ];

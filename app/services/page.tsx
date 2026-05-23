@@ -154,7 +154,7 @@ export default function ServicesPage() {
         </a>
       </div> */}
 
-      <main className={`flex-grow w-full pt-20 pb-24 transition-colors duration-500 overflow-hidden ${isLight ? "bg-white" : isDarkSingular ? "bg-[#0a0a0a]" : "bg-[#0f0e0e]"
+      <main className={`flex-grow w-full pt-36 md:pt-40 pb-24 transition-colors duration-500 overflow-hidden ${isLight ? "bg-white" : isDarkSingular ? "bg-[#0a0a0a]" : "bg-[#0f0e0e]"
         }`}>
         <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop relative">
 
@@ -164,7 +164,7 @@ export default function ServicesPage() {
 
           {/* Page Hero */}
           <div className="text-center max-w-3xl mx-auto mb-16 relative z-10">
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
@@ -172,7 +172,7 @@ export default function ServicesPage() {
             >
               <Sparkles className="w-3.5 h-3.5" />
               Engineered Solutions
-            </motion.div>
+            </motion.div> */}
 
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -204,8 +204,8 @@ export default function ServicesPage() {
                 <div
                   key={idx}
                   className={`flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-body font-bold transition-all duration-300 ${isLight
-                      ? "bg-slate-50/60 border-slate-100 text-slate-700 shadow-sm"
-                      : "bg-[#141414]/40 border-white/5 text-slate-300"
+                    ? "bg-slate-50/60 border-slate-100 text-slate-700 shadow-sm"
+                    : "bg-[#141414]/40 border-white/5 text-slate-300"
                     }`}
                 >
                   <svg
@@ -236,8 +236,8 @@ export default function ServicesPage() {
                   key={service.id}
                   href={`/services/${service.id}`}
                   className={`group relative border-2 p-6 rounded-2xl bg-background cursor-pointer block transition-all duration-300 ${isLight
-                      ? "border-slate-900/10 hover:border-slate-800 shadow-slate-100/50 hover:shadow-slate-200/50"
-                      : "border-white/10 hover:border-white/20 shadow-black/40"
+                    ? "border-slate-900/10 hover:border-slate-800 shadow-slate-100/50 hover:shadow-slate-200/50"
+                    : "border-white/10 hover:border-white/20 shadow-black/40"
                     }`}
                   style={{
                     boxShadow: "4px 4px 0px 0px rgba(0,0,0,0.05)"
@@ -246,15 +246,15 @@ export default function ServicesPage() {
                   {/* Card Header Details */}
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <span className={`font-body text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${isLight
-                        ? "bg-slate-100 text-slate-600 border border-slate-200/40"
-                        : "bg-white/5 text-slate-400 border border-white/5"
+                      ? "bg-slate-100 text-slate-600 border border-slate-200/40"
+                      : "bg-white/5 text-slate-400 border border-white/5"
                       }`}>
                       {service.category}
                     </span>
 
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border transition-all duration-300 group-hover:scale-110 ${isLight
-                        ? "bg-slate-50 border-slate-200 text-brand-accent"
-                        : "bg-[#141414] border-white/10 text-brand-accent"
+                      ? "bg-slate-50 border-slate-200 text-brand-accent"
+                      : "bg-[#141414] border-white/10 text-brand-accent"
                       }`}>
                       <Icon className="w-4 h-4 stroke-[2]" />
                     </div>
@@ -287,8 +287,8 @@ export default function ServicesPage() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             className={`mt-24 p-8 sm:p-12 rounded-3xl border text-center relative overflow-hidden transition-all duration-300 ${isLight
-                ? "bg-slate-50 border-slate-200/60 text-slate-900"
-                : "bg-surface-container-low border-white/10 text-white"
+              ? "bg-slate-50 border-slate-200/60 text-slate-900"
+              : "bg-surface-container-low border-white/10 text-white"
               }`}
           >
             <div className="absolute inset-0 bg-brand-accent/5 pointer-events-none" />
@@ -310,8 +310,8 @@ export default function ServicesPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full border-2 font-body text-xs font-extrabold uppercase tracking-wider transition-colors duration-300 ${isLight
-                      ? "border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white"
-                      : "border-white text-white hover:bg-white hover:text-black"
+                    ? "border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white"
+                    : "border-white text-white hover:bg-white hover:text-black"
                     }`}
                 >
                   Quick Chat on WhatsApp
@@ -326,8 +326,8 @@ export default function ServicesPage() {
                     <div
                       key={idx}
                       className={`w-9 h-9 rounded-full flex items-center justify-center border-2 text-[10px] font-display font-black tracking-wider ${isLight
-                          ? "bg-slate-900 text-white border-white"
-                          : "bg-[#111] text-brand-accent border-[#1c1b1b]"
+                        ? "bg-slate-900 text-white border-white"
+                        : "bg-[#111] text-brand-accent border-[#1c1b1b]"
                         }`}
                     >
                       {initials}

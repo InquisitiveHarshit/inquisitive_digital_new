@@ -128,7 +128,7 @@ export const Services: React.FC = () => {
                 transition={{ duration: 0.5, delay: index * 0.05 }}
               >
                 {/* Icon */}
-                <div className="text-brand-accent mb0 block">
+                <div className="text-brand-accent mb-4 block">
                   <IconComponent className="w-8 h-8 stroke-[2]" />
                 </div>
 
@@ -143,7 +143,7 @@ export const Services: React.FC = () => {
                 </p>
 
                 {/* Detailed description (always visible now) */}
-                <div className="font-body text-sm text-on-surface-variant/80 leading-relaxed border-t border-outline-variant/30 pt-1 mt-auto">
+                <div className="font-body text-sm text-on-surface-variant/80 leading-relaxed border-t border-outline-variant/30 pt-4 mt-4">
                   {service.detailedDesc}
                 </div>
               </motion.div>
