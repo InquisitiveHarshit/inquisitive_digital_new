@@ -1,13 +1,26 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
-import { Button } from "@/components/ui/Button";
 import {
+  ArrowRight,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  TrendingDown,
+  Target,
+  Shield,
+  Clock,
+  BarChart3,
+  Zap,
+  AlertTriangle,
+  Mail,
+  User,
+  Globe,
   Search,
   Share2,
   TrendingUp,
@@ -15,12 +28,6 @@ import {
   FileText,
   Award,
   Megaphone,
-  CheckCircle2,
-  XCircle,
-  ArrowLeft,
-  ArrowRight,
-  Sparkles,
-  HelpCircle,
 } from "lucide-react";
 
 interface ServiceFullDetail {
@@ -41,27 +48,6 @@ export default function ServiceDetailPage() {
   const params = useParams();
   const router = useRouter();
   const serviceId = params?.serviceId as string;
-
-  const [themeMode, setThemeMode] = useState<"brutalist" | "singular-light" | "singular-dark">("singular-light");
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (document.body.classList.contains("singular-theme")) {
-        setThemeMode("singular-light");
-      } else if (document.body.classList.contains("singular-dark-theme")) {
-        setThemeMode("singular-dark");
-      }
-
-      const handleThemeChange = (e: any) => {
-        setThemeMode(e.detail);
-      };
-
-      window.addEventListener("theme-change" as any, handleThemeChange);
-      return () => {
-        window.removeEventListener("theme-change" as any, handleThemeChange);
-      };
-    }
-  }, []);
 
   const servicesData: Record<string, ServiceFullDetail> = {
     seo: {
@@ -320,317 +306,565 @@ export default function ServiceDetailPage() {
 
   const service = servicesData[serviceId];
 
-  // Fallback if the route is invalid
+  // Form State
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formData, setFormData] = useState({ fullName: "", email: "", website: "", challenge: "" });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (formData.fullName && formData.email && formData.website) {
+      setFormSubmitted(true);
+    }
+  };
+
+  // FAQ State
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const toggleFaq = (index: number) => setOpenFaqIndex(openFaqIndex === index ? null : index);
+
   if (!service) {
     return (
-      <>
+      <div className="w-full bg-background text-on-surface font-body overflow-x-hidden antialiased min-h-screen flex flex-col">
         <Header />
-        <main className="flex-grow flex flex-col items-center justify-center min-h-screen text-center px-6">
-          <h2 className="font-display text-3xl font-black uppercase mb-4">Service Not Found</h2>
-          <p className="font-body text-slate-500 mb-8 max-w-md">The request category does not exist in our systems.</p>
-          <Button href="/services">View All Services</Button>
+        <main className="flex-grow flex flex-col items-center justify-center text-center px-6">
+          <h2 className="font-display text-2xl font-extrabold uppercase mb-4 text-brand-accent">Service Not Found</h2>
+          <p className="font-body text-on-surface-variant mb-6 max-w-sm">The requested category does not exist in our systems.</p>
+          <button onClick={() => router.push("/services")} className="bg-surface-container-high text-on-surface hover:bg-brand-accent hover:text-background px-6 py-3 rounded-full font-display text-sm font-bold uppercase tracking-wider transition-colors duration-300 border border-outline-variant">
+            View All Services
+          </button>
         </main>
         <Footer />
-      </>
+      </div>
     );
   }
 
   const Icon = service.icon;
-  const isLight = themeMode === "singular-light";
-  const isDarkSingular = themeMode === "singular-dark";
+  const painPointIcons = [TrendingDown, AlertTriangle, Clock];
 
   return (
-    <>
+    <div className="w-full bg-background text-on-surface font-body selection:bg-brand-accent selection:text-background overflow-x-hidden antialiased relative">
       <Header />
 
-      {/* Sticky Offer Bar */}
-      <div className={`sticky top-[81px] md:top-[89px] z-40 w-full flex items-center justify-between px-6 md:px-margin-desktop py-3 border-b-2 transition-colors duration-300 ${
-        themeMode === "brutalist"
-          ? "bg-[#f5c200] border-black text-black"
-          : isLight 
-            ? "bg-slate-50 border-slate-200 text-slate-900" 
-            : "bg-[#141414] border-white/10 text-white"
-      }`}>
-        <div className="flex items-center gap-2">
-          <span className={`w-2 h-2 rounded-full animate-pulse ${
-            themeMode === "brutalist" ? "bg-black" : "bg-brand-accent"
-          }`} />
-          <span className="font-body text-xs md:text-sm font-extrabold uppercase tracking-wider">
-            Free strategy call — 30 min
-          </span>
-        </div>
-        <a
-          href="#contact"
-          className={`inline-flex items-center justify-center font-body font-black uppercase tracking-wider text-[10px] md:text-xs py-1.5 px-4 rounded-full border-2 transition-all duration-300 hover:scale-[1.02] ${
-            themeMode === "brutalist"
-              ? "bg-black text-[#f5c200] border-black hover:bg-white hover:text-black shadow-[2px_2px_0px_rgba(0,0,0,1)]"
-              : isLight
-                ? "bg-brand-accent text-black border-black hover:bg-black hover:text-brand-accent hover:border-black"
-                : "bg-brand-accent text-black border-brand-accent hover:bg-white hover:text-black hover:border-white"
-          }`}
-        >
-          Book Now
-        </a>
+      {/* Soft Background Orbs */}
+      <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10 opacity-30">
+        <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] rounded-full bg-brand-accent/20 blur-[100px]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-surface-container-high blur-[100px]"></div>
       </div>
 
-      <main className={`flex-grow w-full pt-16 pb-24 transition-colors duration-500 overflow-hidden ${
-        isLight ? "bg-white" : isDarkSingular ? "bg-[#0a0a0a]" : "bg-[#0f0e0e]"
-      }`}>
-        <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop relative">
-
-          {/* Back button */}
-          <div className="mb-10">
-            <button
-              onClick={() => router.push("/services")}
-              className={`inline-flex items-center gap-2 font-display text-[10px] font-black uppercase tracking-wider transition-colors hover:text-brand-accent ${
-                isLight ? "text-slate-500" : "text-slate-400"
-              }`}
-            >
-              <ArrowLeft className="w-3.5 h-3.5" /> Back to all services
-            </button>
-          </div>
-
-          {/* Hero Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-16 relative z-10">
-            <div className="lg:col-span-8">
-              <span className={`font-body text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full ${
-                isLight 
-                  ? "bg-slate-100 text-slate-600 border border-slate-200/40" 
-                  : "bg-white/5 text-slate-400 border border-white/5"
-              }`}>
-                {service.category} Strategy
-              </span>
-              
-              <h1 className={`font-display text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight mt-4 mb-6 ${
-                isLight ? "text-slate-900" : "text-white"
-              }`}>
-                {service.title} <span className="text-brand-accent">Solutions</span>
-              </h1>
-              
-              <p className={`font-body text-base sm:text-lg leading-relaxed max-w-2xl ${
-                isLight ? "text-slate-600" : "text-slate-400"
-              }`}>
-                {service.detailedDesc}
-              </p>
-            </div>
-
-            <div className="lg:col-span-4 flex justify-start lg:justify-end">
-              <div className={`w-24 h-24 sm:w-32 sm:h-32 rounded-2xl flex items-center justify-center border-2 shadow-2xl ${
-                isLight 
-                  ? "bg-slate-50 border-slate-900/10 text-brand-accent shadow-slate-100" 
-                  : "bg-[#141414] border-white/10 text-brand-accent shadow-black"
-              }`}>
-                <Icon className="w-12 h-12 sm:w-16 sm:h-16 stroke-[2]" />
-              </div>
-            </div>
-          </div>
-
-          {/* Grid Panel: Pain Points vs Benefits */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 relative z-10">
-            
-            {/* Pain Points Card */}
-            <div className={`p-8 rounded-2xl border-2 ${
-              isLight ? "bg-slate-50/60 border-slate-100" : "bg-[#141414]/30 border-white/5"
-            }`}>
-              <h3 className={`font-display text-sm font-black uppercase tracking-widest mb-6 flex items-center gap-2 ${
-                isLight ? "text-slate-800" : "text-slate-200"
-              }`}>
-                <XCircle className="w-4 h-4 text-red-500" /> Key Bottlenecks Solved
-              </h3>
-              
-              <div className="space-y-4">
-                {service.painPoints.map((point, index) => (
-                  <p key={index} className={`font-body text-xs sm:text-sm font-medium ${
-                    isLight ? "text-slate-600" : "text-slate-400"
-                  }`}>
-                    • {point}
-                  </p>
-                ))}
-              </div>
-            </div>
-
-            {/* Benefits Card */}
-            <div className={`p-8 rounded-2xl border-2 ${
-              isLight ? "bg-slate-50/60 border-slate-100" : "bg-[#141414]/30 border-white/5"
-            }`}>
-              <h3 className={`font-display text-sm font-black uppercase tracking-widest mb-6 flex items-center gap-2 ${
-                isLight ? "text-slate-800" : "text-slate-200"
-              }`}>
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Revenue Advantages
-              </h3>
-              
-              <div className="space-y-4">
-                {service.benefits.map((benefit, index) => (
-                  <p key={index} className={`font-body text-xs sm:text-sm font-medium ${
-                    isLight ? "text-slate-600" : "text-slate-400"
-                  }`}>
-                    • {benefit}
-                  </p>
-                ))}
-              </div>
-            </div>
-
-          </div>
-
-          {/* Deliverables Board */}
-          <div className={`p-8 sm:p-12 rounded-2xl border-2 mb-16 relative z-10 ${
-            themeMode === "brutalist"
-              ? "bg-[#111] border-black text-white shadow-[8px_8px_0px_rgba(0,0,0,1)]"
-              : isLight
-                ? "bg-slate-50 border-slate-900/10 shadow-slate-100/50 text-slate-800"
-                : "bg-[#141414] border-white/10 shadow-black/60 text-white"
-          }`}>
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8 pb-8 border-b border-outline-variant/10">
-              <div className="flex items-center gap-3">
-                <CheckCircle2 className="w-6 h-6 text-brand-accent shrink-0" />
-                <h2 className={`font-display text-xl sm:text-2xl font-black uppercase tracking-tight ${
-                  isLight ? "text-slate-900" : "text-white"
-                }`}>
-                  Core Deliverables Timeline
-                </h2>
-              </div>
-              
-              <Button
-                href="#contact"
-                className="w-full sm:w-auto font-body font-extrabold text-[10px] sm:text-xs uppercase tracking-wider"
-              >
-                {service.ctaText} <ArrowRight className="w-3.5 h-3.5 ml-2" />
-              </Button>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {service.deliverables.map((del, idx) => (
-                <div key={idx} className="flex items-start gap-4">
-                  <div className="w-6 h-6 rounded-full bg-brand-accent/10 border border-brand-accent/20 flex items-center justify-center shrink-0 mt-0.5">
-                    <span className="text-[10px] font-display font-black text-brand-accent">{idx + 1}</span>
-                  </div>
-                  <span className={`font-body text-xs sm:text-sm font-semibold leading-relaxed ${
-                    isLight ? "text-slate-700" : "text-slate-300"
-                  }`}>
-                    {del}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Custom FAQs Section */}
-          <div className="max-w-3xl mx-auto mb-16 relative z-10">
-            <h3 className={`font-display text-xl font-black uppercase tracking-tight text-center mb-8 flex items-center justify-center gap-2.5 ${
-              isLight ? "text-slate-900" : "text-white"
-            }`}>
-              <HelpCircle className="w-5 h-5 text-brand-accent" /> Frequently Asked Questions
-            </h3>
-            
-            <div className="space-y-6">
-              {service.faq.map((item, idx) => (
-                <div
-                  key={idx}
-                  className={`p-6 rounded-xl border ${
-                    isLight ? "bg-slate-50/50 border-slate-100" : "bg-[#141414]/30 border-white/5"
-                  }`}
-                >
-                  <h4 className={`font-display text-sm font-black uppercase tracking-wide mb-2.5 ${
-                    isLight ? "text-slate-900" : "text-white"
-                  }`}>
-                    {item.q}
-                  </h4>
-                  <p className={`font-body text-xs sm:text-sm leading-relaxed ${
-                    isLight ? "text-slate-500" : "text-slate-400"
-                  }`}>
-                    {item.a}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Quick Consultation Ribbon */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className={`p-8 sm:p-12 rounded-3xl border text-center relative overflow-hidden transition-all duration-300 ${
-              isLight 
-                ? "bg-slate-50 border-slate-200/60 text-slate-900" 
-                : "bg-surface-container-low border-white/10 text-white"
-            }`}
+      {/* SECTION 1 — HERO (Minimal & Tight) */}
+      <section className="relative min-h-[65vh] flex flex-col justify-center items-center text-center pt-28 pb-12 px-6 md:px-margin-desktop overflow-hidden">
+        <div className="w-full absolute top-28 left-0 px-6 md:px-margin-desktop flex justify-start z-20">
+          <motion.button
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            onClick={() => router.push("/services")}
+            className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider transition-colors text-on-surface-variant hover:text-brand-accent bg-surface-container-low px-3 py-3 rounded-full border border-outline-variant shadow-sm"
           >
-            <div className="absolute inset-0 bg-brand-accent/5 pointer-events-none" />
-            <div className="relative z-10 max-w-2xl mx-auto">
-              <h3 className="font-display text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight mb-4">
-                Let&apos;s build your dynamic strategy roadmap
-              </h3>
-              <p className={`font-body text-sm sm:text-base mb-8 max-w-lg mx-auto ${
-                isLight ? "text-slate-600" : "text-slate-400"
-              }`}>
-                Book a direct growth workshop for {service.title}. We will audit your current channels and layout a high-performance roadmap completely free of charge.
+            <ArrowRight className="w-3 h-3 rotate-180" />
+          </motion.button>
+        </div>
+
+        <div className="max-w-4xl mx-auto w-full relative z-10 flex flex-col items-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+            className="font-display text-4xl sm:text-5xl md:text-6xl font-extrabold text-on-surface tracking-tight leading-[1.1] mb-5"
+          >
+            {service.title.split(" ").slice(0, -1).join(" ")} <span className="text-brand-accent">{service.title.split(" ").slice(-1)}</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
+            className="font-body text-on-surface-variant text-lg sm:text-xl font-normal leading-relaxed max-w-2xl mb-8"
+          >
+            {service.shortDesc}
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.4, ease: "easeOut" }}
+            className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center"
+          >
+            <a
+              href="#lead-form"
+              className="inline-flex items-center justify-center font-display font-bold uppercase tracking-wider text-background bg-brand-accent px-6 py-3 rounded-full text-xs sm:text-sm transition-all duration-300 hover:shadow-[0_8px_20px_rgb(245,194,0,0.3)] hover:-translate-y-0.5"
+            >
+              {service.ctaText}
+            </a>
+            <a
+              href="#approach"
+              className="inline-flex items-center justify-center font-display font-bold uppercase tracking-wider text-on-surface bg-surface-container-low border border-outline-variant px-6 py-3 rounded-full text-xs sm:text-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-surface-container-high hover:shadow-sm"
+            >
+              Explore Approach
+            </a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION 2 — WHAT WE ACTUALLY DO */}
+      <section id="approach" className="py-12 px-4 md:px-margin-desktop relative">
+        <div className="max-w-container-max mx-auto relative z-10 bg-surface-container-low rounded-3xl p-6 md:p-10 border border-outline-variant shadow-sm">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-10">
+            <div className="lg:col-span-5 lg:sticky lg:top-8">
+              <motion.span
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="inline-block px-3 py-1 rounded-full bg-background border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-4"
+              >
+                The Approach
+              </motion.span>
+              <motion.h2
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-[1.1] text-on-surface"
+              >
+                How We Make Growth Predictable
+              </motion.h2>
+            </div>
+
+            <div className="lg:col-span-7 space-y-6">
+              <motion.p
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="font-display text-xl sm:text-2xl font-bold leading-relaxed text-on-surface"
+              >
+                {service.detailedDesc}
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="font-body text-base font-normal leading-relaxed text-on-surface-variant opacity-90"
+              >
+                Most agencies focus strictly on front-end metrics to validate their value. We don't. At Inquisitive Digital, {service.title.toLowerCase()} is treated as a strict system engineering challenge. We eliminate variables by combining predictive models, server-side data, and meticulous direct-response frameworks. This allows us to spot fatigue before it kills your momentum and extract maximum yield from every resource deployed.
+              </motion.p>
+            </div>
+          </div>
+
+          <div className="pt-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                { title: "No Vanity Metrics", desc: "We optimize for cash revenue, not generic engagement." },
+                { title: "Full Funnel Ownership", desc: "From strategic assets to high-converting user paths." },
+                { title: "Transparent Reporting", desc: "Direct live attribution dashboard and zero fluff." }
+              ].map((pill, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.1, ease: "easeOut" }}
+                  className="flex flex-col gap-3 bg-background rounded-2xl p-5 transition-transform duration-300 hover:-translate-y-1 hover:shadow-md border border-outline-variant"
+                >
+                  <div className="w-10 h-10 rounded-full bg-brand-accent/10 flex items-center justify-center text-brand-accent font-display border border-outline-variant">
+                    <span className="font-bold text-base">0{i + 1}</span>
+                  </div>
+                  <div>
+                    <h4 className="font-display font-bold text-base text-on-surface tracking-wide">{pill.title}</h4>
+                    <p className="font-body text-xs text-on-surface-variant mt-1.5 opacity-90 leading-relaxed">{pill.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3 — OUR PROCESS */}
+      <section className="py-12 px-4 md:px-margin-desktop relative">
+        <div className="max-w-container-max mx-auto relative z-10">
+          <div className="text-center mb-10">
+            <motion.span
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-block px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
+            >
+              HOW WE WORK
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface"
+            >
+              Our 5-Stage Engine
+            </motion.h2>
+          </div>
+
+          <div className="relative">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 relative z-10">
+              {['Audit', 'Strategy', 'Execute', 'Optimise', 'Scale'].map((step, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1, ease: "easeOut" }}
+                  className="flex flex-col items-center text-center bg-surface-container-low p-6 rounded-2xl border border-outline-variant hover:bg-surface-container-high transition-colors duration-300 shadow-sm hover:shadow-md"
+                >
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-lg mb-4 transition-colors duration-300 bg-background border border-outline-variant shadow-sm ${idx === 0 || idx === 4 ? 'text-brand-accent bg-brand-accent/5' : 'text-on-surface-variant'}`}>
+                    0{idx + 1}
+                  </div>
+                  <h3 className="font-display text-base font-bold text-on-surface tracking-wide mb-2">{step}</h3>
+                  <p className="font-body text-xs text-on-surface-variant leading-relaxed opacity-90">
+                    {idx === 0 && "We dismantle setups to locate technical waste."}
+                    {idx === 1 && "We build custom blueprints matching profit margins."}
+                    {idx === 2 && "Our team launches optimized custom-coded paths."}
+                    {idx === 3 && "Daily calibrations occur on audience definitions."}
+                    {idx === 4 && "We expand safely into proven structures to scale."}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4 — WHAT'S INCLUDED */}
+      <section className="py-12 px-4 md:px-margin-desktop relative">
+        <div className="max-w-container-max mx-auto relative z-10 bg-surface-container-low rounded-3xl p-6 md:p-10 border border-outline-variant shadow-sm">
+          <div className="mb-10 text-center max-w-2xl mx-auto">
+            <motion.span
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-block px-3 py-1 rounded-full bg-background border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
+            >
+              WHAT YOU GET
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface"
+            >
+              Complete Deliverables
+            </motion.h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+            {service.deliverables.map((deliverable, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1, ease: "easeOut" }}
+                className="flex items-start gap-4 bg-background p-5 rounded-2xl cursor-default transition-all duration-300 hover:shadow-sm border border-outline-variant"
+              >
+                <div className="w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-brand-accent flex-shrink-0 mt-0.5">
+                  <Check className="w-4 h-4 stroke-[3]" />
+                </div>
+                <div>
+                  <h4 className="font-display font-bold text-base text-on-surface tracking-wide mb-1">{deliverable}</h4>
+                  <p className="font-body text-xs text-on-surface-variant leading-relaxed opacity-90">
+                    Engineered to align directly with your overall growth trajectory.
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-brand-accent/5 p-6 lg:p-8 rounded-2xl border border-brand-accent/20 flex flex-col md:flex-row items-center justify-between gap-6"
+          >
+            <div className="flex items-center gap-5">
+              <div className="w-12 h-12 bg-background rounded-full flex items-center justify-center text-brand-accent flex-shrink-0 shadow-sm border border-outline-variant">
+                <Shield className="w-6 h-6" />
+              </div>
+              <p className="font-body font-medium text-sm md:text-base leading-relaxed text-on-surface max-w-xl">
+                Every single engagement includes full transparent reporting, a dedicated lead point of contact, and 30-day post-launch deployment support.
               </p>
-              
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button href="#contact" className="w-full sm:w-auto font-body font-extrabold uppercase text-xs">
-                  Schedule Free Workshop
-                </Button>
-                <a
-                  href="https://wa.me/918700049448"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full border-2 font-body text-xs font-extrabold uppercase tracking-wider transition-colors duration-300 ${
-                    isLight 
-                      ? "border-slate-800 text-slate-800 hover:bg-slate-800 hover:text-white" 
-                      : "border-white text-white hover:bg-white hover:text-black"
-                  }`}
-                >
-                  Quick Chat on WhatsApp
-                </a>
-              </div>
+            </div>
+            <a
+              href="#lead-form"
+              className="flex-shrink-0 w-full md:w-auto font-display font-bold uppercase tracking-wider text-background bg-brand-accent px-6 py-3 rounded-full text-xs sm:text-sm transition-all duration-300 hover:shadow-[0_8px_20px_rgb(245,194,0,0.3)] hover:-translate-y-0.5 text-center"
+            >
+              Secure My Setup
+            </a>
+          </motion.div>
+        </div>
+      </section>
 
-              {/* Social Proof Row */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8 pt-8 border-t border-outline-variant/10">
-                <div className="flex -space-x-3">
-                  {["JD", "MK", "AS"].map((initials, idx) => (
-                    <div
-                      key={idx}
-                      className={`w-9 h-9 rounded-full flex items-center justify-center border-2 text-[10px] font-display font-black tracking-wider ${
-                        isLight
-                          ? "bg-slate-900 text-white border-white"
-                          : "bg-[#111] text-brand-accent border-[#1c1b1b]"
-                      }`}
-                    >
-                      {initials}
-                    </div>
-                  ))}
-                </div>
+      {/* SECTION 5 — RESULTS STRIP */}
+      <section className="py-12 px-4 md:px-margin-desktop">
+        <div className="max-w-container-max mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+            {[
+              { val: "312%", label: "Net Sales Expansion", sub: "For lifestyle brand" },
+              { val: "4.8x", label: "Sustained Client ROI", sub: "Across Q3 deployments" },
+              { val: "-64%", label: "Decrease in CAC", sub: "Within 60 days" },
+              { val: "₹25Cr+", label: "Margin Generated", sub: "Bottom-line pipeline" }
+            ].map((stat, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="bg-surface-container-low rounded-2xl p-6 flex flex-col items-center text-center transition-transform duration-300 hover:-translate-y-1 border border-outline-variant hover:shadow-sm"
+              >
+                <span className="block font-display text-3xl lg:text-4xl font-extrabold text-brand-accent tracking-tight mb-2">{stat.val}</span>
+                <span className="font-body text-on-surface-variant text-[10px] uppercase tracking-widest font-bold">{stat.label}</span>
+                <span className="font-body text-[10px] font-normal text-on-surface-variant opacity-80 block mt-3">{stat.sub}</span>
+              </motion.div>
+            ))}
+          </div>
 
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-4 h-4 text-brand-accent fill-current"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-
-                <span
-                  className={`font-body text-xs font-bold uppercase tracking-wider ${
-                    isLight ? "text-slate-600" : "text-slate-400"
-                  }`}
-                >
-                  50+ brands scaled
-                </span>
-              </div>
-
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="max-w-3xl mx-auto text-center"
+          >
+            <p className="font-display text-xl sm:text-2xl font-medium text-on-surface leading-snug mb-6 opacity-90">
+              "Inquisitive Digital stopped the guessing games. They restructured our entire setup and developed optimized custom funnels in under two weeks."
+            </p>
+            <div className="inline-flex flex-col items-center bg-surface-container-low border border-outline-variant px-5 py-2.5 rounded-full shadow-sm">
+              <span className="block font-display font-bold text-on-surface text-xs tracking-wide">Vikram Mehta</span>
+              <span className="font-body text-on-surface-variant text-[9px] uppercase tracking-widest font-semibold mt-0.5 opacity-90">CMO, Zenith Luxury Goods</span>
             </div>
           </motion.div>
-
         </div>
-      </main>
+      </section>
+
+      {/* SECTION 6 — THE COST OF NOT ACTING */}
+      <section className="py-12 px-4 md:px-margin-desktop relative">
+        <div className="max-w-container-max mx-auto relative z-10 bg-surface-container-low rounded-3xl p-6 md:p-10 border border-outline-variant shadow-sm">
+          <div className="text-center mb-10">
+            <motion.span
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-block px-3 py-1 rounded-full bg-background border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
+            >
+              WHAT INACTION COSTS YOU
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface"
+            >
+              The Price of Stagnation
+            </motion.h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {service.painPoints.map((point, index) => {
+              const DynamicIcon = painPointIcons[index % painPointIcons.length];
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ delay: index * 0.1, ease: "easeOut" }}
+                  className="bg-background p-6 rounded-2xl border border-outline-variant transition-transform duration-300 hover:-translate-y-1 hover:shadow-sm text-center flex flex-col items-center shadow-sm"
+                >
+                  <div className="w-12 h-12 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-on-surface mb-4 shadow-sm">
+                    <DynamicIcon className="w-5 h-5 opacity-80 text-brand-accent" />
+                  </div>
+                  <h3 className="font-display text-base font-bold tracking-wide text-on-surface mb-3">{point}</h3>
+                  <p className="font-body text-xs font-normal text-on-surface-variant leading-relaxed opacity-90">
+                    Every day spent running unoptimized campaigns allows your closest competitors to lock down crucial real estate and audiences.
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 7 — INLINE LEAD FORM */}
+      <section id="lead-form" className="py-12 px-4 md:px-margin-desktop relative">
+        <div className="max-w-container-max mx-auto relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center bg-brand-accent/5 rounded-3xl p-6 md:p-10 border border-brand-accent/20">
+            <div className="lg:col-span-6 flex flex-col items-start">
+              <motion.span
+                initial={{ opacity: 0, x: -15 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="inline-block px-3 py-1 rounded-full bg-background border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
+              >
+                FREE TELEMETRY REPORT
+              </motion.span>
+              <motion.h2
+                initial={{ opacity: 0, x: -15 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface leading-tight mb-8"
+              >
+                Ready to Stop Guessing and Start Growing?
+              </motion.h2>
+
+              <div className="space-y-4">
+                {service.benefits.map((benefit, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, x: -15 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                    className="flex items-start gap-4 bg-background p-4 rounded-2xl border border-outline-variant shadow-sm"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-brand-accent flex-shrink-0">
+                      <Check className="w-4 h-4 stroke-[3]" />
+                    </div>
+                    <div>
+                      <h4 className="font-display font-bold text-on-surface text-base mb-0.5">{benefit}</h4>
+                      <p className="font-body font-normal text-xs text-on-surface-variant opacity-90">Our senior engineers map out exactly how this will impact your bottom line.</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="lg:col-span-6 w-full"
+            >
+              <div className="bg-background rounded-2xl p-6 md:p-8 shadow-xl shadow-brand-accent/5 border border-outline-variant">
+                {!formSubmitted ? (
+                  <form onSubmit={handleFormSubmit} className="space-y-4">
+                    <h3 className="font-display text-on-surface text-lg font-extrabold tracking-wide mb-6 text-center">
+                      Request System Audit
+                    </h3>
+
+                    <div className="space-y-1.5">
+                      <div className="relative">
+                        <User className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant opacity-70" />
+                        <input type="text" name="fullName" required value={formData.fullName} onChange={handleInputChange} placeholder="Full Name" className="w-full bg-surface-container-low border border-outline-variant rounded-full px-12 py-3 text-xs font-body text-on-surface placeholder-on-surface-variant/70 focus:border-brand-accent/50 focus:bg-background focus:ring-4 focus:ring-brand-accent/10 focus:outline-none transition-all duration-300" />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <div className="relative">
+                        <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant opacity-70" />
+                        <input type="email" name="email" required value={formData.email} onChange={handleInputChange} placeholder="Business Email" className="w-full bg-surface-container-low border border-outline-variant rounded-full px-12 py-3 text-xs font-body text-on-surface placeholder-on-surface-variant/70 focus:border-brand-accent/50 focus:bg-background focus:ring-4 focus:ring-brand-accent/10 focus:outline-none transition-all duration-300" />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <div className="relative">
+                        <Globe className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant opacity-70" />
+                        <input type="url" name="website" required value={formData.website} onChange={handleInputChange} placeholder="Website URL" className="w-full bg-surface-container-low border border-outline-variant rounded-full px-12 py-3 text-xs font-body text-on-surface placeholder-on-surface-variant/70 focus:border-brand-accent/50 focus:bg-background focus:ring-4 focus:ring-brand-accent/10 focus:outline-none transition-all duration-300" />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <textarea name="challenge" rows={3} value={formData.challenge} onChange={handleInputChange} placeholder="What's your biggest growth challenge?" className="w-full bg-surface-container-low border border-outline-variant rounded-2xl px-5 py-3 text-xs font-body text-on-surface placeholder-on-surface-variant/70 focus:border-brand-accent/50 focus:bg-background focus:ring-4 focus:ring-brand-accent/10 focus:outline-none transition-all duration-300 resize-none"></textarea>
+                    </div>
+
+                    <button type="submit" className="w-full bg-brand-accent text-background font-display font-bold text-xs uppercase tracking-wider py-3 rounded-full transition-all duration-300 hover:shadow-[0_8px_20px_rgb(245,194,0,0.3)] hover:-translate-y-0.5 mt-2">
+                      GET MY FREE AUDIT →
+                    </button>
+                  </form>
+                ) : (
+                  <div className="py-8 px-4 text-center space-y-4">
+                    <div className="w-16 h-16 bg-brand-accent/10 rounded-full flex items-center justify-center text-brand-accent mx-auto mb-4 shadow-inner border border-brand-accent/20">
+                      <Check className="w-8 h-8 stroke-[3]" />
+                    </div>
+                    <h3 className="font-display text-on-surface text-2xl font-extrabold tracking-tight">Audit Initiated</h3>
+                    <p className="font-body text-xs font-normal text-on-surface-variant leading-relaxed max-w-sm mx-auto">
+                      Thank you, <span className="text-on-surface font-bold">{formData.fullName}</span>. Our engineers are analyzing <span className="text-brand-accent font-bold">{formData.website}</span>.
+                      Your custom video breakdown will be delivered to <span className="text-on-surface font-bold">{formData.email}</span> within 48 hours.
+                    </p>
+                    <div className="pt-4">
+                      <button onClick={() => { setFormSubmitted(false); setFormData({ fullName: "", email: "", website: "", challenge: "" }) }} className="font-display text-[10px] font-bold text-brand-accent uppercase tracking-widest hover:underline bg-surface-container-low border border-outline-variant px-4 py-1.5 rounded-full shadow-sm">Submit another</button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 8 — FAQ */}
+      <section className="py-12 px-4 md:px-margin-desktop relative">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-10">
+            <motion.span
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-block px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
+            >
+              COMMON QUESTIONS
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface"
+            >
+              Frequently Asked Questions
+            </motion.h2>
+          </div>
+
+          <div className="space-y-3">
+            {service.faq.map((faq, index) => {
+              const isOpen = openFaqIndex === index;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className={`bg-surface-container-low rounded-2xl transition-all duration-300 overflow-hidden border ${isOpen ? 'border-brand-accent shadow-sm' : 'border-outline-variant hover:border-outline-variant/80'}`}
+                >
+                  <button onClick={() => toggleFaq(index)} className="w-full flex items-center justify-between p-5 md:p-6 text-left focus:outline-none">
+                    <span className="font-display font-bold text-sm sm:text-base text-on-surface pr-4">{faq.q}</span>
+                    <span className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-300 border ${isOpen ? 'bg-brand-accent text-background border-brand-accent' : 'bg-background text-on-surface-variant border-outline-variant'}`}>
+                      {isOpen ? <ChevronUp className="w-4 h-4 stroke-[2.5]" /> : <ChevronDown className="w-4 h-4 stroke-[2.5]" />}
+                    </span>
+                  </button>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-5 md:px-6 pb-6 font-body font-normal text-xs md:text-sm text-on-surface-variant leading-relaxed opacity-90">
+                          {faq.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
       <Footer />
       <FloatingWhatsApp />
-    </>
+    </div>
   );
 }

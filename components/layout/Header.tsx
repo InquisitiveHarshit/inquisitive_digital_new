@@ -57,10 +57,11 @@ export const Header: React.FC = () => {
   }, []);
 
   const navLinks = [
+    { label: "Home", href: "/" },
     { label: "Services", href: "/services" },
-    { label: "Case Studies", href: "/#work" },
-    { label: "Process", href: "/#process" },
-    { label: "Insights", href: "/#insights" },
+    { label: "Blogs", href: "/blogs" },
+    { label: "About Us", href: "/about-us" },
+    { label: "Contact Us", href: "/contact-us" },
   ];
 
   const dropdownServices = [
@@ -140,6 +141,19 @@ export const Header: React.FC = () => {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-10">
+          {/* Home Link */}
+          <a
+            className={`font-body text-xs uppercase tracking-wider font-semibold transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[2px] hover:after:w-full after:transition-all after:duration-300 ${isLight
+              ? "text-slate-700 hover:text-brand-accent after:bg-brand-accent"
+              : isDarkSingular
+                ? "text-slate-300 hover:text-brand-accent after:bg-brand-accent"
+                : "text-on-surface-variant hover:text-brand-accent after:bg-brand-accent"
+              }`}
+            href="/"
+          >
+            Home
+          </a>
+
           {/* Services Dropdown */}
           <div
             className="relative py-2"
@@ -230,7 +244,7 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Other Nav Links */}
-          {navLinks.filter(link => link.label !== "Services").map((link) => (
+          {navLinks.filter(link => link.label !== "Services" && link.label !== "Home").map((link) => (
             <a
               key={link.label}
               className={`font-body text-xs uppercase tracking-wider font-semibold transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[2px] hover:after:w-full after:transition-all after:duration-300 ${isLight
@@ -337,6 +351,20 @@ export const Header: React.FC = () => {
               : "bg-background/98 backdrop-blur-lg border-outline-variant/30"
             }`}
         >
+          {/* Home Link */}
+          <a
+            className={`font-body text-lg uppercase tracking-wider font-semibold transition-colors duration-300 ${isLight
+              ? "text-slate-800 hover:text-brand-accent"
+              : isDarkSingular
+                ? "text-white hover:text-brand-accent"
+                : "text-on-surface hover:text-brand-accent"
+              }`}
+            href="/"
+            onClick={() => setIsOpen(false)}
+          >
+            Home
+          </a>
+
           {/* Services Accordion */}
           <div className="w-full flex flex-col items-center">
             <button
@@ -393,7 +421,7 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Other Nav links */}
-          {navLinks.filter(link => link.label !== "Services").map((link) => (
+          {navLinks.filter(link => link.label !== "Services" && link.label !== "Home").map((link) => (
             <a
               key={link.label}
               className={`font-body text-lg uppercase tracking-wider font-semibold transition-colors duration-300 ${isLight

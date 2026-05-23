@@ -11,7 +11,7 @@
   --color-outline-variant: #4e4632;
   --color-surface-container-low: #1c1b1b;
   --color-surface-container-high: #2a2a2a;
-  
+
   --spacing-base: 8px;
   --spacing-margin-desktop: 80px;
   --spacing-margin-mobile: 32px;
@@ -37,10 +37,10 @@
   --color-outline-variant: #e2e8f0;
   --color-surface-container-low: #f8fafc;
   --color-surface-container-high: #f1f5f9;
-  
+
   /* Expand the entire website's container to full width */
   --spacing-container-max: 100%;
-  
+
   --background: #ffffff;
   --foreground: #111111;
 }
@@ -54,13 +54,14 @@
   --color-outline-variant: #333333;
   --color-surface-container-low: #111111;
   --color-surface-container-high: #1a1a1a;
-  
+
   /* Expand the entire website's container to full width */
   --spacing-container-max: 100%;
-  
+
   --background: #0a0a0a;
   --foreground: #ffffff;
 }
+
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -81,15 +82,18 @@ body {
 }
 
 .hero-pattern {
-  background-image: 
+  background-image:
     radial-gradient(circle at 15% 50%, rgba(245, 194, 0, 0.05) 0%, transparent 35%),
     radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.03) 0%, transparent 30%);
 }
 
 @keyframes goldGlowPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     filter: drop-shadow(0 0 12px rgba(245, 194, 0, 0.4)) drop-shadow(0 0 2px rgba(245, 194, 0, 0.2));
   }
+
   50% {
     filter: drop-shadow(0 0 24px rgba(245, 194, 0, 0.75)) drop-shadow(0 0 5px rgba(245, 194, 0, 0.4));
   }
