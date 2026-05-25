@@ -190,7 +190,7 @@ export const Hero: React.FC = () => {
         <div className="md:col-span-12 flex flex-col items-center text-center">
 
           {/* Trust Badge Banner / Subheader */}
-          {/* <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait">
             {themeMode === "brutalist" ? (
               <motion.div
                 key="dark-badge"
@@ -217,7 +217,7 @@ export const Hero: React.FC = () => {
                 ⭐ 500+ Clients Served | 8+ Years of Excellence
               </motion.div>
             )}
-          </AnimatePresence> */}
+          </AnimatePresence>
 
           {/* Animated Headline with Custom Copy & Black-Yellow styling */}
           <AnimatePresence mode="wait">
@@ -231,11 +231,11 @@ export const Hero: React.FC = () => {
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               >
                 <span className="bg-gradient-to-b from-white via-[#f1f5f9] to-[#94a3b8] bg-clip-text text-transparent drop-shadow-sm select-none">
-                  DIGITAL MARKETING
+                  YOUR DIGITAL
                 </span> <br />
                 <span className="relative inline-block select-none mt-2">
                   <span className="bg-gradient-to-r from-[#ffe47e] via-[#f5c200] to-[#b38600] bg-clip-text text-transparent font-extrabold gold-glow-pulse">
-                    THAT DELIVERS.
+                    GROWTH PARTNER.
                   </span>
                 </span>
               </motion.h1>
@@ -249,12 +249,12 @@ export const Hero: React.FC = () => {
                 exit={{ opacity: 0, y: -30 }}
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               >
-                Digital Marketing <br />
+                Your Digital <br />
                 <span className={`relative inline-block mt-3 px-4 sm:px-6 py-1.5 sm:py-2 rounded-sm transform -rotate-1 select-none ${themeMode === "singular-dark"
                   ? "bg-brand-accent text-[#111111] border-2 border-brand-accent shadow-[4px_4px_0px_rgba(255,255,255,0.1)] sm:shadow-[6px_6px_0px_rgba(255,255,255,0.1)]"
                   : "bg-[#111111] text-brand-accent border-2 border-black shadow-[4px_4px_0px_rgba(245,194,0,1)] sm:shadow-[6px_6px_0px_rgba(245,194,0,1)]"
                   }`}>
-                  That Delivers.
+                  Growth Partner.
                 </span>
               </motion.h1>
             )}

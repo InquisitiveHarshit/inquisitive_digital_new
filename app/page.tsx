@@ -7,6 +7,7 @@ import { Services } from "@/components/sections/Services";
 import { Deliverables } from "@/components/sections/Deliverables";
 import { PainPoints } from "@/components/sections/PainPoints";
 import { Process } from "@/components/sections/Process";
+import { BookingSteps } from "@/components/sections/BookingSteps";
 import { Industries } from "@/components/sections/Industries";
 import { CaseStudies } from "@/components/sections/CaseStudies";
 import { Testimonials } from "@/components/sections/Testimonials";
@@ -49,6 +50,9 @@ export default function Home() {
 
         {/* Process Flow Section */}
         <Process />
+
+        {/* Booking Steps Section */}
+        <BookingSteps />
 
         {/* Industries We Serve Grid */}
         <Industries />

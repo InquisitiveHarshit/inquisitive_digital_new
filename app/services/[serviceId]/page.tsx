@@ -494,7 +494,7 @@ export default function ServiceDetailPage() {
               viewport={{ once: true }}
               className="inline-block px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
             >
-              HOW WE WORK
+              THE PACE APPROACH
             </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 15 }}
@@ -502,13 +502,34 @@ export default function ServiceDetailPage() {
               viewport={{ once: true }}
               className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface"
             >
-              Our 5-Stage Engine
+              Our 4-Stage PACE Approach
             </motion.h2>
           </div>
 
           <div className="relative">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 relative z-10">
-              {['Audit', 'Strategy', 'Execute', 'Optimise', 'Scale'].map((step, idx) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+              {[
+                {
+                  title: "PREPARE",
+                  subtitle: "DISCOVER | MODEL",
+                  desc: "Understand the business and its revenue funnel."
+                },
+                {
+                  title: "ACT",
+                  subtitle: "PLAN | EXECUTE",
+                  desc: "Identify opportunities and attack leverage points within that funnel."
+                },
+                {
+                  title: "CALIBRATE",
+                  subtitle: "MEASURE | ADAPT",
+                  desc: "Make necessary course corrections to further align actions with the desired results."
+                },
+                {
+                  title: "EVOLVE",
+                  subtitle: "ITERATE | OPTIMIZE",
+                  desc: "Constantly measure, adapt, and improve results at each identified lever in the funnel."
+                }
+              ].map((step, idx) => (
                 <motion.div
                   key={idx}
                   initial={{ opacity: 0, y: 20 }}
@@ -517,16 +538,15 @@ export default function ServiceDetailPage() {
                   transition={{ delay: idx * 0.1, ease: "easeOut" }}
                   className="flex flex-col items-center text-center bg-surface-container-low p-6 rounded-2xl border border-outline-variant hover:bg-surface-container-high transition-colors duration-300 shadow-sm hover:shadow-md"
                 >
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-lg mb-4 transition-colors duration-300 bg-background border border-outline-variant shadow-sm ${idx === 0 || idx === 4 ? 'text-brand-accent bg-brand-accent/5' : 'text-on-surface-variant'}`}>
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-lg mb-4 transition-colors duration-300 bg-background border border-outline-variant shadow-sm ${idx === 0 || idx === 3 ? 'text-brand-accent bg-brand-accent/5' : 'text-on-surface-variant'}`}>
                     0{idx + 1}
                   </div>
-                  <h3 className="font-display text-base font-bold text-on-surface tracking-wide mb-2">{step}</h3>
+                  <h3 className="font-display text-base font-bold text-on-surface tracking-wide mb-1">{step.title}</h3>
+                  <div className="text-[9px] font-display font-extrabold uppercase tracking-wider text-brand-accent mb-3">
+                    {step.subtitle}
+                  </div>
                   <p className="font-body text-xs text-on-surface-variant leading-relaxed opacity-90">
-                    {idx === 0 && "We dismantle setups to locate technical waste."}
-                    {idx === 1 && "We build custom blueprints matching profit margins."}
-                    {idx === 2 && "Our team launches optimized custom-coded paths."}
-                    {idx === 3 && "Daily calibrations occur on audience definitions."}
-                    {idx === 4 && "We expand safely into proven structures to scale."}
+                    {step.desc}
                   </p>
                 </motion.div>
               ))}
