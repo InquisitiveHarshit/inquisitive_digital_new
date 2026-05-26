@@ -21,6 +21,13 @@ export const blogs: BlogPost[] = [
     ## 1. Content is Still King
     But it's not just any content. You need highly authoritative, original content that provides unique value. AI models are getting better at identifying fluff.
     
+    ### Quality Over Quantity
+    Publishing 100 mediocre articles won't cut it anymore. Focus on long-form, deeply researched pieces.
+    
+    - In-depth topic coverage
+    - Original data and primary research
+    - Expert interviews and quotes
+    
     ## 2. AEO (Answer Engine Optimization)
     With AI platforms giving direct answers, optimizing for 'zero-click' searches and becoming the source of truth is critical. Make sure your data is structured properly.
     
@@ -40,6 +47,13 @@ export const blogs: BlogPost[] = [
     ## The Multi-Touch Attribution Problem
     Many brands struggle to measure social ROI because they look at last-click attribution. We need a holistic view.
     
+    ### Building Custom Attribution Models
+    Relying solely on platform data is a mistake. Implement third-party tracking to see the full customer journey.
+    
+    - First-click tracking
+    - Linear attribution weighting
+    - Time-decay models
+    
     ## Creative That Converts
     In a world of infinite scroll, your creative needs to stop thumbs. We'll discuss the anatomy of high-converting social creative.
     
@@ -58,6 +72,14 @@ export const blogs: BlogPost[] = [
     
     ## What is Brutalist Design?
     It's characterized by raw, unpolished aesthetics, high-contrast colors, large typography, and a deliberate breaking of conventional UI rules.
+    
+    ### Core Elements of Brutalism
+    To truly pull off this aesthetic, you need to commit to the core principles:
+    
+    - High-contrast, stark palettes (often black, white, and a single neon accent)
+    - Exposed grid structures and harsh, visible borders
+    - Deliberately large, uncompromising typography
+    - Lack of traditional drop shadows or soft gradients
     
     ## Why it Works
     In a sea of generic, template-driven websites, a brutalist design stands out. It signals confidence and disruption.
