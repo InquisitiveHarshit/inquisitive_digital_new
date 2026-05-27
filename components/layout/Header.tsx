@@ -246,19 +246,7 @@ export const Header: React.FC = () => {
               ? "bg-slate-100 border-slate-200"
               : "bg-black/40 backdrop-blur-md border-white/10"
           }`}>
-            <button
-              onClick={() => handleThemeSwitch("brutalist")}
-              className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ${
-                themeMode === "brutalist"
-                  ? "bg-[#1c1b1b] text-brand-accent border border-outline-variant/40 shadow-sm"
-                  : isLight
-                    ? "text-slate-400 hover:text-slate-700"
-                    : "text-white/50 hover:text-white"
-              }`}
-              title="Brutalist Mode"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-            </button>
+
             <button
               onClick={() => handleThemeSwitch("singular-light")}
               className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ${
@@ -442,19 +430,7 @@ export const Header: React.FC = () => {
                 ? "bg-slate-100 border-slate-200"
                 : "bg-black/40 backdrop-blur-md border-white/10"
             }`}>
-              <button
-                onClick={() => handleThemeSwitch("brutalist")}
-                className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ${
-                  themeMode === "brutalist"
-                    ? "bg-[#1c1b1b] text-brand-accent border border-outline-variant/40 shadow-sm"
-                    : isLight
-                      ? "text-slate-400 hover:text-slate-700"
-                      : "text-white/50 hover:text-white"
-                }`}
-                title="Brutalist Mode"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-              </button>
+
               <button
                 onClick={() => handleThemeSwitch("singular-light")}
                 className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ${

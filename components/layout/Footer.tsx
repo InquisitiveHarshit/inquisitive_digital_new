@@ -14,7 +14,7 @@ export const Footer: React.FC = () => {
           <a href="/" className="flex items-center group cursor-pointer animate-pulse-subtle">
             <Image
               alt="Inquisitive Digital Logo"
-              className="h-25 w-auto object-contain group-hover:scale-[1.03] transition-transform duration-300"
+              className={`w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03] ${isLight ? "h-20 scale-[2]" : "h-14 scale-[0.8]"}`}
               src={isLight ? "/logo_black_name.png" : "/logo_white_name.png"}
               width={240}
               height={100}
