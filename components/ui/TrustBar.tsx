@@ -1,32 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck } from "lucide-react";
-
-type ThemeMode = "brutalist" | "singular-light" | "singular-dark";
+import { useTheme } from "@/components/ThemeProvider";
 
 export const TrustBar: React.FC = () => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>("singular-light");
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (document.body.classList.contains("singular-theme")) {
-        setThemeMode("singular-light");
-      } else if (document.body.classList.contains("singular-dark-theme")) {
-        setThemeMode("singular-dark");
-      }
-
-      const handleThemeChange = (e: any) => {
-        setThemeMode(e.detail);
-      };
-      
-      window.addEventListener("theme-change" as any, handleThemeChange);
-      return () => {
-        window.removeEventListener("theme-change" as any, handleThemeChange);
-      };
-    }
-  }, []);
+  const { themeMode } = useTheme();
 
   const isLight = themeMode === "singular-light";
   const isDarkSingular = themeMode === "singular-dark";

@@ -9,31 +9,13 @@ import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { blogs, getBlogBySlug } from "../data";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { useTheme } from "@/components/ThemeProvider";
 
 export default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
-  const [themeMode, setThemeMode] = useState<"brutalist" | "singular-light" | "singular-dark">("singular-light");
+  const { themeMode } = useTheme();
 
   const resolvedParams = use(params);
   const blog = getBlogBySlug(resolvedParams.slug);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (document.body.classList.contains("singular-theme")) {
-        setThemeMode("singular-light");
-      } else if (document.body.classList.contains("singular-dark-theme")) {
-        setThemeMode("singular-dark");
-      }
-
-      const handleThemeChange = (e: any) => {
-        setThemeMode(e.detail);
-      };
-
-      window.addEventListener("theme-change" as any, handleThemeChange);
-      return () => {
-        window.removeEventListener("theme-change" as any, handleThemeChange);
-      };
-    }
-  }, []);
 
   if (!blog) {
     notFound();

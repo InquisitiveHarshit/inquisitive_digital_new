@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const beVietnam = localFont({
   src: [
@@ -44,9 +45,23 @@ export default function RootLayout({
       lang="en"
       className={`${beVietnam.variable} h-full antialiased scroll-smooth dark`}
     >
-      <body className="min-h-full flex flex-col bg-background text-on-surface singular-theme" suppressHydrationWarning>
-        <div className="noise-overlay" />
-        {children}
+      <body className="min-h-full flex flex-col bg-background text-on-surface" suppressHydrationWarning>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme-mode') || 'singular-light';
+                  document.body.setAttribute('data-theme', theme);
+                } catch (e) {}
+              })();
+            `
+          }}
+        />
+        <ThemeProvider>
+          <div className="noise-overlay" />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

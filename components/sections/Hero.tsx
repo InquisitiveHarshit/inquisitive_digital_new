@@ -1,45 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-type ThemeMode = "brutalist" | "singular-light" | "singular-dark";
+import { useTheme } from "@/components/ThemeProvider";
 
 export const Hero: React.FC = () => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>("singular-light");
-
-  // Sync the theme class with body element
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      document.body.classList.remove("singular-theme", "singular-dark-theme");
-      if (themeMode === "singular-light") {
-        document.body.classList.add("singular-theme");
-      } else if (themeMode === "singular-dark") {
-        document.body.classList.add("singular-dark-theme");
-      }
-      window.dispatchEvent(new CustomEvent("theme-change", { detail: themeMode }));
-    }
-    return () => {
-      if (typeof window !== "undefined") {
-        document.body.classList.remove("singular-theme", "singular-dark-theme");
-      }
-    };
-  }, [themeMode]);
-
-  // Listen to external theme changes (like from the Header)
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const handleExternalThemeChange = (e: any) => {
-        if (e.detail !== themeMode) {
-          setThemeMode(e.detail);
-        }
-      };
-      window.addEventListener("theme-change" as any, handleExternalThemeChange);
-      return () => {
-        window.removeEventListener("theme-change" as any, handleExternalThemeChange);
-      };
-    }
-  }, [themeMode]);
+  const { themeMode } = useTheme();
 
   return (
     <section

@@ -4,27 +4,17 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Menu, X, Sparkles, Sun, Moon, Search, Share2, TrendingUp, Code, FileText, Award, Megaphone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-type ThemeMode = "brutalist" | "singular-light" | "singular-dark";
+import { useTheme, ThemeMode } from "@/components/ThemeProvider";
 
 export const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [themeMode, setThemeMode] = useState<ThemeMode>("singular-light");
+  const { themeMode, setTheme } = useTheme();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
 
   const handleThemeSwitch = (mode: ThemeMode) => {
-    setThemeMode(mode);
-    if (typeof window !== "undefined") {
-      document.body.classList.remove("singular-theme", "singular-dark-theme");
-      if (mode === "singular-light") {
-        document.body.classList.add("singular-theme");
-      } else if (mode === "singular-dark") {
-        document.body.classList.add("singular-dark-theme");
-      }
-      window.dispatchEvent(new CustomEvent("theme-change", { detail: mode }));
-    }
+    setTheme(mode);
   };
 
   useEffect(() => {
@@ -37,20 +27,8 @@ export const Header: React.FC = () => {
     };
 
     if (typeof window !== "undefined") {
-      if (document.body.classList.contains("singular-theme")) {
-        setThemeMode("singular-light");
-      } else if (document.body.classList.contains("singular-dark-theme")) {
-        setThemeMode("singular-dark");
-      }
-
-      const handleThemeChange = (e: any) => {
-        setThemeMode(e.detail);
-      };
-
-      window.addEventListener("theme-change" as any, handleThemeChange);
       window.addEventListener("scroll", handleScroll);
       return () => {
-        window.removeEventListener("theme-change" as any, handleThemeChange);
         window.removeEventListener("scroll", handleScroll);
       };
     }

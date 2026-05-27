@@ -1,28 +1,11 @@
 "use client";
-import React, { useState, useEffect } from "react";
-type ThemeMode = "brutalist" | "singular-light" | "singular-dark";
+import React from "react";
 import Image from "next/image";
+import { useTheme } from "@/components/ThemeProvider";
 
 export const Footer: React.FC = () => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>("singular-light");
+  const { themeMode } = useTheme();
   const isLight = themeMode === "singular-light";
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (document.body.classList.contains("singular-theme")) {
-        setThemeMode("singular-light");
-      } else if (document.body.classList.contains("singular-dark-theme")) {
-        setThemeMode("singular-dark");
-      }
-      const handleThemeChange = (e: any) => {
-        setThemeMode(e.detail);
-      };
-      window.addEventListener("theme-change" as any, handleThemeChange);
-      return () => {
-        window.removeEventListener("theme-change" as any, handleThemeChange);
-      };
-    }
-  }, []);
   return (
     <footer className="bg-background w-full border-t border-outline-variant/30 py-20 px-6 md:px-margin-desktop">
       <div className="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">

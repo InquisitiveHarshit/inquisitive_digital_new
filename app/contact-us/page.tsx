@@ -7,9 +7,10 @@ import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { Send, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { useTheme } from "@/components/ThemeProvider";
 
 export default function ContactUsPage() {
-  const [themeMode, setThemeMode] = useState<"brutalist" | "singular-light" | "singular-dark">("singular-light");
+  const { themeMode } = useTheme();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -19,25 +20,6 @@ export default function ContactUsPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (document.body.classList.contains("singular-theme")) {
-        setThemeMode("singular-light");
-      } else if (document.body.classList.contains("singular-dark-theme")) {
-        setThemeMode("singular-dark");
-      }
-
-      const handleThemeChange = (e: any) => {
-        setThemeMode(e.detail);
-      };
-
-      window.addEventListener("theme-change" as any, handleThemeChange);
-      return () => {
-        window.removeEventListener("theme-change" as any, handleThemeChange);
-      };
-    }
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

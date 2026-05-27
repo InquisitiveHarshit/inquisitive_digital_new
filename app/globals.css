@@ -29,7 +29,7 @@
 }
 
 /* Singular Light Theme Overrides */
-.singular-theme {
+[data-theme="singular-light"] {
   --color-background: #ffffff;
   --color-surface: #ffffff;
   --color-on-surface: #111111;
@@ -46,7 +46,7 @@
 }
 
 /* Singular Dark Theme Overrides */
-.singular-dark-theme {
+[data-theme="singular-dark"] {
   --color-background: #0a0a0a;
   --color-surface: #0a0a0a;
   --color-on-surface: #ffffff;

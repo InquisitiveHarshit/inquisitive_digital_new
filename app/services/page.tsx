@@ -7,6 +7,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { Button } from "@/components/ui/Button";
+import { useTheme } from "@/components/ThemeProvider";
 import {
   Search,
   Share2,
@@ -30,26 +31,7 @@ interface ServiceDetail {
 }
 
 export default function ServicesPage() {
-  const [themeMode, setThemeMode] = useState<"brutalist" | "singular-light" | "singular-dark">("singular-light");
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (document.body.classList.contains("singular-theme")) {
-        setThemeMode("singular-light");
-      } else if (document.body.classList.contains("singular-dark-theme")) {
-        setThemeMode("singular-dark");
-      }
-
-      const handleThemeChange = (e: any) => {
-        setThemeMode(e.detail);
-      };
-
-      window.addEventListener("theme-change" as any, handleThemeChange);
-      return () => {
-        window.removeEventListener("theme-change" as any, handleThemeChange);
-      };
-    }
-  }, []);
+  const { themeMode } = useTheme();
 
   const services: ServiceDetail[] = [
     {
