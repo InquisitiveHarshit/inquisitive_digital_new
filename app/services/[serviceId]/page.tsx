@@ -29,6 +29,8 @@ import {
   Award,
   Megaphone,
 } from "lucide-react";
+import { BlogCard } from "@/components/ui/BlogCard";
+import { blogs } from "@/app/blogs/data";
 
 interface ServiceFullDetail {
   id: string;
@@ -879,6 +881,46 @@ export default function ServiceDetailPage() {
                 </motion.div>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 9 — RELATED INSIGHTS */}
+      <section className="py-12 px-4 md:px-margin-desktop relative border-t border-outline-variant/30">
+        <div className="max-w-container-max mx-auto">
+          <div className="text-center mb-12">
+            <motion.h2
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface mb-4"
+            >
+              Related <span className="text-brand-accent">Insights</span>
+            </motion.h2>
+            <p className="font-body text-on-surface-variant max-w-2xl mx-auto">
+              Explore our latest strategies and playbooks to accelerate your growth.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {blogs.slice(0, 3).map((blog, index) => (
+              <div key={blog.id}>
+                <BlogCard
+                  slug={blog.slug}
+                  date={blog.date}
+                  readTime={blog.readTime}
+                  category={blog.category}
+                  title={blog.title}
+                  desc={blog.excerpt}
+                  image={blog.imageUrl || [
+                    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+                    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
+                    "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=600&q=80"
+                  ][index % 3]}
+                  delay={0.1 * (index + 1)}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -11,7 +11,7 @@ import { BookingSteps } from "@/components/sections/BookingSteps";
 import { Industries } from "@/components/sections/Industries";
 import { CaseStudies } from "@/components/sections/CaseStudies";
 import { Testimonials } from "@/components/sections/Testimonials";
-import { Insights } from "@/components/sections/Insights";
+import { Insights } from "@/components/sections/blogSection";
 import { CTA } from "@/components/sections/CTA";
 import { FAQ } from "@/components/sections/FAQ";
 import { Contact } from "@/components/sections/Contact";

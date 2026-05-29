@@ -30,17 +30,14 @@ export const CTA: React.FC = () => {
           Let’s build a strategy that delivers real, measurable results for your business.
         </motion.p>
         <motion.div
-          className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+          className="flex justify-center items-center w-full"
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <Button href="#contact" variant="secondary" className="px-10 py-5 text-sm">
+          <Button href="#contact" variant="secondary" className="px-10 py-5 text-sm hover:!bg-[#111111] hover:!text-brand-accent hover:!border-[#111111]">
             Get Free Consultation
-          </Button>
-          <Button href="tel:+919999999999" variant="outline" className="px-10 py-5 text-sm border-background hover:bg-background hover:text-brand-accent transition-colors duration-300">
-            Call Us Now
           </Button>
         </motion.div>
       </div>

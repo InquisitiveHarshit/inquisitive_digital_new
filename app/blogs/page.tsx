@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { blogs } from "./data";
 import { useTheme } from "@/components/ThemeProvider";
+import { BlogCard } from "@/components/ui/BlogCard";
 
 export default function BlogsPage() {
   const { themeMode } = useTheme();
@@ -41,50 +42,22 @@ export default function BlogsPage() {
         <div className="max-w-container-max mx-auto px-6 md:px-margin-desktop w-full">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogs.map((blog, index) => (
-              <motion.a
-                href={`/blogs/${blog.slug}`}
-                key={blog.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`group flex flex-col border-2 rounded-2xl p-6 transition-all duration-300 ${
-                  isLight
-                    ? "border-slate-200 bg-slate-50 hover:border-slate-400 hover:-translate-y-1 shadow-sm"
-                    : "border-white/10 bg-surface hover:border-white/20 hover:-translate-y-1 shadow-black/40"
-                }`}
-                style={{
-                  boxShadow: isLight ? "4px 4px 0px 0px rgba(0,0,0,0.05)" : "4px 4px 0px 0px #f5c200"
-                }}
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <span className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${
-                    isLight ? "bg-slate-200 text-slate-700" : "bg-white/10 text-slate-300"
-                  }`}>
-                    {blog.category}
-                  </span>
-                  <span className={`text-[10px] font-medium ${isLight ? "text-slate-500" : "text-slate-400"}`}>
-                    {blog.readTime}
-                  </span>
-                </div>
-                <h3 className={`font-display text-xl font-bold uppercase tracking-tight mb-3 transition-colors ${
-                  isLight ? "text-slate-900 group-hover:text-brand-accent" : "text-white group-hover:text-brand-accent"
-                }`}>
-                  {blog.title}
-                </h3>
-                <p className={`font-body text-sm leading-relaxed mb-6 flex-grow ${
-                  isLight ? "text-slate-600" : "text-on-surface-variant"
-                }`}>
-                  {blog.excerpt}
-                </p>
-                <div className="mt-auto border-t border-outline-variant/30 pt-4 flex items-center justify-between">
-                  <span className={`text-xs font-medium ${isLight ? "text-slate-500" : "text-slate-400"}`}>
-                    {blog.date}
-                  </span>
-                  <span className="text-brand-accent font-bold text-xs uppercase tracking-wider group-hover:translate-x-1 transition-transform">
-                    Read More →
-                  </span>
-                </div>
-              </motion.a>
+              <div key={blog.id} className="h-full">
+                <BlogCard
+                  slug={blog.slug}
+                  date={blog.date}
+                  readTime={blog.readTime}
+                  category={blog.category}
+                  title={blog.title}
+                  desc={blog.excerpt}
+                  image={blog.imageUrl || [
+                    "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+                    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
+                    "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=600&q=80"
+                  ][index % 3]}
+                  delay={index * 0.1}
+                />
+              </div>
             ))}
           </div>
         </div>

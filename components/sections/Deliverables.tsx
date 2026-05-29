@@ -57,38 +57,28 @@ export const Deliverables: React.FC = () => {
       <div className="max-w-container-max mx-auto relative z-10">
         
         {/* Header */}
-        <div className="mb-12 md:mb-16 max-w-3xl">
-          <motion.div
-            className="flex items-center gap-4 mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="w-10 h-[1px] bg-brand-accent"></div>
-            <span className="font-display text-[10px] sm:text-xs uppercase tracking-[0.2em] text-brand-accent font-bold">
-              Deliverables
-            </span>
-          </motion.div>
-          
-          <motion.h2
-            className="font-display text-3xl sm:text-4xl md:text-5xl text-on-surface tracking-tight mb-5 font-light leading-tight"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            Included in <span className="font-medium italic text-on-surface/90">every project.</span>
-          </motion.h2>
-          
-          <motion.p
-            className="font-body text-base md:text-lg text-on-surface-variant/80 max-w-2xl leading-relaxed font-light"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            No hidden surprises. Uncompromising execution. Here's exactly what you get when you work with Inquisitive Digital.
-          </motion.p>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12 md:mb-16">
+          <div className="md:col-span-8">
+            <motion.h2
+              className="font-display text-4xl sm:text-5xl md:text-6xl font-bold text-on-surface uppercase tracking-tight mb-4"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              INCLUDED IN <br className="hidden sm:block" />
+              <span className="text-brand-accent">EVERY PROJECT</span>
+            </motion.h2>
+            <motion.p
+              className="font-body text-lg text-on-surface-variant max-w-2xl leading-relaxed"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              No hidden surprises. Uncompromising execution. Here's exactly what you get when you work with Inquisitive Digital.
+            </motion.p>
+          </div>
         </div>
 
         {/* Grid */}
