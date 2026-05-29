@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { Quote, Sparkles, TrendingUp, Award, Mail } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
@@ -179,7 +179,6 @@ export default function AboutUsPage() {
         </div>
 
       </main>
-      <Footer />
       <FloatingWhatsApp />
     </>
   );

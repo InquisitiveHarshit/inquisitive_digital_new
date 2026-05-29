@@ -59,7 +59,7 @@ export const Footer: React.FC = () => {
               <strong className="text-on-surface block mb-2 font-bold tracking-widest uppercase text-xs">
                 HQ
               </strong>
-              Noida Office: Sector 62, Noida, UP
+              H-36, H Block, Sector 63, Noida, Uttar Pradesh 201309
             </div>
           </div>
         </div>

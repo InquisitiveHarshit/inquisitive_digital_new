@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import {
   ArrowRight,
@@ -339,7 +338,6 @@ export default function ServiceDetailPage() {
             View All Services
           </button>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -925,7 +923,6 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
-      <Footer />
       <FloatingWhatsApp />
     </div>
   );

@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { blogs } from "./data";
 import { useTheme } from "@/components/ThemeProvider";
@@ -62,7 +61,6 @@ export default function BlogsPage() {
           </div>
         </div>
       </main>
-      <Footer />
       <FloatingWhatsApp />
     </>
   );

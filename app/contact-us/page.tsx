@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { Send, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -203,7 +202,7 @@ export default function ContactUsPage() {
         </div>
 
       </main>
-      <Footer />
+      </main>
       <FloatingWhatsApp />
     </>
   );

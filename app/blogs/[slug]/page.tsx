@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { blogs, getBlogBySlug } from "../data";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
@@ -315,7 +314,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                 </div>
 
             </main>
-            <Footer />
+            </main>
             <FloatingWhatsApp />
         </>
     );

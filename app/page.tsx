@@ -14,8 +14,6 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { Insights } from "@/components/sections/blogSection";
 import { CTA } from "@/components/sections/CTA";
 import { FAQ } from "@/components/sections/FAQ";
-import { Contact } from "@/components/sections/Contact";
-import { Footer } from "@/components/layout/Footer";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { TrustBar } from "@/components/ui/TrustBar";
 
@@ -74,8 +72,6 @@ export default function Home() {
 
       </main>
 
-      {/* Footer Navigation */}
-      <Footer />
 
       {/* Interactive WhatsApp Floating Button */}
       <FloatingWhatsApp />

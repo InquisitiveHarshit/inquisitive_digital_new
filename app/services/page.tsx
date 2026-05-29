@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { Button } from "@/components/ui/Button";
 import { useTheme } from "@/components/ThemeProvider";
@@ -345,7 +345,6 @@ export default function ServicesPage() {
         </div>
       </main>
 
-      <Footer />
       <FloatingWhatsApp />
     </>
   );
