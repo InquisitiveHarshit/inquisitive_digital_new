@@ -33,7 +33,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
   return (
     <Link href={`/blogs/${slug}`} className="block h-full">
       <motion.article
-        className={`${isLight ? "bg-white border-slate-200" : "bg-[#111111] border-[#2a2a2a]"} border-2 overflow-hidden flex flex-col group cursor-pointer shadow-[8px_8px_0px_0px_#f5c200] hover:shadow-[12px_12px_0px_0px_#f5c200] hover:-translate-y-1 hover:-translate-x-1 h-full transition-all duration-300`}
+        className={`${isLight ? "bg-white border-slate-200" : "bg-[#111111] border-[#2a2a2a]"} rounded-xl border-2 overflow-hidden flex flex-col group cursor-pointer shadow-[8px_8px_0px_0px_#f5c200] hover:shadow-[12px_12px_0px_0px_#f5c200] hover:-translate-y-1 hover:-translate-x-1 h-full transition-all duration-300`}
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
