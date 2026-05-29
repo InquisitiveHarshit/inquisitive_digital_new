@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Contact } from "@/components/sections/Contact";
 
 const beVietnam = localFont({
   src: [
@@ -61,6 +62,7 @@ export default function RootLayout({
         <ThemeProvider>
           <div className="noise-overlay" />
           {children}
+          <Contact />
         </ThemeProvider>
       </body>
     </html>
