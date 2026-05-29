@@ -229,38 +229,50 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                 {/* Prev/Next Blog Navigation */}
                 {(prevBlog || nextBlog) && (
                     <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
-                        <div className="mb-8">
-                            <h3 className={`text-2xl font-display font-bold uppercase ${isLight ? "text-slate-900" : "text-white"}`}>Read More Insights</h3>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {prevBlog && (
-                                <div className="h-full">
-                                    <BlogCard
-                                        slug={prevBlog.slug}
-                                        date={prevBlog.date}
-                                        readTime={prevBlog.readTime}
-                                        category={prevBlog.category}
-                                        title={prevBlog.title}
-                                        desc={prevBlog.excerpt}
-                                        image={prevBlog.imageUrl || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"}
-                                        delay={0.1}
-                                    />
-                                </div>
-                            )}
-                            {nextBlog && (
-                                <div className="h-full">
-                                    <BlogCard
-                                        slug={nextBlog.slug}
-                                        date={nextBlog.date}
-                                        readTime={nextBlog.readTime}
-                                        category={nextBlog.category}
-                                        title={nextBlog.title}
-                                        desc={nextBlog.excerpt}
-                                        image={nextBlog.imageUrl || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80"}
-                                        delay={0.2}
-                                    />
-                                </div>
-                            )}
+                        <div
+                            className={`rounded-2xl p-6 md:p-8 border ${isLight ? "bg-slate-50 border-slate-200" : "bg-white/5 border-white/10"}`}
+                        >
+                            <div className={`flex flex-col md:flex-row gap-6 ${prevBlog && nextBlog ? 'justify-between' : 'justify-center'}`}>
+                                {/* Previous Blog */}
+                                {prevBlog && (
+                                    <Link
+                                        href={`/blogs/${prevBlog.slug}`}
+                                        className={`group flex items-center gap-4 p-4 rounded-xl transition-all duration-300 border ${
+                                            isLight ? "bg-white border-slate-200 hover:border-brand-accent hover:shadow-lg" : "bg-white/5 border-white/10 hover:border-brand-accent hover:bg-brand-accent/5"
+                                        } ${prevBlog && nextBlog ? 'md:w-[48%]' : 'md:w-auto'}`}
+                                    >
+                                        <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 bg-brand-accent/10 group-hover:bg-brand-accent">
+                                            <ChevronLeft className="w-5 h-5 text-brand-accent group-hover:text-slate-900" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <p className={`text-xs font-bold uppercase tracking-wider mb-1 ${isLight ? "text-slate-400" : "text-white/40"}`}>Previous</p>
+                                            <h4 className={`font-bold text-sm md:text-base line-clamp-2 transition-colors ${isLight ? "text-slate-900 group-hover:text-brand-accent" : "text-white group-hover:text-brand-accent"}`}>
+                                                {prevBlog.title}
+                                            </h4>
+                                        </div>
+                                    </Link>
+                                )}
+
+                                {/* Next Blog */}
+                                {nextBlog && (
+                                    <Link
+                                        href={`/blogs/${nextBlog.slug}`}
+                                        className={`group flex items-center gap-4 p-4 rounded-xl transition-all duration-300 border ${
+                                            isLight ? "bg-white border-slate-200 hover:border-brand-accent hover:shadow-lg" : "bg-white/5 border-white/10 hover:border-brand-accent hover:bg-brand-accent/5"
+                                        } ${prevBlog && nextBlog ? 'md:w-[48%]' : 'md:w-auto'}`}
+                                    >
+                                        <div className="flex-1 min-w-0 text-right">
+                                            <p className={`text-xs font-bold uppercase tracking-wider mb-1 ${isLight ? "text-slate-400" : "text-white/40"}`}>Next</p>
+                                            <h4 className={`font-bold text-sm md:text-base line-clamp-2 transition-colors ${isLight ? "text-slate-900 group-hover:text-brand-accent" : "text-white group-hover:text-brand-accent"}`}>
+                                                {nextBlog.title}
+                                            </h4>
+                                        </div>
+                                        <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 bg-brand-accent/10 group-hover:bg-brand-accent">
+                                            <ChevronRight className="w-5 h-5 text-brand-accent group-hover:text-slate-900" />
+                                        </div>
+                                    </Link>
+                                )}
+                            </div>
                         </div>
                     </div>
                 )}

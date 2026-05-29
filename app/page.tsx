@@ -72,8 +72,6 @@ export default function Home() {
         {/* Frequently Asked Questions Section */}
         <FAQ />
 
-        {/* Free Audit & General Contact Form Section */}
-        <Contact />
       </main>
 
       {/* Footer Navigation */}
