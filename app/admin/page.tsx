@@ -241,6 +241,7 @@ export default function AdminDashboard() {
         const newJob = json.data || {
           id: `job-${Date.now()}`,
           ...payload,
+          salary: payload.salary_range || "",
           applications_count: 0,
         };
 
@@ -255,7 +256,7 @@ export default function AdminDashboard() {
         setJobs((prev) =>
           prev.map((j) =>
             j.id === editingJob.id
-              ? { ...j, ...payload }
+              ? { ...j, ...payload, salary: payload.salary_range || "" }
               : j
           )
         );
@@ -264,6 +265,7 @@ export default function AdminDashboard() {
         const localNewJob: Job = {
           id: `job-${Date.now()}`,
           ...payload,
+          salary: payload.salary_range || "",
           applications_count: 0,
         };
         setJobs((prev) => [localNewJob, ...prev]);
