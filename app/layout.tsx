@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Contact } from "@/components/sections/Contact";
 import { Footer } from "@/components/layout/Footer";
+import { AdminExclusionWrapper } from "@/components/layout/AdminExclusionWrapper";
 
 const beVietnam = localFont({
   src: [
@@ -63,8 +64,10 @@ export default function RootLayout({
         <ThemeProvider>
           <div className="noise-overlay" />
           {children}
-          <Contact />
-          <Footer />
+          <AdminExclusionWrapper>
+            <Contact />
+            <Footer />
+          </AdminExclusionWrapper>
         </ThemeProvider>
       </body>
     </html>

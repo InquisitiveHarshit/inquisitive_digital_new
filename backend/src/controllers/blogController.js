@@ -83,16 +83,16 @@ export const adminGetBlogById = async (req, res, next) => {
  */
 export const adminCreateBlog = async (req, res, next) => {
   try {
-    const { title, excerpt, content, category, imageUrl, readTime, isActive,
-            metaTitle, metaDescription, author } = req.body;
+    const payload = { ...req.body };
 
-    // Auto-generate slug from title
-    const slug = slugify(title, { lower: true, strict: true, trim: true });
+    // Auto-generate slug from title if not explicitly provided
+    if (!payload.slug && payload.title) {
+      payload.slug = slugify(payload.title, { lower: true, strict: true, trim: true });
+    } else if (payload.slug) {
+      payload.slug = slugify(payload.slug, { lower: true, strict: true, trim: true });
+    }
 
-    const blog = await Blog.create({
-      title, slug, excerpt, content, category,
-      imageUrl, readTime, isActive, metaTitle, metaDescription, author,
-    });
+    const blog = await Blog.create(payload);
 
     sitemapState.bust(); // invalidate sitemap cache
     res.status(201).json({ success: true, data: blog });
@@ -107,8 +107,10 @@ export const adminCreateBlog = async (req, res, next) => {
  */
 export const adminUpdateBlog = async (req, res, next) => {
   try {
-    // If title is being updated, regenerate the slug
-    if (req.body.title) {
+    // If slug is provided, slugify it. Else if title is updated and no slug provided, generate from title
+    if (req.body.slug) {
+      req.body.slug = slugify(req.body.slug, { lower: true, strict: true, trim: true });
+    } else if (req.body.title) {
       req.body.slug = slugify(req.body.title, { lower: true, strict: true, trim: true });
     }
 
