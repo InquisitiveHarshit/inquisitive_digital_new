@@ -55,6 +55,9 @@ export const Footer: React.FC = () => {
             <a className="font-body text-on-surface-variant hover:text-brand-accent transition-colors text-base" href="/privacy">
               Privacy Policy
             </a>
+            <a className="font-body text-on-surface-variant hover:text-brand-accent transition-colors text-base" href="/careers">
+              Careers
+            </a>
             <div className="font-body text-on-surface-variant mt-4 text-base">
               <strong className="text-on-surface block mb-2 font-bold tracking-widest uppercase text-xs">
                 HQ
