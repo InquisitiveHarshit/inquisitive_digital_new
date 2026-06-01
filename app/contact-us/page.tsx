@@ -200,8 +200,6 @@ export default function ContactUsPage() {
             </AnimatePresence>
           </motion.div>
         </div>
-
-      </main>
       </main>
       <FloatingWhatsApp />
     </>
