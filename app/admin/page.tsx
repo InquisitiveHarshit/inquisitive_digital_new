@@ -105,14 +105,19 @@ export default function AdminDashboard() {
   };
 
   // Helper mapping: Job ID -> Job Title
-  const getJobTitle = (jobId: string) => {
-    const j = jobs.find((x) => x.id === jobId);
+  // job_id can be a plain string ID (mock data) OR a populated object {_id, title} from the API
+  const getJobTitle = (jobId: string | { _id: string; title: string; department: string }) => {
+    if (jobId && typeof jobId === "object" && jobId.title) return jobId.title;
+    const id = typeof jobId === "string" ? jobId : jobId?._id;
+    const j = jobs.find((x) => x.id === id);
     return j ? j.title : "Unknown Role";
   };
 
   // Helper mapping: Job ID -> Department
-  const getJobDept = (jobId: string) => {
-    const j = jobs.find((x) => x.id === jobId);
+  const getJobDept = (jobId: string | { _id: string; title: string; department: string }) => {
+    if (jobId && typeof jobId === "object" && jobId.department) return jobId.department;
+    const id = typeof jobId === "string" ? jobId : jobId?._id;
+    const j = jobs.find((x) => x.id === id);
     return j ? j.department : "Engineering";
   };
 
