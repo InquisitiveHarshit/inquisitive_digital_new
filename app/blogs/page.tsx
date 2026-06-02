@@ -9,7 +9,7 @@ import { useTheme } from "@/components/ThemeProvider";
 import { BlogCard } from "@/components/ui/BlogCard";
 import type { BlogPost } from "./data";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_BASE = "";
 
 const FALLBACK_IMAGES = [
   "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",

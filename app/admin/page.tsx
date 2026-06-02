@@ -26,7 +26,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { mockJobs, mockApplications, Job, Application } from "../careers/data";
 import BlogsAdmin from "./BlogsAdmin";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_BASE = "";
 
 type ActiveTab = "overview" | "jobs" | "applications" | "blogs";
 

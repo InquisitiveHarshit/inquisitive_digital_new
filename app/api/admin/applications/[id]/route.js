@@ -1,0 +1,28 @@
+import { NextResponse } from "next/server";
+import connectDB from "@/lib/mongodb";
+import Application from "@/backend/src/models/Application";
+import Job from "@/backend/src/models/Job"; // required for populate
+
+export async function GET(request, { params }) {
+  try {
+    await connectDB();
+
+    const { id } = await params;
+    const application = await Application.findById(id).populate("job_id");
+
+    if (!application) {
+      return NextResponse.json({ success: false, message: "Application not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, data: application });
+  } catch (err) {
+    console.error(`[ERROR] GET /api/admin/applications/${params?.id}:`, err.message);
+    if (err.message.includes("Not authorised") || err.message.includes("token")) {
+      return NextResponse.json({ success: false, message: err.message }, { status: 401 });
+    }
+    return NextResponse.json(
+      { success: false, message: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}

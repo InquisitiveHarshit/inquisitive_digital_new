@@ -160,5 +160,5 @@ blogSchema.index({ slug: 1 });
 blogSchema.index({ isActive: 1, priority: 1, publishDate: -1 });
 blogSchema.index({ category: 1 });
 
-const Blog = mongoose.model("Blog", blogSchema);
+const Blog = mongoose.models.Blog || mongoose.model("Blog", blogSchema);
 export default Blog;
