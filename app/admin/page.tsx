@@ -24,11 +24,21 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { mockJobs, mockApplications, Job, Application } from "../careers/data";
+
+// Audit request type
+interface Audit {
+  id: string;
+  name: string;
+  email: string;
+  website: string;
+  message: string;
+  created_at: string;
+}
 import BlogsAdmin from "./BlogsAdmin";
 
 const API_BASE = "";
 
-type ActiveTab = "overview" | "jobs" | "applications" | "blogs";
+type ActiveTab = "overview" | "jobs" | "applications" | "blogs" | "audits";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("overview");
@@ -36,6 +46,7 @@ export default function AdminDashboard() {
   // Data States
   const [jobs, setJobs] = useState<Job[]>(mockJobs);
   const [applications, setApplications] = useState<Application[]>(mockApplications);
+  const [audits, setAudits] = useState<Audit[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Filter States
@@ -83,6 +94,14 @@ export default function AdminDashboard() {
           const appsJson = await appsRes.json();
           const fetchedApps = appsJson.data || appsJson.applications || [];
           if (fetchedApps.length > 0) setApplications(fetchedApps);
+        }
+
+        // Fetch Audits
+        const auditsRes = await fetch(`${API_BASE}/api/admin/audits`, { cache: "no-store" });
+        if (auditsRes.ok) {
+          const auditsJson = await auditsRes.json();
+          const fetchedAudits = auditsJson.data || auditsJson.audits || [];
+          if (fetchedAudits.length > 0) setAudits(fetchedAudits);
         }
       } catch (err) {
         console.warn("Backend admin endpoints not reachable. Using fallback mock database.");
@@ -445,6 +464,17 @@ export default function AdminDashboard() {
             <BookOpen className="w-4 h-4" />
             Blogs
           </button>
+          <button
+            onClick={() => setActiveTab("audits")}
+            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-xs uppercase tracking-wider font-extrabold transition-all ${
+              activeTab === "audits"
+                ? "bg-brand-accent/10 text-brand-accent border border-brand-accent/20"
+                : "text-white/50 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <FileText className="w-4 h-4" />
+            Audits
+          </button>
         </nav>
 
         <div className="px-6 py-6 border-t border-white/5">
@@ -786,6 +816,51 @@ export default function AdminDashboard() {
             {/* TAB 4: BLOGS */}
             {activeTab === "blogs" && (
               <BlogsAdmin />
+            )}
+            {activeTab === "audits" && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h1 className="text-3xl font-black font-display uppercase tracking-tight">Audit Requests</h1>
+                  <p className="text-white/40 text-sm">{audits.length} total audits</p>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-2xl overflow-x-auto">
+                  <table className="w-full text-left border-collapse text-sm">
+                    <thead>
+                      <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-widest text-white/40">
+                        <th className="py-4 px-6">Name</th>
+                        <th className="py-4 px-6">Email</th>
+                        <th className="py-4 px-6">Website</th>
+                        <th className="py-4 px-6">Message</th>
+                        <th className="py-4 px-6">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {audits.map((a) => (
+                        <tr key={a.id} className="hover:bg-white/5 transition-colors">
+                          <td className="py-4 px-6 font-bold text-white">{a.name}</td>
+                          <td className="py-4 px-6 text-white/70">{a.email}</td>
+                          <td className="py-4 px-6 text-white/70">{a.website}</td>
+                          <td className="py-4 px-6 text-white/70 max-w-xs">{a.message}</td>
+                          <td className="py-4 px-6 text-white/60">
+                            {new Date(a.created_at).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                            })}
+                          </td>
+                        </tr>
+                      ))}
+                      {audits.length === 0 && (
+                        <tr>
+                          <td colSpan={5} className="py-10 text-center text-white/20">
+                            No audit requests yet.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             )}
 
           </div>

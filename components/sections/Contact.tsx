@@ -19,15 +19,34 @@ export const Contact: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate submission delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const payload = new FormData();
+      payload.append('name', formData.name);
+      payload.append('email', formData.email);
+      payload.append('website', formData.website);
+      payload.append('message', formData.message);
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    setFormData({ name: "", email: "", website: "", message: "" });
+      const res = await fetch('/api/audit', {
+        method: 'POST',
+        body: payload,
+      });
 
-    // Reset success message after 5 seconds
-    setTimeout(() => setIsSubmitted(false), 5000);
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || 'Failed to submit audit request');
+      }
+
+      setIsSubmitted(true);
+      setFormData({ name: "", email: "", website: "", message: "" });
+    } catch (error) {
+      console.error(error);
+      // For simplicity we reuse the error banner (could add a separate error state)
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+      // Reset success message after 5 seconds
+      setTimeout(() => setIsSubmitted(false), 5000);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
