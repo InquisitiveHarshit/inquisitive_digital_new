@@ -34,11 +34,20 @@ interface Audit {
   message: string;
   created_at: string;
 }
+
+interface ContactLead {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  created_at: string;
+}
 import BlogsAdmin from "./BlogsAdmin";
 
 const API_BASE = "";
 
-type ActiveTab = "overview" | "jobs" | "applications" | "blogs" | "audits";
+type ActiveTab = "overview" | "jobs" | "applications" | "blogs" | "audits" | "contactLeads";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("overview");
@@ -47,6 +56,8 @@ export default function AdminDashboard() {
   const [jobs, setJobs] = useState<Job[]>(mockJobs);
   const [applications, setApplications] = useState<Application[]>(mockApplications);
   const [audits, setAudits] = useState<Audit[]>([]);
+  const [contactLeads, setContactLeads] = useState<ContactLead[]>([]);
+  const [blogsCount, setBlogsCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
   // Filter States
@@ -65,8 +76,10 @@ export default function AdminDashboard() {
   const [jobFormReqs, setJobFormReqs] = useState<string[]>([]);
   const [currentReqInput, setCurrentReqInput] = useState("");
 
-  // Application Details Drawer State
+  // Details Drawer State
   const [selectedApp, setSelectedApp] = useState<Application | null>(null);
+  const [selectedAudit, setSelectedAudit] = useState<Audit | null>(null);
+  const [selectedLead, setSelectedLead] = useState<ContactLead | null>(null);
 
   // Delete Confirm Modal State
   const [deleteConfirmJobId, setDeleteConfirmJobId] = useState<string | null>(null);
@@ -102,6 +115,22 @@ export default function AdminDashboard() {
           const auditsJson = await auditsRes.json();
           const fetchedAudits = auditsJson.data || auditsJson.audits || [];
           if (fetchedAudits.length > 0) setAudits(fetchedAudits);
+        }
+
+        // Fetch Contact Leads
+        const leadsRes = await fetch(`${API_BASE}/api/admin/contact-leads`, { cache: "no-store" });
+        if (leadsRes.ok) {
+          const leadsJson = await leadsRes.json();
+          const fetchedLeads = leadsJson.data || leadsJson.leads || [];
+          if (fetchedLeads.length > 0) setContactLeads(fetchedLeads);
+        }
+
+        // Fetch Blogs Count
+        const blogsRes = await fetch(`${API_BASE}/api/admin/blogs`, { cache: "no-store" });
+        if (blogsRes.ok) {
+          const blogsJson = await blogsRes.json();
+          const fetchedBlogs = blogsJson.data || [];
+          setBlogsCount(fetchedBlogs.length);
         }
       } catch (err) {
         console.warn("Backend admin endpoints not reachable. Using fallback mock database.");
@@ -145,6 +174,9 @@ export default function AdminDashboard() {
     const totalJobs = jobs.length;
     const activeJobs = jobs.filter((j) => j.is_active !== false).length;
     const totalApps = applications.length;
+    const totalAudits = audits.length;
+    const totalContactLeads = contactLeads.length;
+    const totalBlogs = blogsCount;
 
     // Applications in the last 7 days
     const sevenDaysAgo = new Date();
@@ -153,8 +185,8 @@ export default function AdminDashboard() {
       (app) => new Date(app.applied_at) >= sevenDaysAgo
     ).length;
 
-    return { totalJobs, activeJobs, totalApps, newThisWeek };
-  }, [jobs, applications]);
+    return { totalJobs, activeJobs, totalApps, newThisWeek, totalAudits, totalContactLeads, totalBlogs };
+  }, [jobs, applications, audits, contactLeads, blogsCount]);
 
   // --- RECENT APPLICATIONS (LAST 10) ---
   const recentApplications = useMemo(() => {
@@ -475,6 +507,17 @@ export default function AdminDashboard() {
             <FileText className="w-4 h-4" />
             Audits
           </button>
+          <button
+            onClick={() => setActiveTab("contactLeads")}
+            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-xs uppercase tracking-wider font-extrabold transition-all ${
+              activeTab === "contactLeads"
+                ? "bg-brand-accent/10 text-brand-accent border border-brand-accent/20"
+                : "text-white/50 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <Inbox className="w-4 h-4" />
+            Contact Leads
+          </button>
         </nav>
 
         <div className="px-6 py-6 border-t border-white/5">
@@ -525,6 +568,15 @@ export default function AdminDashboard() {
           <BookOpen className="w-5 h-5" />
           Blogs
         </button>
+        <button
+          onClick={() => setActiveTab("contactLeads")}
+          className={`flex flex-col items-center gap-1 text-[9px] uppercase tracking-wider font-bold transition-all ${
+            activeTab === "contactLeads" ? "text-brand-accent" : "text-white/40"
+          }`}
+        >
+          <Inbox className="w-5 h-5" />
+          Leads
+        </button>
       </nav>
 
       {/* MAIN CONTAINER */}
@@ -547,12 +599,13 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Stats cards row */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                   {[
+                    { label: "Total Audits", val: stats.totalAudits },
+                    { label: "Contact Leads", val: stats.totalContactLeads },
                     { label: "Total Jobs", val: stats.totalJobs },
-                    { label: "Active Jobs", val: stats.activeJobs },
                     { label: "Total Applications", val: stats.totalApps },
-                    { label: "New This Week", val: stats.newThisWeek, hasTrend: true },
+                    { label: "Total Blogs", val: stats.totalBlogs },
                   ].map((card, idx) => (
                     <div
                       key={idx}
@@ -571,12 +624,12 @@ export default function AdminDashboard() {
                   ))}
                 </div>
 
-                {/* Recent Applications (Last 10) */}
+                {/* Recent Audits (Last 5) */}
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xs font-bold uppercase tracking-widest text-white/40">Recent Applications</h2>
+                    <h2 className="text-xs font-bold uppercase tracking-widest text-white/40">Recent Audit Requests</h2>
                     <button
-                      onClick={() => setActiveTab("applications")}
+                      onClick={() => setActiveTab("audits")}
                       className="text-xs text-brand-accent font-extrabold flex items-center gap-1 hover:underline"
                     >
                       View All <ChevronRight className="w-3.5 h-3.5" />
@@ -587,37 +640,88 @@ export default function AdminDashboard() {
                     <table className="w-full text-left border-collapse text-sm">
                       <thead>
                         <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-widest text-white/40">
-                          <th className="py-4 px-6">Candidate</th>
-                          <th className="py-4 px-6">Role Applied</th>
+                          <th className="py-4 px-6">Name</th>
+                          <th className="py-4 px-6">Website</th>
                           <th className="py-4 px-6">Date</th>
-                          <th className="py-4 px-6">Status</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-white/5">
-                        {recentApplications.map((app) => (
+                        {audits.slice(0, 5).map((a) => (
                           <tr
-                            key={app.id}
-                            onClick={() => setSelectedApp(app)}
+                            key={a.id || a._id}
+                            onClick={() => setSelectedAudit(a)}
                             className="hover:bg-white/5 transition-colors cursor-pointer group"
                           >
                             <td className="py-4 px-6 font-bold text-white group-hover:text-brand-accent transition-colors">
-                              {app.full_name}
+                              {a.name}
                             </td>
-                            <td className="py-4 px-6 text-white/80">{getJobTitle(app.job_id)}</td>
+                            <td className="py-4 px-6 text-white/80">{a.website}</td>
                             <td className="py-4 px-6 text-white/60">
-                              {new Date(app.applied_at).toLocaleDateString("en-US", {
+                              {new Date(a.created_at).toLocaleDateString("en-US", {
                                 month: "short",
                                 day: "numeric",
                                 year: "numeric",
                               })}
                             </td>
-                            <td className="py-4 px-6">{getStatusBadge(app.status)}</td>
                           </tr>
                         ))}
-                        {recentApplications.length === 0 && (
+                        {audits.length === 0 && (
                           <tr>
-                            <td colSpan={4} className="py-10 text-center text-white/20">
-                              No applications submitted yet.
+                            <td colSpan={3} className="py-10 text-center text-white/20">
+                              No audit requests submitted yet.
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Recent Contact Leads (Last 5) */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xs font-bold uppercase tracking-widest text-white/40">Recent Contact Leads</h2>
+                    <button
+                      onClick={() => setActiveTab("contactLeads")}
+                      className="text-xs text-brand-accent font-extrabold flex items-center gap-1 hover:underline"
+                    >
+                      View All <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  <div className="bg-white/5 border border-white/10 rounded-2xl overflow-x-auto">
+                    <table className="w-full text-left border-collapse text-sm">
+                      <thead>
+                        <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-widest text-white/40">
+                          <th className="py-4 px-6">Name</th>
+                          <th className="py-4 px-6">Subject</th>
+                          <th className="py-4 px-6">Date</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        {contactLeads.slice(0, 5).map((lead) => (
+                          <tr
+                            key={lead.id || lead._id}
+                            onClick={() => setSelectedLead(lead)}
+                            className="hover:bg-white/5 transition-colors cursor-pointer group"
+                          >
+                            <td className="py-4 px-6 font-bold text-white group-hover:text-brand-accent transition-colors">
+                              {lead.name}
+                            </td>
+                            <td className="py-4 px-6 text-white/80">{lead.subject}</td>
+                            <td className="py-4 px-6 text-white/60">
+                              {new Date(lead.created_at).toLocaleDateString("en-US", {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                              })}
+                            </td>
+                          </tr>
+                        ))}
+                        {contactLeads.length === 0 && (
+                          <tr>
+                            <td colSpan={3} className="py-10 text-center text-white/20">
+                              No contact leads submitted yet.
                             </td>
                           </tr>
                         )}
@@ -659,8 +763,8 @@ export default function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5">
-                      {jobs.map((job) => (
-                        <tr key={job.id} className="hover:bg-white/5 transition-colors">
+                      {jobs.map((job, idx) => (
+                        <tr key={job.id || (job as any)._id || idx} className="hover:bg-white/5 transition-colors">
                           <td className="py-4 px-6 font-bold text-white">{job.title}</td>
                           <td className="py-4 px-6 text-white/80">{job.department}</td>
                           <td className="py-4 px-6 text-white/60">{job.location}</td>
@@ -776,8 +880,8 @@ export default function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5">
-                      {filteredApplications.map((app) => (
-                        <tr key={app.id} className="hover:bg-white/5 transition-colors">
+                      {filteredApplications.map((app, idx) => (
+                        <tr key={app.id || (app as any)._id || idx} className="hover:bg-white/5 transition-colors">
                           <td className="py-4 px-6 font-bold text-white">{app.full_name}</td>
                           <td className="py-4 px-6 text-white/70">{app.email}</td>
                           <td className="py-4 px-6 text-white/60">{app.phone}</td>
@@ -835,8 +939,8 @@ export default function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5">
-                      {audits.map((a) => (
-                        <tr key={a.id} className="hover:bg-white/5 transition-colors">
+                      {audits.map((a, idx) => (
+                        <tr key={a.id || (a as any)._id || idx} onClick={() => setSelectedAudit(a)} className="hover:bg-white/5 transition-colors cursor-pointer group">
                           <td className="py-4 px-6 font-bold text-white">{a.name}</td>
                           <td className="py-4 px-6 text-white/70">{a.email}</td>
                           <td className="py-4 px-6 text-white/70">{a.website}</td>
@@ -854,6 +958,53 @@ export default function AdminDashboard() {
                         <tr>
                           <td colSpan={5} className="py-10 text-center text-white/20">
                             No audit requests yet.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {/* TAB: CONTACT LEADS */}
+            {activeTab === "contactLeads" && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h1 className="text-3xl font-black font-display uppercase tracking-tight">Contact Leads</h1>
+                  <p className="text-white/40 text-sm">{contactLeads.length} total leads</p>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-2xl overflow-x-auto">
+                  <table className="w-full text-left border-collapse text-sm">
+                    <thead>
+                      <tr className="border-b border-white/10 text-[10px] font-bold uppercase tracking-widest text-white/40">
+                        <th className="py-4 px-6">Name</th>
+                        <th className="py-4 px-6">Email</th>
+                        <th className="py-4 px-6">Subject</th>
+                        <th className="py-4 px-6">Message</th>
+                        <th className="py-4 px-6">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {contactLeads.map((lead, idx) => (
+                        <tr key={lead.id || (lead as any)._id || idx} onClick={() => setSelectedLead(lead)} className="hover:bg-white/5 transition-colors cursor-pointer group">
+                          <td className="py-4 px-6 font-bold text-white group-hover:text-brand-accent transition-colors">{lead.name}</td>
+                          <td className="py-4 px-6 text-white/70">{lead.email}</td>
+                          <td className="py-4 px-6 text-white/70">{lead.subject}</td>
+                          <td className="py-4 px-6 text-white/70 max-w-xs">{lead.message}</td>
+                          <td className="py-4 px-6 text-white/60">
+                            {new Date(lead.created_at).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric',
+                            })}
+                          </td>
+                        </tr>
+                      ))}
+                      {contactLeads.length === 0 && (
+                        <tr>
+                          <td colSpan={5} className="py-10 text-center text-white/20">
+                            No contact leads yet.
                           </td>
                         </tr>
                       )}
@@ -1182,6 +1333,146 @@ export default function AdminDashboard() {
               <div className="p-6 border-t border-white/10">
                 <button
                   onClick={() => setSelectedApp(null)}
+                  className="w-full py-4 rounded-xl border border-white/10 text-white/60 font-display text-xs uppercase font-extrabold tracking-wider hover:border-white/30 hover:text-white transition-all"
+                >
+                  Close Profile
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* --- AUDIT DETAIL DRAWER --- */}
+      <AnimatePresence>
+        {selectedAudit && (
+          <div className="fixed inset-0 z-50 flex justify-end">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.6 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedAudit(null)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-xs"
+            />
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="relative w-full max-w-xl bg-[#0d0d0d] border-l border-white/10 h-full shadow-2xl flex flex-col justify-between z-10"
+            >
+              <div className="p-6 border-b border-white/10 flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-display font-black uppercase tracking-tight">Audit Request</h3>
+                  <p className="text-xs text-brand-accent font-extrabold uppercase tracking-widest mt-1">
+                    Date: {new Date(selectedAudit.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setSelectedAudit(null)}
+                  className="p-2 rounded-lg text-white/40 hover:text-white hover:bg-white/5"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-6 space-y-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-white/5 border border-white/15 p-5 rounded-2xl">
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Full Name</span>
+                    <p className="text-base font-bold text-white mt-1">{selectedAudit.name}</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Website</span>
+                    <p className="text-base font-bold text-brand-accent mt-1">{selectedAudit.website}</p>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Email Address</span>
+                    <p className="text-sm font-semibold text-white mt-1 break-all">{selectedAudit.email}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <span className="text-xs uppercase tracking-wider font-bold text-white/50 block">Message</span>
+                  <div className="bg-white/5 border border-white/10 rounded-xl p-5 text-sm leading-relaxed max-h-48 overflow-y-auto">
+                    <p className="whitespace-pre-line text-white/80">{selectedAudit.message}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 border-t border-white/10">
+                <button
+                  onClick={() => setSelectedAudit(null)}
+                  className="w-full py-4 rounded-xl border border-white/10 text-white/60 font-display text-xs uppercase font-extrabold tracking-wider hover:border-white/30 hover:text-white transition-all"
+                >
+                  Close Profile
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* --- CONTACT LEAD DETAIL DRAWER --- */}
+      <AnimatePresence>
+        {selectedLead && (
+          <div className="fixed inset-0 z-50 flex justify-end">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.6 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedLead(null)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-xs"
+            />
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="relative w-full max-w-xl bg-[#0d0d0d] border-l border-white/10 h-full shadow-2xl flex flex-col justify-between z-10"
+            >
+              <div className="p-6 border-b border-white/10 flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-display font-black uppercase tracking-tight">Contact Lead</h3>
+                  <p className="text-xs text-brand-accent font-extrabold uppercase tracking-widest mt-1">
+                    Date: {new Date(selectedLead.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setSelectedLead(null)}
+                  className="p-2 rounded-lg text-white/40 hover:text-white hover:bg-white/5"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-6 space-y-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-white/5 border border-white/15 p-5 rounded-2xl">
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Full Name</span>
+                    <p className="text-base font-bold text-white mt-1">{selectedLead.name}</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Subject</span>
+                    <p className="text-base font-bold text-brand-accent mt-1">{selectedLead.subject}</p>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Email Address</span>
+                    <p className="text-sm font-semibold text-white mt-1 break-all">{selectedLead.email}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <span className="text-xs uppercase tracking-wider font-bold text-white/50 block">Message</span>
+                  <div className="bg-white/5 border border-white/10 rounded-xl p-5 text-sm leading-relaxed max-h-48 overflow-y-auto">
+                    <p className="whitespace-pre-line text-white/80">{selectedLead.message}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 border-t border-white/10">
+                <button
+                  onClick={() => setSelectedLead(null)}
                   className="w-full py-4 rounded-xl border border-white/10 text-white/60 font-display text-xs uppercase font-extrabold tracking-wider hover:border-white/30 hover:text-white transition-all"
                 >
                   Close Profile

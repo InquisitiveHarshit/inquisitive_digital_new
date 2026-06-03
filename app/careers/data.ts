@@ -3,8 +3,9 @@ export interface Job {
   title: string;
   department: string;
   location: string;
-  type: "Full-time" | "Part-time" | "Remote";
-  salary: string;
+  type: "Full-time" | "Part-time" | "Remote" | string;
+  salary?: string;
+  salary_range?: string;
   description: string;
   requirements: string[];
   is_active?: boolean;

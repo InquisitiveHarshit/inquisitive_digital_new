@@ -53,7 +53,10 @@ export default function CareersPage() {
     return ["All", ...Array.from(depts)];
   }, [jobs]);
 
-  const jobTypes = ["All", "Full-time", "Part-time", "Remote"];
+  const jobTypes = useMemo(() => {
+    const types = new Set(jobs.map((j) => j.type));
+    return ["All", ...Array.from(types)];
+  }, [jobs]);
 
   const locations = useMemo(() => {
     const locs = new Set(jobs.map((j) => j.location));
@@ -281,7 +284,7 @@ export default function CareersPage() {
                           </span>
                           <span className="flex items-center gap-1">
                             <DollarSign className="w-3.5 h-3.5 text-brand-accent" />
-                            {job.salary}
+                            {job.salary_range || job.salary || "Not specified"}
                           </span>
                         </div>
 

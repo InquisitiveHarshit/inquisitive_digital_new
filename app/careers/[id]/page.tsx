@@ -11,7 +11,7 @@ import {
   ArrowLeft, 
   MapPin, 
   Briefcase, 
-  DollarSign, 
+  IndianRupee, 
   Lock, 
   UploadCloud, 
   FileText, 
@@ -186,6 +186,11 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
 
     if (!phone.trim()) {
       newErrors.phone = "Phone Number is required.";
+    } else {
+      const phoneRegex = /^\+?[\d\s\-]{7,15}$/;
+      if (!phoneRegex.test(phone)) {
+        newErrors.phone = "Please enter a valid phone number.";
+      }
     }
 
     if (!resume) {
@@ -335,8 +340,8 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                     {job.location}
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <DollarSign className="w-4 h-4 text-brand-accent" />
-                    {job.salary}
+                    <IndianRupee className="w-4 h-4 text-brand-accent" />
+                    {job.salary_range || job.salary || "Not specified"}
                   </span>
                 </div>
               </div>
@@ -484,7 +489,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                       type="tel"
                       id="phone"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
+                      onChange={(e) => setPhone(e.target.value.replace(/[^\d\+\-\s]/g, ''))}
                       placeholder="e.g. +91 9876543210"
                       className={`w-full px-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-brand-accent transition-all ${
                         isLight
