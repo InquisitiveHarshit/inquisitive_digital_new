@@ -28,6 +28,7 @@ import { mockJobs, mockApplications, Job, Application } from "../careers/data";
 // Audit request type
 interface Audit {
   id: string;
+  _id?: string;
   name: string;
   email: string;
   website: string;
@@ -37,6 +38,7 @@ interface Audit {
 
 interface ContactLead {
   id: string;
+  _id?: string;
   name: string;
   email: string;
   subject: string;
@@ -70,7 +72,7 @@ export default function AdminDashboard() {
   const [jobFormTitle, setJobFormTitle] = useState("");
   const [jobFormDept, setJobFormDept] = useState("");
   const [jobFormLoc, setJobFormLoc] = useState("");
-  const [jobFormType, setJobFormType] = useState<"Full-time" | "Part-time" | "Remote">("Full-time");
+  const [jobFormType, setJobFormType] = useState<"Full-time" | "Part-time" | "Remote" | string>("Full-time");
   const [jobFormDesc, setJobFormDesc] = useState("");
   const [jobFormSalary, setJobFormSalary] = useState("");
   const [jobFormReqs, setJobFormReqs] = useState<string[]>([]);
@@ -265,7 +267,7 @@ export default function AdminDashboard() {
       type: jobFormType,
       description: jobFormDesc.trim(),
       requirements: jobFormReqs,
-      salary_range: jobFormSalary.trim() || null,
+      salary_range: jobFormSalary.trim() || undefined,
       is_active: editingJob ? editingJob.is_active : true,
     };
 
@@ -601,11 +603,11 @@ export default function AdminDashboard() {
                 {/* Stats cards row */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                   {[
-                    { label: "Total Audits", val: stats.totalAudits },
-                    { label: "Contact Leads", val: stats.totalContactLeads },
-                    { label: "Total Jobs", val: stats.totalJobs },
-                    { label: "Total Applications", val: stats.totalApps },
-                    { label: "Total Blogs", val: stats.totalBlogs },
+                    { label: "Total Audits", val: stats.totalAudits, hasTrend: true },
+                    { label: "Contact Leads", val: stats.totalContactLeads, hasTrend: true },
+                    { label: "Total Jobs", val: stats.totalJobs, hasTrend: true },
+                    { label: "Total Applications", val: stats.totalApps, hasTrend: true },
+                    { label: "Total Blogs", val: stats.totalBlogs, hasTrend: true },
                   ].map((card, idx) => (
                     <div
                       key={idx}

@@ -5,7 +5,7 @@ export interface Job {
   location: string;
   type: "Full-time" | "Part-time" | "Remote" | string;
   salary?: string;
-  salary_range?: string;
+  salary_range?: string | null;
   description: string;
   requirements: string[];
   is_active?: boolean;
