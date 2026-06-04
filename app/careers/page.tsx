@@ -7,7 +7,7 @@ import { Header } from "@/components/layout/Header";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import { useTheme } from "@/components/ThemeProvider";
 import { mockJobs, Job } from "./data";
-import { Search, MapPin, Briefcase, DollarSign, ArrowRight, Inbox } from "lucide-react";
+import { Search, MapPin, Briefcase, IndianRupee, ArrowRight, Inbox } from "lucide-react";
 
 const API_BASE = "";
 
@@ -283,7 +283,7 @@ export default function CareersPage() {
                             {job.location}
                           </span>
                           <span className="flex items-center gap-1">
-                            <DollarSign className="w-3.5 h-3.5 text-brand-accent" />
+                            <IndianRupee className="w-3.5 h-3.5 text-brand-accent" />
                             {job.salary_range || job.salary || "Not specified"}
                           </span>
                         </div>
