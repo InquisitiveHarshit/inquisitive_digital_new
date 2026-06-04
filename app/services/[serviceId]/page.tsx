@@ -34,6 +34,7 @@ import { ServiceFullDetail } from "../types";
 import { performanceMarketingData } from "../data/performance-marketing";
 import { seoData } from "../data/seo";
 import { socialMediaData } from "../data/social-media";
+import { webDevelopmentData } from "../data/web-development";
 
 
 export default function ServiceDetailPage() {
@@ -45,42 +46,7 @@ export default function ServiceDetailPage() {
     seo: seoData,
     "social-media": socialMediaData,
     "performance-marketing": performanceMarketingData,
-    "web-development": {
-      id: "web-development",
-      title: "Web Design & Development",
-      category: "Web Tech",
-      shortDesc: "Modern, responsive, and conversion-focused websites.",
-      detailedDesc: "We build blazing-fast React and Next.js websites that pass Core Web Vitals with flying colors, offering an uncompromising experience that ranks higher.",
-      icon: Code,
-      deliverables: [
-        "Custom Next.js & React Responsive Architecture",
-        "100% Core Web Vitals Speed & Performance Focus",
-        "Ultra-Premium UX/UI Custom Prototyping",
-        "Secure CMS, API & CRM Pipeline integrations",
-        "Modern SEO-Ready Clean Coding Practices",
-      ],
-      ctaText: "Build My Website",
-      painPoints: [
-        "Slow loading speeds causing high visitor bounce rates.",
-        "Outdated designs that fail to convey professional brand authority.",
-        "Clunky mobile responsive behaviors losing critical viewport customers.",
-      ],
-      benefits: [
-        "Next.js server-side rendering for instant page transitions.",
-        "Premium brutalist or clean theme options tailored to your identity.",
-        "Interactive micro-animations keeping users active and engaged.",
-      ],
-      faq: [
-        {
-          q: "Why do you use Next.js instead of standard WordPress?",
-          a: "Next.js websites load up to 10x faster, offer superior custom security, rank dramatically better on search engines, and avoid plugin bloat.",
-        },
-        {
-          q: "Is the design responsive on all viewports?",
-          a: "Yes, every container is meticulously engineered to fit mobile, tablet, and ultra-wide desktop monitors seamlessly.",
-        },
-      ],
-    },
+    "web-development": webDevelopmentData,
     "content-writing": {
       id: "content-writing",
       title: "Content Writing & Blogging",

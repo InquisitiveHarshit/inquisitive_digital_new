@@ -311,7 +311,7 @@ export const Header: React.FC = () => {
       {/* Mobile Nav Drawer */}
       {isOpen && (
         <div
-          className={`md:hidden fixed top-[81px] left-0 w-full h-[calc(100vh-81px)] z-40 flex flex-col items-center justify-center gap-8 py-12 transition-all duration-300 border-t ${isLight
+          className={`md:hidden fixed top-[81px] left-0 w-full h-[calc(100vh-81px)] overflow-y-auto z-40 flex flex-col items-center justify-start gap-8 py-12 transition-all duration-300 border-t ${isLight
             ? "bg-white/98 backdrop-blur-lg border-slate-100"
             : isDarkSingular
               ? "bg-[#0a0a0a]/98 backdrop-blur-lg border-white/10"
@@ -419,47 +419,6 @@ export const Header: React.FC = () => {
             </a>
           </div>
 
-          {/* Mobile Theme Switcher inside Navigation Drawer */}
-          <div className="mt-8 flex flex-col items-center gap-3">
-            <span className={`font-body text-[10px] uppercase tracking-widest font-bold ${
-              isLight ? "text-slate-400" : "text-slate-500"
-            }`}>
-              Select Mode
-            </span>
-            <div className={`flex items-center rounded-full p-0.5 border transition-all duration-300 ${
-              isLight
-                ? "bg-slate-100 border-slate-200"
-                : "bg-black/40 backdrop-blur-md border-white/10"
-            }`}>
-
-              <button
-                onClick={() => handleThemeSwitch("singular-light")}
-                className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ${
-                  themeMode === "singular-light"
-                    ? "bg-white text-black border border-slate-200 shadow-sm"
-                    : isLight
-                      ? "text-slate-400 hover:text-slate-700"
-                      : "text-white/50 hover:text-white"
-                }`}
-                title="Light Mode"
-              >
-                <Sun className="w-3.5 h-3.5" />
-              </button>
-              <button
-                onClick={() => handleThemeSwitch("singular-dark")}
-                className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ${
-                  themeMode === "singular-dark"
-                    ? "bg-brand-accent text-black border border-brand-accent shadow-sm"
-                    : isLight
-                      ? "text-slate-400 hover:text-slate-700"
-                      : "text-white/50 hover:text-white"
-                }`}
-                title="Dark Mode"
-              >
-                <Moon className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
         </div>
       )}
     </header>
