@@ -56,7 +56,7 @@ export default function Home() {
         <Industries />
 
         {/* Case Studies / Portfolio Section */}
-        <CaseStudies />
+        {/* <CaseStudies /> */}
 
         {/* Client Testimonials Carousel/Grid */}
         <Testimonials />

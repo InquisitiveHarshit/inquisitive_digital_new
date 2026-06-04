@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { Button } from "../ui/Button";
 import {
   Search,
-  MousePointerClick,
   Share2,
   TrendingUp,
   Code,
@@ -21,17 +21,27 @@ interface ServiceItem {
   detailedDesc: string;
   icon: React.ComponentType<{ className?: string }>;
   spanClass: string;
+  slug: string;
 }
 
 export const Services: React.FC = () => {
+  const router = useRouter();
+  const [expandedIds, setExpandedIds] = useState<Record<number, boolean>>({});
+
+  const toggleExpand = (id: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setExpandedIds((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
   const services: ServiceItem[] = [
     {
       id: 1,
       title: "SEO / AEO / GEO",
       shortDesc: "Rank higher on Google and AI search with advanced optimization strategies.",
-      detailedDesc: "Our strategic SEO campaigns target lucrative, high-intent keywords that drive immediate transactions and revenue. We completely optimize your site architecture, fix technical elements, and build high-quality authority back links. By structuring your content for maximum relevance, we ensure your business dominates organic search results. Our ultimate goal is to secure permanent, long-term market share for your brand across all traditional search networks as well as the latest AI-driven discovery engines.",
+      detailedDesc: "Our strategic SEO campaigns target lucrative, high-intent keywords that drive immediate transactions and revenue. We completely optimize your site architecture, fix technical elements, and build high-quality authority backlinks. By structuring your content for maximum relevance, we ensure your business dominates organic search results. Our ultimate goal is to secure permanent, long-term market share for your brand across all traditional search networks as well as the latest AI-driven discovery engines.",
       icon: Search,
       spanClass: "lg:col-span-2",
+      slug: "seo"
     },
     {
       id: 3,
@@ -40,6 +50,7 @@ export const Services: React.FC = () => {
       detailedDesc: "We create cohesive content strategies across platforms that turn casual followers into passionate brand evangelists and high-value customers.",
       icon: Share2,
       spanClass: "lg:col-span-1",
+      slug: "social-media"
     },
     {
       id: 4,
@@ -48,6 +59,7 @@ export const Services: React.FC = () => {
       detailedDesc: "Using structured funnels, pixel tracking, and predictive analytics, we scale paid advertising across social and search platforms to achieve optimal CAC/ROAS.",
       icon: TrendingUp,
       spanClass: "lg:col-span-1",
+      slug: "performance-marketing"
     },
     {
       id: 5,
@@ -56,6 +68,7 @@ export const Services: React.FC = () => {
       detailedDesc: "We build blazing-fast React and Next.js websites that pass Core Web Vitals with flying colors, offering an uncompromising experience that ranks higher on search engines.",
       icon: Code,
       spanClass: "lg:col-span-1",
+      slug: "web-development"
     },
     {
       id: 6,
@@ -64,6 +77,7 @@ export const Services: React.FC = () => {
       detailedDesc: "We draft industry-leading educational blog series, whitepapers, and copy that establishes your brand as a primary source of authoritative knowledge.",
       icon: FileText,
       spanClass: "lg:col-span-1",
+      slug: "content-writing"
     },
     {
       id: 7,
@@ -72,6 +86,7 @@ export const Services: React.FC = () => {
       detailedDesc: "Our premium graphic design services focus on creating high-impact visual assets that instantly capture customer attention and drive engagement. We design stunning, custom graphics that align with your brand identity, from social media creatives to professional website visuals. By balancing aesthetics with marketing psychology, we structure every design to convert viewers into clients. We build a powerful, permanent visual presence that makes your business stand out across digital platforms and print media.",
       icon: Award,
       spanClass: "lg:col-span-2",
+      slug: "branding"
     },
     {
       id: 8,
@@ -80,6 +95,7 @@ export const Services: React.FC = () => {
       detailedDesc: "We build conversion paths, landing pages, and smart lead forms optimized for capture, bringing high-intent prospects straight to your pipeline.",
       icon: Megaphone,
       spanClass: "lg:col-span-1",
+      slug: "lead-gen"
     },
   ];
 
@@ -115,10 +131,12 @@ export const Services: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr mb-16">
           {services.map((service, index) => {
             const IconComponent = service.icon;
+            const isExpanded = expandedIds[service.id] || false;
             return (
               <motion.div
                 key={service.id}
-                className={`relative border-2 border-on-surface p-8 flex flex-col justify-start rounded-lg cursor-pointer bg-background transition-transform duration-300 hover:-translate-y-1 hover:-translate-x-1 ${service.spanClass}`}
+                onClick={() => router.push(`/services/${service.slug}`)}
+                className={`relative border-2 border-on-surface p-8 flex flex-col justify-between rounded-lg cursor-pointer bg-background transition-all duration-300 hover:-translate-y-1 hover:-translate-x-1 ${service.spanClass}`}
                 style={{
                   boxShadow: "8px 8px 0px 0px #f5c200",
                 }}
@@ -127,24 +145,63 @@ export const Services: React.FC = () => {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
               >
-                {/* Icon */}
-                <div className="text-brand-accent mb-4 block">
-                  <IconComponent className="w-8 h-8 stroke-[2]" />
+                <div>
+                  {/* Icon */}
+                  <div className="text-brand-accent mb-4 block">
+                    <IconComponent className="w-8 h-8 stroke-[2]" />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="font-display text-xl font-bold text-on-surface uppercase mb-3 tracking-tight">
+                    {service.title}
+                  </h3>
+
+                  {/* Always visible description */}
+                  <p className="font-body text-sm font-medium text-on-surface-variant mb-4">
+                    {service.shortDesc}
+                  </p>
+
+                  {/* Desktop detailed description / Mobile expandable detailed description */}
+                  <div className="font-body text-sm text-on-surface-variant/80 leading-relaxed border-t border-outline-variant/30 pt-4 mt-4">
+                    {/* On mobile, show toggleable behavior. On desktop, show full description. */}
+                    <div className="hidden md:block">
+                      {service.detailedDesc}
+                    </div>
+                    
+                    <div className="block md:hidden">
+                      <AnimatePresence initial={false}>
+                        {isExpanded ? (
+                          <motion.div
+                            key="expanded"
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            {service.detailedDesc}
+                          </motion.div>
+                        ) : (
+                          <div className="line-clamp-2 text-on-surface-variant/60">
+                            {service.detailedDesc}
+                          </div>
+                        )}
+                      </AnimatePresence>
+                      
+                      <button
+                        onClick={(e) => toggleExpand(service.id, e)}
+                        className="text-xs font-bold text-brand-accent hover:underline mt-2 flex items-center gap-1 uppercase tracking-wider"
+                      >
+                        {isExpanded ? "Show Less ↑" : "Learn More →"}
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Title */}
-                <h3 className="font-display text-xl font-bold text-on-surface uppercase mb-3 tracking-tight">
-                  {service.title}
-                </h3>
-
-                {/* Always visible description */}
-                <p className="font-body text-sm font-medium text-on-surface-variant mb-4">
-                  {service.shortDesc}
-                </p>
-
-                {/* Detailed description (always visible now) */}
-                <div className="font-body text-sm text-on-surface-variant/80 leading-relaxed border-t border-outline-variant/30 pt-4 mt-4">
-                  {service.detailedDesc}
+                {/* Arrow indicator bottom right */}
+                <div className="flex justify-end mt-6">
+                  <span className="text-xs font-bold tracking-wider uppercase text-brand-accent group-hover:underline flex items-center gap-1">
+                    Go to Page →
+                  </span>
                 </div>
               </motion.div>
             );
