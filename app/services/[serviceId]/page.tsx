@@ -30,20 +30,11 @@ import {
 } from "lucide-react";
 import { BlogCard } from "@/components/ui/BlogCard";
 import { blogs } from "@/app/blogs/data";
+import { ServiceFullDetail } from "../types";
+import { performanceMarketingData } from "../data/performance-marketing";
+import { seoData } from "../data/seo";
+import { socialMediaData } from "../data/social-media";
 
-interface ServiceFullDetail {
-  id: string;
-  title: string;
-  category: string;
-  shortDesc: string;
-  detailedDesc: string;
-  icon: React.ComponentType<{ className?: string }>;
-  deliverables: string[];
-  ctaText: string;
-  painPoints: string[];
-  benefits: string[];
-  faq: { q: string; a: string }[];
-}
 
 export default function ServiceDetailPage() {
   const params = useParams();
@@ -51,114 +42,9 @@ export default function ServiceDetailPage() {
   const serviceId = params?.serviceId as string;
 
   const servicesData: Record<string, ServiceFullDetail> = {
-    seo: {
-      id: "seo",
-      title: "SEO / AEO / GEO",
-      category: "Search",
-      shortDesc: "Grow your business with our SEO Service. Improve rankings, visibility, traffic, and AI search presence.",
-      detailedDesc: "Our SEO Service goes beyond conventional optimization. We combine Search Engine Optimization (SEO), Answer Engine Optimization (AEO), and Generative Engine Optimization (GEO) to help businesses increase online visibility, attract qualified traffic, and generate sustainable growth across both search engines and AI-driven platforms.",
-      icon: Search,
-      deliverables: [
-        "Technical SEO, Core Web Vitals & Site Architecture",
-        "Strategic Keyword Mapping & Semantic Content Optimization",
-        "Off-Page SEO & High-Authority Editorial Link Building",
-        "Answer Engine Optimization (AEO) for Featured Snippets",
-        "Generative Engine Optimization (GEO) for AI Search",
-      ],
-      ctaText: "Get Free SEO Strategy Consultation",
-      painPoints: [
-        "Missing out on high-intent search traffic due to low organic rankings.",
-        "Over-relying on paid advertising budgets that drain ROI over time.",
-        "Losing visibility as users shift toward AI-powered search discovery.",
-      ],
-      benefits: [
-        "Increased keyword rankings and higher quality organic traffic.",
-        "Generates sustainable traffic without relying on paid ad budgets.",
-        "Enhanced brand authority and greater AI search visibility.",
-      ],
-      faq: [
-        {
-          q: "What is the difference between SEO, AEO, and GEO?",
-          a: "SEO improves visibility in traditional search engine results. AEO focuses on becoming the preferred answer for search queries, while GEO helps businesses gain visibility within AI-generated search experiences like ChatGPT and Google AI Overviews.",
-        },
-        {
-          q: "How long does SEO take to show results?",
-          a: "Most businesses begin seeing measurable improvements within three to six months. However, SEO is a long-term strategy, and significant growth often occurs through consistent optimization over time.",
-        },
-      ],
-    },
-    "social-media": {
-      id: "social-media",
-      title: "Social Media Marketing",
-      category: "Organic",
-      shortDesc: "Build brand awareness and engagement across all major platforms.",
-      detailedDesc: "We create cohesive content strategies across platforms that turn casual followers into passionate brand evangelists and high-value customers.",
-      icon: Share2,
-      deliverables: [
-        "Platform-Specific Visual Style & Content Systems",
-        "Engaging Reels, Carousels & Video Scriptwriting",
-        "Community Growth & Social Sentiment Monitoring",
-        "Strategic Creator & Key Opinion Leader Partnerships",
-        "Cross-Channel Brand Narrative Engineering",
-      ],
-      ctaText: "Scale My Socials",
-      painPoints: [
-        "Posting content consistently without generating actual business inquiries.",
-        "Low organic reach and follower engagement due to algorithmic changes.",
-        "Unprofessional or inconsistent brand designs across platforms.",
-      ],
-      benefits: [
-        "High-fidelity custom graphic templates that make you stand out.",
-        "A highly passionate community actively engaging with your products.",
-        "Predictable organic lead channels generated directly through direct messages.",
-      ],
-      faq: [
-        {
-          q: "Which social platforms do you support?",
-          a: "We actively scale channels on Instagram, LinkedIn, YouTube, Meta, and TikTok depending on where your target buyers exist.",
-        },
-        {
-          q: "Do you handle custom video editing?",
-          a: "Yes! We draft scripts, direct visual content formats, and edit short-form reels/shorts optimized for retention.",
-        },
-      ],
-    },
-    "performance-marketing": {
-      id: "performance-marketing",
-      title: "Performance Marketing",
-      category: "Paid Ads",
-      shortDesc: "Data-driven campaigns focused on ROI and measurable growth.",
-      detailedDesc: "Using structured funnels, pixel tracking, and predictive analytics, we scale paid advertising across social and search platforms to achieve optimal CAC/ROAS.",
-      icon: TrendingUp,
-      deliverables: [
-        "Multi-Platform Paid Advertising (Meta, Google, LinkedIn, TikTok)",
-        "Advanced Pixel & Conversion API Integrations",
-        "Continuous Ad Creative Variations & A/B Testing",
-        "Landing Page Conversion Funnel Architectures",
-        "Granular Audience Cohort Targeting & Retargeting",
-      ],
-      ctaText: "Launch Campaigns",
-      painPoints: [
-        "Wasting huge marketing budgets on clicks that never buy anything.",
-        "Inability to accurately track return on ad spend (ROAS) and conversions.",
-        "High ad fatigue causing campaign performance to die out after two weeks.",
-      ],
-      benefits: [
-        "Full funnel setup targeting prospects at every decision stage.",
-        "Continuous creative refreshes keeping click-through rates (CTR) high.",
-        "Transparent live reporting metrics matching real backend CRM returns.",
-      ],
-      faq: [
-        {
-          q: "What is a good starting ad budget?",
-          a: "We recommend a testing budget that allows for fast audience verification, which we scale upwards once target ROAS is satisfied.",
-        },
-        {
-          q: "Do you build custom landing pages for ads?",
-          a: "Absolutely. High-converting dedicated landing pages are built for all paid search and social campaigns to maximize lead capture.",
-        },
-      ],
-    },
+    seo: seoData,
+    "social-media": socialMediaData,
+    "performance-marketing": performanceMarketingData,
     "web-development": {
       id: "web-development",
       title: "Web Design & Development",
@@ -398,17 +284,276 @@ export default function ServiceDetailPage() {
               href="#lead-form"
               className="inline-flex items-center justify-center font-display font-bold uppercase tracking-wider text-background bg-brand-accent px-6 py-3 rounded-full text-xs sm:text-sm transition-all duration-300 hover:shadow-[0_8px_20px_rgb(245,194,0,0.3)] hover:-translate-y-0.5"
             >
-              {service.ctaText}
+              {service.heroSection?.ctaText1 ?? service.ctaText}
             </a>
             <a
               href="#approach"
               className="inline-flex items-center justify-center font-display font-bold uppercase tracking-wider text-on-surface bg-surface-container-low border border-outline-variant px-6 py-3 rounded-full text-xs sm:text-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-surface-container-high hover:shadow-sm"
             >
-              Explore Approach
+              {service.heroSection?.ctaText2 ?? "Explore Approach"}
             </a>
           </motion.div>
         </div>
       </section>
+
+      {/* SECTION 1.1 — STATS */}
+      {service.statsSection && (
+        <section className="py-12 px-4 md:px-margin-desktop relative">
+          <div className="max-w-container-max mx-auto">
+            <div className="text-center mb-10">
+              <motion.span
+                initial={{ opacity: 0, y: -10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="inline-block px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
+              >
+                {service.statsSection.tag}
+              </motion.span>
+              <motion.h2
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface"
+              >
+                {service.statsSection.heading}
+              </motion.h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {service.statsSection.stats.map((stat, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="bg-surface-container-low border border-outline-variant rounded-3xl p-8 flex flex-col items-center justify-center text-center shadow-sm"
+                >
+                  <span className="font-display text-5xl md:text-7xl font-extrabold text-brand-accent mb-4 tracking-tighter">
+                    {stat.value}
+                  </span>
+                  <span className="font-body text-sm md:text-base text-on-surface-variant leading-relaxed max-w-sm">
+                    {stat.label}
+                  </span>
+                  {stat.source && (
+                    <span className="font-body text-[10px] uppercase tracking-widest text-on-surface-variant opacity-60 mt-4 font-bold">
+                      Source: {stat.source}
+                    </span>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* SECTION 1.2 — WHAT IS */}
+      {service.whatIsSection && (
+        <section className="py-12 px-4 md:px-margin-desktop relative">
+          <div className="max-w-container-max mx-auto relative z-10 bg-brand-accent/5 rounded-3xl p-6 md:p-10 border border-brand-accent/20 shadow-sm">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+              <div className="lg:col-span-5">
+                <motion.span
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="inline-block px-3 py-1 rounded-full bg-background border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-4 shadow-sm"
+                >
+                  {service.whatIsSection.tag}
+                </motion.span>
+                <motion.h2
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                  className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-[1.1] text-on-surface"
+                >
+                  {service.whatIsSection.heading}
+                </motion.h2>
+              </div>
+              <div className="lg:col-span-7 space-y-6">
+                <motion.p
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="font-display text-xl sm:text-2xl font-bold leading-relaxed text-on-surface"
+                >
+                  {service.whatIsSection.description}
+                </motion.p>
+                <motion.p
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                  className="font-body text-base font-normal leading-relaxed text-on-surface-variant opacity-90"
+                >
+                  {service.whatIsSection.secondaryDescription}
+                </motion.p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* SECTION 1.3 — WHY IT MATTERS */}
+      {service.whyMattersSection && (
+        <section className="py-12 px-4 md:px-margin-desktop relative">
+          <div className="max-w-container-max mx-auto">
+            <div className="text-center mb-10 max-w-3xl mx-auto">
+              <motion.span
+                initial={{ opacity: 0, y: -10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="inline-block px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
+              >
+                {service.whyMattersSection.tag}
+              </motion.span>
+              <motion.h2
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface mb-6"
+              >
+                {service.whyMattersSection.heading}
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+                className="font-body text-base font-normal leading-relaxed text-on-surface-variant opacity-90"
+              >
+                {service.whyMattersSection.intro}
+              </motion.p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {service.whyMattersSection.benefits.map((benefit, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div className="w-10 h-10 rounded-full bg-background border border-outline-variant flex items-center justify-center text-brand-accent mb-4 shadow-sm">
+                    <Check className="w-5 h-5 stroke-[2.5]" />
+                  </div>
+                  <h3 className="font-display text-base font-bold text-on-surface mb-2">{benefit.title}</h3>
+                  <p className="font-body text-xs text-on-surface-variant leading-relaxed opacity-90">{benefit.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* SECTION 1.4 — SERVICES SECTION */}
+      {service.servicesSection && (
+        <section className="py-12 px-4 md:px-margin-desktop relative">
+          <div className="max-w-container-max mx-auto relative z-10 bg-surface-container-low rounded-3xl p-6 md:p-10 border border-outline-variant shadow-sm">
+            <div className="text-center mb-10 max-w-3xl mx-auto">
+              <motion.span
+                initial={{ opacity: 0, y: -10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="inline-block px-3 py-1 rounded-full bg-background border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
+              >
+                {service.servicesSection.tag}
+              </motion.span>
+              <motion.h2
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface mb-6"
+              >
+                {service.servicesSection.heading}
+              </motion.h2>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+              {service.servicesSection.services.map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.05 }}
+                  className="bg-background p-6 rounded-2xl border border-outline-variant flex flex-col shadow-sm"
+                >
+                  <h4 className="font-display font-bold text-lg text-on-surface mb-3 flex items-center gap-3">
+                    <span className="w-8 h-8 rounded-full bg-brand-accent/10 flex items-center justify-center text-brand-accent border border-brand-accent/20 flex-shrink-0">
+                      <Target className="w-4 h-4" />
+                    </span>
+                    {item.title}
+                  </h4>
+                  <p className="font-body text-sm text-on-surface-variant leading-relaxed opacity-90 pl-11">
+                    {item.desc}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* AEO and GEO Nested Sections */}
+            {(service.servicesSection.aeo || service.servicesSection.geo) && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-10 border-t border-outline-variant/50">
+                {service.servicesSection.aeo && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className="bg-background p-6 lg:p-8 rounded-3xl border border-outline-variant shadow-sm relative overflow-hidden"
+                  >
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-brand-accent/5 rounded-bl-full -z-10" />
+                    <span className="inline-block px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm">
+                      {service.servicesSection.aeo.tag}
+                    </span>
+                    <h3 className="font-display text-xl sm:text-2xl font-extrabold text-on-surface mb-2">{service.servicesSection.aeo.heading}</h3>
+                    <h4 className="font-display text-sm font-bold text-brand-accent mb-4">{service.servicesSection.aeo.subheading}</h4>
+                    <p className="font-body text-xs sm:text-sm text-on-surface-variant leading-relaxed mb-6">
+                      {service.servicesSection.aeo.description}
+                    </p>
+                    <ul className="space-y-3">
+                      {service.servicesSection.aeo.services.map((li, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <Check className="w-4 h-4 text-brand-accent flex-shrink-0 mt-0.5" />
+                          <span className="font-body text-xs text-on-surface font-medium">{li}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                )}
+
+                {service.servicesSection.geo && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className="bg-brand-accent/5 p-6 lg:p-8 rounded-3xl border border-brand-accent/20 shadow-sm relative overflow-hidden"
+                  >
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-background/50 rounded-bl-full -z-10" />
+                    <span className="inline-block px-3 py-1 rounded-full bg-background border border-brand-accent/20 text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm">
+                      {service.servicesSection.geo.tag}
+                    </span>
+                    <h3 className="font-display text-xl sm:text-2xl font-extrabold text-on-surface mb-2">{service.servicesSection.geo.heading}</h3>
+                    <h4 className="font-display text-sm font-bold text-brand-accent mb-4">{service.servicesSection.geo.subheading}</h4>
+                    <p className="font-body text-xs sm:text-sm text-on-surface-variant leading-relaxed mb-6">
+                      {service.servicesSection.geo.description}
+                    </p>
+                    <ul className="space-y-3">
+                      {service.servicesSection.geo.services.map((li, i) => (
+                        <li key={i} className="flex items-start gap-3">
+                          <Check className="w-4 h-4 text-brand-accent flex-shrink-0 mt-0.5" />
+                          <span className="font-body text-xs text-on-surface font-medium">{li}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                )}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* SECTION 2 — WHAT WE ACTUALLY DO */}
       <section id="approach" className="py-12 px-4 md:px-margin-desktop relative">
@@ -421,7 +566,7 @@ export default function ServiceDetailPage() {
                 viewport={{ once: true }}
                 className="inline-block px-3 py-1 rounded-full bg-background border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-4"
               >
-                The Approach
+                {service.approachSection?.tag ?? "The Approach"}
               </motion.span>
               <motion.h2
                 initial={{ opacity: 0, y: 15 }}
@@ -430,7 +575,7 @@ export default function ServiceDetailPage() {
                 transition={{ delay: 0.1 }}
                 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-[1.1] text-on-surface"
               >
-                How We Make Growth Predictable
+                {service.approachSection?.heading ?? "How We Make Growth Predictable"}
               </motion.h2>
             </div>
 
@@ -441,7 +586,7 @@ export default function ServiceDetailPage() {
                 viewport={{ once: true }}
                 className="font-display text-xl sm:text-2xl font-bold leading-relaxed text-on-surface"
               >
-                {service.detailedDesc}
+                {service.approachSection?.mainDescription ?? service.detailedDesc}
               </motion.p>
               <motion.p
                 initial={{ opacity: 0, y: 15 }}
@@ -450,18 +595,18 @@ export default function ServiceDetailPage() {
                 transition={{ delay: 0.1 }}
                 className="font-body text-base font-normal leading-relaxed text-on-surface-variant opacity-90"
               >
-                Most agencies focus strictly on front-end metrics to validate their value. We don't. At Inquisitive Digital, {service.title.toLowerCase()} is treated as a strict system engineering challenge. We eliminate variables by combining predictive models, server-side data, and meticulous direct-response frameworks. This allows us to spot fatigue before it kills your momentum and extract maximum yield from every resource deployed.
+                {service.approachSection?.secondaryDescription ?? `Most agencies focus strictly on front-end metrics to validate their value. We don't. At Inquisitive Digital, ${service.title.toLowerCase()} is treated as a strict system engineering challenge. We eliminate variables by combining predictive models, server-side data, and meticulous direct-response frameworks. This allows us to spot fatigue before it kills your momentum and extract maximum yield from every resource deployed.`}
               </motion.p>
             </div>
           </div>
 
           <div className="pt-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[
+              {(service.approachSection?.pills ?? [
                 { title: "No Vanity Metrics", desc: "We optimize for cash revenue, not generic engagement." },
                 { title: "Full Funnel Ownership", desc: "From strategic assets to high-converting user paths." },
                 { title: "Transparent Reporting", desc: "Direct live attribution dashboard and zero fluff." }
-              ].map((pill, i) => (
+              ]).map((pill, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -565,7 +710,7 @@ export default function ServiceDetailPage() {
               viewport={{ once: true }}
               className="inline-block px-3 py-1 rounded-full bg-background border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
             >
-              WHAT YOU GET
+              {service.deliverablesSection?.tag ?? "WHAT YOU GET"}
             </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 15 }}
@@ -573,12 +718,12 @@ export default function ServiceDetailPage() {
               viewport={{ once: true }}
               className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface"
             >
-              Complete Deliverables
+              {service.deliverablesSection?.heading ?? "Complete Deliverables"}
             </motion.h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-            {service.deliverables.map((deliverable, index) => (
+            {(service.deliverablesSection?.items ?? service.deliverables).map((deliverable, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -593,7 +738,7 @@ export default function ServiceDetailPage() {
                 <div>
                   <h4 className="font-display font-bold text-base text-on-surface tracking-wide mb-1">{deliverable}</h4>
                   <p className="font-body text-xs text-on-surface-variant leading-relaxed opacity-90">
-                    Engineered to align directly with your overall growth trajectory.
+                    {service.deliverablesSection?.itemSubtext ?? "Engineered to align directly with your overall growth trajectory."}
                   </p>
                 </div>
               </motion.div>
@@ -611,20 +756,159 @@ export default function ServiceDetailPage() {
                 <Shield className="w-6 h-6" />
               </div>
               <p className="font-body font-medium text-sm md:text-base leading-relaxed text-on-surface max-w-xl">
-                Every single engagement includes full transparent reporting, a dedicated lead point of contact, and 30-day post-launch deployment support.
+                {service.deliverablesSection?.guaranteeText ?? "Every single engagement includes full transparent reporting, a dedicated lead point of contact, and 30-day post-launch deployment support."}
               </p>
             </div>
             <a
               href="#lead-form"
               className="flex-shrink-0 w-full md:w-auto font-display font-bold uppercase tracking-wider text-background bg-brand-accent px-6 py-3 rounded-full text-xs sm:text-sm transition-all duration-300 hover:shadow-[0_8px_20px_rgb(245,194,0,0.3)] hover:-translate-y-0.5 text-center"
             >
-              Secure My Setup
+              {service.deliverablesSection?.guaranteeCtaText ?? "Secure My Setup"}
             </a>
           </motion.div>
         </div>
       </section>
 
-      {/* SECTION 5 — RESULTS STRIP */}
+      {/* SECTION 4.1 — PROCESS SECTION */}
+      {service.processSection && (
+        <section className="py-12 px-4 md:px-margin-desktop relative">
+          <div className="max-w-container-max mx-auto relative z-10">
+            <div className="text-center mb-10">
+              <motion.span
+                initial={{ opacity: 0, y: -10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="inline-block px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
+              >
+                {service.processSection.tag}
+              </motion.span>
+              <motion.h2
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface"
+              >
+                {service.processSection.heading}
+              </motion.h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+              {service.processSection.steps.map((step, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1, ease: "easeOut" }}
+                  className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant hover:bg-surface-container-high transition-colors shadow-sm flex flex-col items-center text-center"
+                >
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-lg mb-4 text-brand-accent bg-brand-accent/10 border border-brand-accent/20">
+                    {step.number}
+                  </div>
+                  <h3 className="font-display text-base font-bold text-on-surface mb-2">{step.title}</h3>
+                  <p className="font-body text-xs text-on-surface-variant leading-relaxed opacity-90">{step.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* SECTION 4.2 — WHY US SECTION */}
+      {service.whyUsSection && (
+        <section className="py-12 px-4 md:px-margin-desktop relative">
+          <div className="max-w-container-max mx-auto relative z-10 bg-brand-accent/5 rounded-3xl p-6 md:p-10 border border-brand-accent/20 shadow-sm">
+            <div className="text-center mb-10">
+              <motion.span
+                initial={{ opacity: 0, y: -10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="inline-block px-3 py-1 rounded-full bg-background border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
+              >
+                {service.whyUsSection.tag}
+              </motion.span>
+              <motion.h2
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface"
+              >
+                {service.whyUsSection.heading}
+              </motion.h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {service.whyUsSection.items.map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="bg-background p-6 rounded-2xl border border-outline-variant shadow-sm"
+                >
+                  <h3 className="font-display text-base font-bold text-on-surface mb-2 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-brand-accent flex-shrink-0" />
+                    {item.title}
+                  </h3>
+                  <p className="font-body text-xs text-on-surface-variant leading-relaxed opacity-90 pl-6">{item.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* SECTION 4.3 — DYNAMIC RESULTS SECTION */}
+      {service.resultsSection ? (
+        <section className="py-12 px-4 md:px-margin-desktop relative">
+          <div className="max-w-container-max mx-auto">
+            <div className="text-center mb-10 max-w-3xl mx-auto">
+              <motion.span
+                initial={{ opacity: 0, y: -10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="inline-block px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
+              >
+                {service.resultsSection.tag}
+              </motion.span>
+              <motion.h2
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface mb-4"
+              >
+                {service.resultsSection.heading}
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="font-body text-base font-normal leading-relaxed text-on-surface-variant opacity-90"
+              >
+                {service.resultsSection.description}
+              </motion.p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {service.resultsSection.outcomes.map((outcome, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="bg-surface-container-low rounded-2xl p-6 flex flex-col transition-transform duration-300 hover:-translate-y-1 border border-outline-variant shadow-sm"
+                >
+                  <h3 className="font-display font-bold text-sm text-brand-accent uppercase tracking-wide mb-2">{outcome.title}</h3>
+                  <p className="font-body text-xs text-on-surface-variant leading-relaxed opacity-90">{outcome.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : (
+      /* SECTION 5 — RESULTS STRIP (Fallback) */
       <section className="py-12 px-4 md:px-margin-desktop">
         <div className="max-w-container-max mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
@@ -665,6 +949,7 @@ export default function ServiceDetailPage() {
           </motion.div>
         </div>
       </section>
+      )}
 
       {/* SECTION 6 — THE COST OF NOT ACTING */}
       <section className="py-12 px-4 md:px-margin-desktop relative">
@@ -676,7 +961,7 @@ export default function ServiceDetailPage() {
               viewport={{ once: true }}
               className="inline-block px-3 py-1 rounded-full bg-background border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
             >
-              WHAT INACTION COSTS YOU
+              {service.inactionSection?.tag ?? "WHAT INACTION COSTS YOU"}
             </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 15 }}
@@ -684,32 +969,53 @@ export default function ServiceDetailPage() {
               viewport={{ once: true }}
               className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface"
             >
-              The Price of Stagnation
+              {service.inactionSection?.heading ?? "The Price of Stagnation"}
             </motion.h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {service.painPoints.map((point, index) => {
-              const DynamicIcon = painPointIcons[index % painPointIcons.length];
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ delay: index * 0.1, ease: "easeOut" }}
-                  className="bg-background p-6 rounded-2xl border border-outline-variant transition-transform duration-300 hover:-translate-y-1 hover:shadow-sm text-center flex flex-col items-center shadow-sm"
-                >
-                  <div className="w-12 h-12 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-on-surface mb-4 shadow-sm">
-                    <DynamicIcon className="w-5 h-5 opacity-80 text-brand-accent" />
-                  </div>
-                  <h3 className="font-display text-base font-bold tracking-wide text-on-surface mb-3">{point}</h3>
-                  <p className="font-body text-xs font-normal text-on-surface-variant leading-relaxed opacity-90">
-                    Every day spent running unoptimized campaigns allows your closest competitors to lock down crucial real estate and audiences.
-                  </p>
-                </motion.div>
-              );
-            })}
+            {(service.inactionSection?.painPoints
+              ? service.inactionSection.painPoints.map((p, index) => {
+                  const DynamicIcon = painPointIcons[index % painPointIcons.length];
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      transition={{ delay: index * 0.1, ease: "easeOut" }}
+                      className="bg-background p-6 rounded-2xl border border-outline-variant transition-transform duration-300 hover:-translate-y-1 hover:shadow-sm text-center flex flex-col items-center shadow-sm"
+                    >
+                      <div className="w-12 h-12 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-on-surface mb-4 shadow-sm">
+                        <DynamicIcon className="w-5 h-5 opacity-80 text-brand-accent" />
+                      </div>
+                      <h3 className="font-display text-base font-bold tracking-wide text-on-surface mb-3">{p.title}</h3>
+                      <p className="font-body text-xs font-normal text-on-surface-variant leading-relaxed opacity-90">{p.desc}</p>
+                    </motion.div>
+                  );
+                })
+              : service.painPoints.map((point, index) => {
+                  const DynamicIcon = painPointIcons[index % painPointIcons.length];
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      transition={{ delay: index * 0.1, ease: "easeOut" }}
+                      className="bg-background p-6 rounded-2xl border border-outline-variant transition-transform duration-300 hover:-translate-y-1 hover:shadow-sm text-center flex flex-col items-center shadow-sm"
+                    >
+                      <div className="w-12 h-12 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-on-surface mb-4 shadow-sm">
+                        <DynamicIcon className="w-5 h-5 opacity-80 text-brand-accent" />
+                      </div>
+                      <h3 className="font-display text-base font-bold tracking-wide text-on-surface mb-3">{point}</h3>
+                      <p className="font-body text-xs font-normal text-on-surface-variant leading-relaxed opacity-90">
+                        Every day spent running unoptimized campaigns allows your closest competitors to lock down crucial real estate and audiences.
+                      </p>
+                    </motion.div>
+                  );
+                })
+            )}
           </div>
         </div>
       </section>
@@ -725,7 +1031,7 @@ export default function ServiceDetailPage() {
                 viewport={{ once: true }}
                 className="inline-block px-3 py-1 rounded-full bg-background border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
               >
-                FREE TELEMETRY REPORT
+                {service.leadFormSection?.tag ?? "FREE TELEMETRY REPORT"}
               </motion.span>
               <motion.h2
                 initial={{ opacity: 0, x: -15 }}
@@ -733,28 +1039,48 @@ export default function ServiceDetailPage() {
                 viewport={{ once: true }}
                 className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface leading-tight mb-8"
               >
-                Ready to Stop Guessing and Start Growing?
+                {service.leadFormSection?.heading ?? "Ready to Stop Guessing and Start Growing?"}
               </motion.h2>
 
               <div className="space-y-4">
-                {service.benefits.map((benefit, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: -15 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1 }}
-                    className="flex items-start gap-4 bg-background p-4 rounded-2xl border border-outline-variant shadow-sm"
-                  >
-                    <div className="w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-brand-accent flex-shrink-0">
-                      <Check className="w-4 h-4 stroke-[3]" />
-                    </div>
-                    <div>
-                      <h4 className="font-display font-bold text-on-surface text-base mb-0.5">{benefit}</h4>
-                      <p className="font-body font-normal text-xs text-on-surface-variant opacity-90">Our senior engineers map out exactly how this will impact your bottom line.</p>
-                    </div>
-                  </motion.div>
-                ))}
+                {(service.leadFormSection?.benefits
+                  ? service.leadFormSection.benefits.map((b, idx) => (
+                      <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, x: -15 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: idx * 0.1 }}
+                        className="flex items-start gap-4 bg-background p-4 rounded-2xl border border-outline-variant shadow-sm"
+                      >
+                        <div className="w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-brand-accent flex-shrink-0">
+                          <Check className="w-4 h-4 stroke-[3]" />
+                        </div>
+                        <div>
+                          <h4 className="font-display font-bold text-on-surface text-base mb-0.5">{b.title}</h4>
+                          <p className="font-body font-normal text-xs text-on-surface-variant opacity-90">{b.desc}</p>
+                        </div>
+                      </motion.div>
+                    ))
+                  : service.benefits.map((benefit, idx) => (
+                      <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, x: -15 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: idx * 0.1 }}
+                        className="flex items-start gap-4 bg-background p-4 rounded-2xl border border-outline-variant shadow-sm"
+                      >
+                        <div className="w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-brand-accent flex-shrink-0">
+                          <Check className="w-4 h-4 stroke-[3]" />
+                        </div>
+                        <div>
+                          <h4 className="font-display font-bold text-on-surface text-base mb-0.5">{benefit}</h4>
+                          <p className="font-body font-normal text-xs text-on-surface-variant opacity-90">Our senior engineers map out exactly how this will impact your bottom line.</p>
+                        </div>
+                      </motion.div>
+                    ))
+                )}
               </div>
             </div>
 
@@ -899,7 +1225,7 @@ export default function ServiceDetailPage() {
               Explore our latest strategies and playbooks to accelerate your growth.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {blogs.slice(0, 3).map((blog, index) => (
               <div key={blog.id}>

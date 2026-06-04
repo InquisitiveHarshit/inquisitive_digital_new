@@ -23,7 +23,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (savedTheme) {
         setThemeMode(savedTheme);
       } else {
-        const currentTheme = document.body.getAttribute("data-theme") as ThemeMode | null;
+        const currentTheme = document.documentElement.getAttribute("data-theme") as ThemeMode | null;
         if (currentTheme) {
           setThemeMode(currentTheme);
         } else {
@@ -46,7 +46,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setThemeMode(mode);
     if (typeof window !== "undefined") {
       localStorage.setItem("theme-mode", mode);
-      document.body.setAttribute("data-theme", mode);
+      document.documentElement.setAttribute("data-theme", mode);
       window.dispatchEvent(new CustomEvent("theme-change", { detail: mode }));
     }
   };

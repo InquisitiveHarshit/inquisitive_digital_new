@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Contact } from "@/components/sections/Contact";
@@ -47,15 +48,18 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${beVietnam.variable} h-full antialiased scroll-smooth dark`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-background text-on-surface" suppressHydrationWarning>
-        <script
+      <body className="min-h-full flex flex-col bg-background text-on-surface">
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
-                  const theme = localStorage.getItem('theme-mode') || 'singular-light';
-                  document.body.setAttribute('data-theme', theme);
+                  var theme = localStorage.getItem('theme-mode') || 'singular-light';
+                  document.documentElement.setAttribute('data-theme', theme);
                 } catch (e) {}
               })();
             `
