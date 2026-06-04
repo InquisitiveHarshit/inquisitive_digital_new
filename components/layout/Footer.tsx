@@ -29,17 +29,17 @@ export const Footer: React.FC = () => {
     }`;
 
   const headingClass = `font-display text-[10px] uppercase tracking-[0.2em] font-bold mb-5 pb-3 border-b ${isLight
-      ? "text-slate-900 border-slate-200"
-      : "text-white border-white/10"
+    ? "text-slate-900 border-slate-200"
+    : "text-white border-white/10"
     }`;
 
   return (
     <footer
       className={`w-full border-t transition-colors duration-300 ${isLight
-          ? "bg-white border-slate-100"
-          : isDark
-            ? "bg-[#080808] border-white/10"
-            : "bg-background border-outline-variant/30"
+        ? "bg-white border-slate-100"
+        : isDark
+          ? "bg-[#080808] border-white/10"
+          : "bg-background border-outline-variant/30"
         }`}
     >
       {/* Main Footer Grid */}
@@ -50,10 +50,10 @@ export const Footer: React.FC = () => {
           <a href="/" className="flex items-center cursor-pointer">
             <Image
               alt="Inquisitive Digital Logo"
-              className={`w-auto object-contain ${isLight ? "h-12 scale-2" : "h-10"}`}
+              className={`w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03] origin-left ${isLight ? "h-20 scale-[2]" : "h-14 scale-[0.8]"}`}
               src={isLight ? "/logo_black_name.png" : "/logo_white_name.png"}
-              width={200}
-              height={60}
+              width={240}
+              height={100}
             />
           </a>
           <p className={`font-body text-sm leading-relaxed max-w-xs ${isLight ? "text-slate-500" : "text-slate-400"}`}>
@@ -89,11 +89,11 @@ export const Footer: React.FC = () => {
         <div className="flex flex-col">
           <h4 className={headingClass}>Our Services</h4>
           <div className="flex flex-col gap-3">
-            <a className={linkClass} href="/services#seo">SEO / AEO / GEO</a>
-            <a className={linkClass} href="/services#performance-marketing">Performance Marketing</a>
-            <a className={linkClass} href="/services#social-media">Social Media Marketing</a>
-            <a className={linkClass} href="/services#web-development">Web Development</a>
-            <a className={linkClass} href="/services#content-writing">Content Marketing</a>
+            <a className={linkClass} href="/services/seo">SEO / AEO / GEO</a>
+            <a className={linkClass} href="/services/performance-marketing">Performance Marketing</a>
+            <a className={linkClass} href="/services/social-media">Social Media Marketing</a>
+            <a className={linkClass} href="/services/web-development">Web Development</a>
+            <a className={linkClass} href="/services/content-writing">Content Marketing</a>
           </div>
         </div>
 
@@ -101,10 +101,10 @@ export const Footer: React.FC = () => {
         <div className="flex flex-col">
           <h4 className={headingClass}>Company</h4>
           <div className="flex flex-col gap-3">
-            <a className={linkClass} href="/about">About Us</a>
+            <a className={linkClass} href="/about-us">About Us</a>
             <a className={linkClass} href="/careers">Careers</a>
-            <a className={linkClass} href="/contact">Contact Us</a>
-            <a className={linkClass} href="/privacy">Privacy Policy</a>
+            <a className={linkClass} href="/contact-us">Contact Us</a>
+            <a className={linkClass} href="/blogs">Blog</a>
           </div>
         </div>
 
