@@ -41,7 +41,7 @@ export const Services: React.FC = () => {
       detailedDesc: "Our strategic SEO campaigns target lucrative, high-intent keywords that drive immediate transactions and revenue. We completely optimize your site architecture, fix technical elements, and build high-quality authority backlinks. By structuring your content for maximum relevance, we ensure your business dominates organic search results. Our ultimate goal is to secure permanent, long-term market share for your brand across all traditional search networks as well as the latest AI-driven discovery engines.",
       icon: Search,
       spanClass: "lg:col-span-2",
-      slug: "seo"
+      slug: "seo-services"
     },
     {
       id: 3,
@@ -50,7 +50,7 @@ export const Services: React.FC = () => {
       detailedDesc: "We create cohesive content strategies across platforms that turn casual followers into passionate brand evangelists and high-value customers.",
       icon: Share2,
       spanClass: "lg:col-span-1",
-      slug: "social-media"
+      slug: "social-media-marketing"
     },
     {
       id: 4,
@@ -77,7 +77,7 @@ export const Services: React.FC = () => {
       detailedDesc: "We draft industry-leading educational blog series, whitepapers, and copy that establishes your brand as a primary source of authoritative knowledge.",
       icon: FileText,
       spanClass: "lg:col-span-1",
-      slug: "content-writing"
+      slug: "content-marketing"
     },
     {
       id: 7,
@@ -86,7 +86,7 @@ export const Services: React.FC = () => {
       detailedDesc: "Our premium graphic design services focus on creating high-impact visual assets that instantly capture customer attention and drive engagement. We design stunning, custom graphics that align with your brand identity, from social media creatives to professional website visuals. By balancing aesthetics with marketing psychology, we structure every design to convert viewers into clients. We build a powerful, permanent visual presence that makes your business stand out across digital platforms and print media.",
       icon: Award,
       spanClass: "lg:col-span-2",
-      slug: "branding"
+      slug: "creative-services"
     },
     {
       id: 8,
@@ -95,7 +95,7 @@ export const Services: React.FC = () => {
       detailedDesc: "We build conversion paths, landing pages, and smart lead forms optimized for capture, bringing high-intent prospects straight to your pipeline.",
       icon: Megaphone,
       spanClass: "lg:col-span-1",
-      slug: "lead-gen"
+      slug: "performance-marketing"
     },
   ];
 
