@@ -1,5 +1,6 @@
 import { Header } from "@/components/layout/Header";
 import { Hero } from "@/components/sections/Hero";
+import { BrandsMarquee } from "@/components/sections/BrandsMarquee";
 import { TrustStrip } from "@/components/sections/TrustStrip";
 import { Metrics } from "@/components/sections/Metrics";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
@@ -27,6 +28,9 @@ export default function Home() {
       <main className="flex-grow flex flex-col w-full">
         {/* Hero Section */}
         <Hero />
+
+        {/* Brands Marquee Section */}
+        <BrandsMarquee />
 
         {/* Trust Strip / Social Proof Ribbon
         <TrustStrip /> */}
