@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Menu, X, Sparkles, Sun, Moon, Search, Share2, TrendingUp, Code, FileText, Award, Megaphone } from "lucide-react";
+import { Menu, X, Sparkles, Sun, Moon, Search, Share2, TrendingUp, Code, FileText, Palette } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme, ThemeMode } from "@/components/ThemeProvider";
 
@@ -45,19 +45,19 @@ export const Header: React.FC = () => {
 
   const dropdownServices = [
     { 
-      title: "SEO / AEO / GEO", 
+      title: "SEO, AEO & GEO", 
       desc: "Rank higher on Google and AI search", 
-      href: "/services/seo",
+      href: "/services/seo-services",
       icon: Search 
     },
     { 
-      title: "Social Media", 
+      title: "Social Media Marketing", 
       desc: "Build brand awareness & engagement", 
-      href: "/services/social-media",
+      href: "/services/social-media-marketing",
       icon: Share2 
     },
     { 
-      title: "Performance Ads", 
+      title: "Performance Marketing", 
       desc: "Data-driven ROI campaigns", 
       href: "/services/performance-marketing",
       icon: TrendingUp 
@@ -69,22 +69,16 @@ export const Header: React.FC = () => {
       icon: Code 
     },
     { 
-      title: "Content & Blogs", 
-      desc: "SEO optimized authoritative copy", 
-      href: "/services/content-writing",
+      title: "Content Marketing & Blogging", 
+      desc: "SEO optimized authoritative content", 
+      href: "/services/content-marketing",
       icon: FileText 
     },
     { 
-      title: "Branding & Design", 
-      desc: "Premium visual identity ecosystems", 
-      href: "/services/branding",
-      icon: Award 
-    },
-    { 
-      title: "Lead Generation", 
-      desc: "High quality transactional leads", 
-      href: "/services/lead-gen",
-      icon: Megaphone 
+      title: "Creative Services", 
+      desc: "Design, branding & video production", 
+      href: "/services/creative-services",
+      icon: Palette 
     },
   ];
 

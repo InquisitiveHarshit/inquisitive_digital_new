@@ -76,6 +76,43 @@ export interface ServiceFullDetail {
       description: string;
       services: string[];
     };
+    // Content Marketing sub-sections
+    seoContent?: {
+      tag: string;
+      heading: string;
+      subheading: string;
+      description: string;
+      services: string[];
+    };
+    thoughtLeadership?: {
+      tag: string;
+      heading: string;
+      subheading: string;
+      description: string;
+      services: string[];
+    };
+    // Creative Services sub-sections
+    branding?: {
+      tag: string;
+      heading: string;
+      subheading: string;
+      description: string;
+      services: string[];
+    };
+    marketingCreative?: {
+      tag: string;
+      heading: string;
+      subheading: string;
+      description: string;
+      services: string[];
+    };
+    motionGraphics?: {
+      tag: string;
+      heading: string;
+      subheading: string;
+      description: string;
+      services: string[];
+    };
   };
   processSection?: {
     tag: string;

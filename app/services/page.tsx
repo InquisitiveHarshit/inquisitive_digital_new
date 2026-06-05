@@ -15,9 +15,7 @@ import {
   Code,
   FileText,
   Award,
-  Megaphone,
   ArrowRight,
-  Sparkles,
 } from "lucide-react";
 
 interface ServiceDetail {
@@ -35,8 +33,8 @@ export default function ServicesPage() {
 
   const services: ServiceDetail[] = [
     {
-      id: "seo",
-      title: "SEO / AEO / GEO",
+      id: "seo-services",
+      title: "SEO, AEO & GEO",
       category: "Search",
       shortDesc: "Rank higher on Google and AI search with advanced optimization strategies.",
       detailedDesc: "Our SEO campaigns focus on high-intent search terms that drive transactions. We optimize site architecture, build authority, and structure content to build permanent organic market share across search and AI engines.",
@@ -44,7 +42,7 @@ export default function ServicesPage() {
       ctaText: "Request Free SEO Audit",
     },
     {
-      id: "social-media",
+      id: "social-media-marketing",
       title: "Social Media Marketing",
       category: "Organic",
       shortDesc: "Build brand awareness and engagement across all major platforms.",
@@ -63,7 +61,7 @@ export default function ServicesPage() {
     },
     {
       id: "web-development",
-      title: "Web Design & Development",
+      title: "Web Development",
       category: "Web Tech",
       shortDesc: "Modern, responsive, and conversion-focused websites.",
       detailedDesc: "We build blazing-fast React and Next.js websites that pass Core Web Vitals with flying colors, offering an uncompromising experience that ranks higher.",
@@ -71,31 +69,22 @@ export default function ServicesPage() {
       ctaText: "Build My Website",
     },
     {
-      id: "content-writing",
-      title: "Content Writing & Blogging",
-      category: "Organic",
-      shortDesc: "SEO-optimized content that attracts and converts users.",
-      detailedDesc: "We draft industry-leading educational blog series, whitepapers, and copy that establishes your brand as a primary source of authoritative knowledge.",
+      id: "content-marketing",
+      title: "Content Marketing & Blogging",
+      category: "Content",
+      shortDesc: "SEO-optimized content that attracts, engages, and converts your audience.",
+      detailedDesc: "We craft industry-leading blog series, service pages, and authoritative copy that positions your brand as the go-to resource in your market while driving sustainable organic growth.",
       icon: FileText,
-      ctaText: "Get Content Plan",
+      ctaText: "Build My Content Strategy",
     },
     {
-      id: "branding",
-      title: "Graphic Design & Branding",
+      id: "creative-services",
+      title: "Creative Services",
       category: "Design",
-      shortDesc: "Create a strong visual identity that stands out.",
-      detailedDesc: "From custom typography and high-end design assets to unique market positioning, we construct premium visual ecosystems that demand attention.",
+      shortDesc: "Elevate your brand with professional design, video production, and creative assets.",
+      detailedDesc: "From brand identity and marketing creatives to motion graphics and animation, we build premium visual ecosystems that strengthen your brand and drive marketing performance.",
       icon: Award,
-      ctaText: "Design My Brand",
-    },
-    {
-      id: "lead-gen",
-      title: "Lead Generation",
-      category: "Paid Ads",
-      shortDesc: "Generate high-quality leads that convert into customers.",
-      detailedDesc: "We build conversion paths, landing pages, and smart lead forms optimized for capture, bringing high-intent prospects straight to your pipeline.",
-      icon: Megaphone,
-      ctaText: "Acquire High-Value Leads",
+      ctaText: "Start My Creative Project",
     },
   ];
 

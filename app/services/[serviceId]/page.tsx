@@ -25,8 +25,6 @@ import {
   TrendingUp,
   Code,
   FileText,
-  Award,
-  Megaphone,
 } from "lucide-react";
 import { BlogCard } from "@/components/ui/BlogCard";
 import { blogs } from "@/app/blogs/data";
@@ -35,6 +33,8 @@ import { performanceMarketingData } from "../data/performance-marketing";
 import { seoData } from "../data/seo";
 import { socialMediaData } from "../data/social-media";
 import { webDevelopmentData } from "../data/web-development";
+import { contentMarketingData } from "../data/content-marketing";
+import { creativeServicesData } from "../data/creative-services";
 
 
 export default function ServiceDetailPage() {
@@ -43,118 +43,12 @@ export default function ServiceDetailPage() {
   const serviceId = params?.serviceId as string;
 
   const servicesData: Record<string, ServiceFullDetail> = {
-    seo: seoData,
-    "social-media": socialMediaData,
+    "seo-services": seoData,
+    "social-media-marketing": socialMediaData,
     "performance-marketing": performanceMarketingData,
     "web-development": webDevelopmentData,
-    "content-writing": {
-      id: "content-writing",
-      title: "Content Writing & Blogging",
-      category: "Organic",
-      shortDesc: "SEO-optimized content that attracts and converts users.",
-      detailedDesc: "We draft industry-leading educational blog series, whitepapers, and copy that establishes your brand as a primary source of authoritative knowledge.",
-      icon: FileText,
-      deliverables: [
-        "E-E-A-T Compliant Authoritative Copywriting",
-        "Strategic Content Calendars & Topic Cluster Maps",
-        "High-Value downloadable Whitepapers & Case Studies",
-        "High-Performance Email Copywriting & Newsletters",
-        "Natural Semantic Internal & External Linking Setup",
-      ],
-      ctaText: "Get Content Plan",
-      painPoints: [
-        "Generic AI articles that search engines penalize for low quality.",
-        "High-effort blog writing that fails to capture organic intent.",
-        "Inability to establish author credibility (E-E-A-T) on Google.",
-      ],
-      benefits: [
-        "Expert-written, value-first articles that solve real user problems.",
-        "Higher search crawl rates due to organized topic clusters.",
-        "Premium downloadable resources that capture high-intent leads.",
-      ],
-      faq: [
-        {
-          q: "Do you write standard copywriting pages as well?",
-          a: "Yes, we write high-impact landing page copy, pitch decks, whitepapers, and customer educational series.",
-        },
-        {
-          q: "How do you ensure search engines trust the articles?",
-          a: "We integrate comprehensive schema code, leverage human expert citations, and align structured headings matching real searches.",
-        },
-      ],
-    },
-    branding: {
-      id: "branding",
-      title: "Graphic Design & Branding",
-      category: "Design",
-      shortDesc: "Create a strong visual identity that stands out.",
-      detailedDesc: "From custom typography and high-end design assets to unique market positioning, we construct premium visual ecosystems that demand attention.",
-      icon: Award,
-      deliverables: [
-        "Premium Visual Guidelines & Identity Design",
-        "Custom SVGs, Typography & Graphic Systems",
-        "Multi-Channel Interactive Visual Design Templates",
-        "High-End Marketing Collateral & Digital Product Assets",
-        "Branding Asset Pack (Logos, Icons, Typography)",
-      ],
-      ctaText: "Design My Brand",
-      painPoints: [
-        "Brand style that looks cheap and fails to justify high ticket prices.",
-        "Visual assets that appear disjointed across web and social channels.",
-        "Generic typography failing to make your visual message memorable.",
-      ],
-      benefits: [
-        "Unified brand styling books that keep visual assets completely consistent.",
-        "Custom vectorized branding illustrations that scale infinitely.",
-        "Unforgettable typographic pairings representing direct corporate authority.",
-      ],
-      faq: [
-        {
-          q: "What do we receive in the branding pack?",
-          a: "You receive standard logo lockups, corporate color system maps, vector typography assets, social templates, and a brand style manual.",
-        },
-        {
-          q: "Can we integrate this visual identity into our existing site?",
-          a: "Absolutely, we coordinate templates directly to keep visual integration on your custom sites fluid.",
-        },
-      ],
-    },
-    "lead-gen": {
-      id: "lead-gen",
-      title: "Lead Generation",
-      category: "Paid Ads",
-      shortDesc: "Generate high-quality leads that convert into customers.",
-      detailedDesc: "We build conversion paths, landing pages, and smart lead forms optimized for capture, bringing high-intent prospects straight to your pipeline.",
-      icon: Megaphone,
-      deliverables: [
-        "High-Converting Lead Form Architecture & UX",
-        "Automated CRM Lead Pipeline Routing Setup",
-        "Lead Quality Scoring & Instant Verification Filters",
-        "Custom Automated Follow-Up Sequence Integrations",
-        "In-Depth Analytics Dashboards & Attribution Tracking",
-      ],
-      ctaText: "Acquire High-Value Leads",
-      painPoints: [
-        "Attracting low-quality leads that clog your sales team's schedule.",
-        "High lead acquisition costs that make scaling paid budgets unprofitable.",
-        "Slow response times causing warm prospects to go cold instantly.",
-      ],
-      benefits: [
-        "Smart multi-step qualification filters to verify intent before booking.",
-        "Automated instant dispatch systems sending leads to CRM pipelines.",
-        "Highly precise channel tracking validating exactly where profits originate.",
-      ],
-      faq: [
-        {
-          q: "How do you filter out spam form submissions?",
-          a: "We construct custom multi-step smart validation inputs, domain checks, and double-opt mechanisms to verify leads.",
-        },
-        {
-          q: "Can this integrate with our current CRM?",
-          a: "Yes, we build custom webhooks connecting lead data straight into HubSpot, Salesforce, Zoho, or active custom platforms.",
-        },
-      ],
-    },
+    "content-marketing": contentMarketingData,
+    "creative-services": creativeServicesData,
   };
 
   const service = servicesData[serviceId];
@@ -515,6 +409,81 @@ export default function ServiceDetailPage() {
                     </ul>
                   </motion.div>
                 )}
+              </div>
+            )}
+
+            {/* Content Marketing Sub-Sections: SEO Content + Thought Leadership */}
+            {(service.servicesSection.seoContent || service.servicesSection.thoughtLeadership) && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-10 border-t border-outline-variant/50">
+                {[service.servicesSection.seoContent, service.servicesSection.thoughtLeadership]
+                  .filter(Boolean)
+                  .map((sub, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, x: idx === 0 ? -20 : 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      className={`p-6 lg:p-8 rounded-3xl border shadow-sm relative overflow-hidden ${
+                        idx === 0
+                          ? "bg-background border-outline-variant"
+                          : "bg-brand-accent/5 border-brand-accent/20"
+                      }`}
+                    >
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-brand-accent/5 rounded-bl-full -z-10" />
+                      <span className="inline-block px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm">
+                        {sub!.tag}
+                      </span>
+                      <h3 className="font-display text-xl sm:text-2xl font-extrabold text-on-surface mb-2">{sub!.heading}</h3>
+                      <h4 className="font-display text-sm font-bold text-brand-accent mb-4">{sub!.subheading}</h4>
+                      <p className="font-body text-xs sm:text-sm text-on-surface-variant leading-relaxed mb-6">{sub!.description}</p>
+                      <ul className="space-y-3">
+                        {sub!.services.map((li, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <Check className="w-4 h-4 text-brand-accent flex-shrink-0 mt-0.5" />
+                            <span className="font-body text-xs text-on-surface font-medium">{li}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  ))}
+              </div>
+            )}
+
+            {/* Creative Services Sub-Sections: Branding + Marketing Creative + Motion Graphics */}
+            {(service.servicesSection.branding || service.servicesSection.marketingCreative || service.servicesSection.motionGraphics) && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-10 border-t border-outline-variant/50">
+                {[service.servicesSection.branding, service.servicesSection.marketingCreative, service.servicesSection.motionGraphics]
+                  .filter(Boolean)
+                  .map((sub, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.1 }}
+                      className={`p-6 rounded-3xl border shadow-sm relative overflow-hidden ${
+                        idx === 1
+                          ? "bg-brand-accent/5 border-brand-accent/20"
+                          : "bg-background border-outline-variant"
+                      }`}
+                    >
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-brand-accent/5 rounded-bl-full -z-10" />
+                      <span className="inline-block px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm">
+                        {sub!.tag}
+                      </span>
+                      <h3 className="font-display text-lg sm:text-xl font-extrabold text-on-surface mb-2">{sub!.heading}</h3>
+                      <h4 className="font-display text-xs font-bold text-brand-accent mb-4">{sub!.subheading}</h4>
+                      <p className="font-body text-xs text-on-surface-variant leading-relaxed mb-5">{sub!.description}</p>
+                      <ul className="space-y-2.5">
+                        {sub!.services.map((li, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <Check className="w-4 h-4 text-brand-accent flex-shrink-0 mt-0.5" />
+                            <span className="font-body text-xs text-on-surface font-medium">{li}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  ))}
               </div>
             )}
           </div>
