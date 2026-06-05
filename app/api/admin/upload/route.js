@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
+import { verifyAuth } from "@/lib/auth";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -9,6 +10,7 @@ cloudinary.config({
 
 export async function POST(request) {
   try {
+    await verifyAuth(request);
 
     const formData = await request.formData();
     const imageFile = formData.get("image");

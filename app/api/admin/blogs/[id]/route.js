@@ -3,9 +3,11 @@ import connectDB from "@/lib/mongodb";
 import Blog from "@/backend/src/models/Blog";
 import slugify from "slugify";
 import { sitemapState } from "@/lib/sitemapCache";
+import { verifyAuth } from "@/lib/auth";
 
 export async function GET(request, { params }) {
   try {
+    await verifyAuth(request);
     await connectDB();
 
     const { id } = await params;
@@ -28,6 +30,7 @@ export async function GET(request, { params }) {
 
 export async function PUT(request, { params }) {
   try {
+    await verifyAuth(request);
     await connectDB();
 
     const { id } = await params;
@@ -70,6 +73,7 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
+    await verifyAuth(request);
     await connectDB();
 
     const { id } = await params;

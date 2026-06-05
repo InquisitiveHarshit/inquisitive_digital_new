@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Job from "@/backend/src/models/Job";
+import { verifyAuth } from "@/lib/auth";
 
 export async function GET(request) {
   try {
+    await verifyAuth(request);
     await connectDB();
 
     const jobs = await Job.aggregate([
@@ -52,6 +54,7 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
+    await verifyAuth(request);
     await connectDB();
 
     const payload = await request.json();

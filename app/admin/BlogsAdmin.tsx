@@ -144,7 +144,11 @@ export default function BlogsAdmin() {
   const fetchBlogs = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`${API_BASE}/api/admin/blogs`, { cache: "no-store" });
+      const token = localStorage.getItem("adminToken");
+      const res = await fetch(`${API_BASE}/api/admin/blogs`, {
+        cache: "no-store",
+        headers: token ? { "Authorization": `Bearer ${token}` } : {}
+      });
       if (res.ok) {
         const json = await res.json();
         setBlogs(json.data || []);
@@ -207,7 +211,11 @@ export default function BlogsAdmin() {
       if (blogId) {
         setDrawerLoading(true);
         try {
-          const res = await fetch(`${API_BASE}/api/admin/blogs/${blogId}`, { cache: "no-store" });
+          const token = localStorage.getItem("adminToken");
+          const res = await fetch(`${API_BASE}/api/admin/blogs/${blogId}`, {
+            cache: "no-store",
+            headers: token ? { "Authorization": `Bearer ${token}` } : {}
+          });
           if (res.ok) {
             const json = await res.json();
             const full = json.data;
@@ -263,8 +271,10 @@ export default function BlogsAdmin() {
     formData.append("image", file);
 
     try {
+      const token = localStorage.getItem("adminToken");
       const res = await fetch(`${API_BASE}/api/admin/upload`, {
         method: "POST",
+        headers: token ? { "Authorization": `Bearer ${token}` } : {},
         body: formData,
       });
       const data = await res.json();
@@ -386,9 +396,13 @@ export default function BlogsAdmin() {
     try {
       if (editingBlog) {
         const blogId = editingBlog._id || editingBlog.id;
+        const token = localStorage.getItem("adminToken");
         const res = await fetch(`${API_BASE}/api/admin/blogs/${blogId}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { "Authorization": `Bearer ${token}` } : {})
+          },
           body: JSON.stringify(payload),
         });
         if (!res.ok) throw new Error("Failed to update blog");
@@ -397,9 +411,13 @@ export default function BlogsAdmin() {
         setBlogs((prev) => prev.map((b) => ((b._id || b.id) === blogId ? { ...b, ...updated } : b)));
         notify("success", `Blog "${payload.title}" updated successfully!`);
       } else {
+        const token = localStorage.getItem("adminToken");
         const res = await fetch(`${API_BASE}/api/admin/blogs`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { "Authorization": `Bearer ${token}` } : {})
+          },
           body: JSON.stringify(payload),
         });
         if (!res.ok) throw new Error("Failed to create blog");
@@ -418,9 +436,13 @@ export default function BlogsAdmin() {
     const newStatus = !blog.isActive;
     const blogId = blog._id || blog.id;
     try {
+      const token = localStorage.getItem("adminToken");
       const res = await fetch(`${API_BASE}/api/admin/blogs/${blogId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        },
         body: JSON.stringify({ isActive: newStatus }),
       });
       if (!res.ok) throw new Error("Toggle failed");
@@ -434,7 +456,11 @@ export default function BlogsAdmin() {
   const handleDelete = async () => {
     if (!deleteConfirmId) return;
     try {
-      const res = await fetch(`${API_BASE}/api/admin/blogs/${deleteConfirmId}`, { method: "DELETE" });
+      const token = localStorage.getItem("adminToken");
+      const res = await fetch(`${API_BASE}/api/admin/blogs/${deleteConfirmId}`, {
+        method: "DELETE",
+        headers: token ? { "Authorization": `Bearer ${token}` } : {}
+      });
       if (!res.ok) throw new Error("Delete failed");
       setBlogs((prev) => prev.filter((b) => (b._id || b.id) !== deleteConfirmId));
       notify("success", "Blog deleted successfully.");

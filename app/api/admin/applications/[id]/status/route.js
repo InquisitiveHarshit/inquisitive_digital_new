@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Application from "@/backend/src/models/Application";
+import { verifyAuth } from "@/lib/auth";
 
 export async function PUT(request, { params }) {
   try {
+    await verifyAuth(request);
     await connectDB();
 
     const { id } = await params;

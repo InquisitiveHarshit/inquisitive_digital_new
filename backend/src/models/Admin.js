@@ -18,7 +18,7 @@ const adminSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Password is required"],
-      minlength: [8, "Password must be at least 8 characters"],
+      minlength: [5, "Password must be at least 5 characters"],
       select: false, // never returned in queries unless explicitly selected
     },
     role: {
@@ -37,11 +37,10 @@ const adminSchema = new mongoose.Schema(
 );
 
 // ─── Hash password before saving ─────────────────────────────────────────────
-adminSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+adminSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
   const salt = await bcrypt.genSalt(12);
   this.password = await bcrypt.hash(this.password, salt);
-  next();
 });
 
 // ─── Instance method: compare passwords ──────────────────────────────────────
@@ -49,5 +48,8 @@ adminSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-const Admin = mongoose.models.Admin || mongoose.model("Admin", adminSchema);
+if (mongoose.models.Admin) {
+  delete mongoose.models.Admin;
+}
+const Admin = mongoose.model("Admin", adminSchema);
 export default Admin;

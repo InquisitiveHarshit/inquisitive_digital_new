@@ -54,6 +54,25 @@ type ActiveTab = "overview" | "jobs" | "applications" | "blogs" | "audits" | "co
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("overview");
   
+  // Auth States
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+  const [adminUser, setAdminUser] = useState<any>(null);
+  
+  // Login Form States
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [loginError, setLoginError] = useState<string | null>(null);
+
+  // Add Admin Drawer States
+  const [isAddAdminDrawerOpen, setIsAddAdminDrawerOpen] = useState(false);
+  const [newAdminName, setNewAdminName] = useState("");
+  const [newAdminEmail, setNewAdminEmail] = useState("");
+  const [newAdminPassword, setNewAdminPassword] = useState("");
+  const [newAdminRole, setNewAdminRole] = useState("editor");
+  const [addAdminLoading, setAddAdminLoading] = useState(false);
+
   // Data States
   const [jobs, setJobs] = useState<Job[]>(mockJobs);
   const [applications, setApplications] = useState<Application[]>(mockApplications);
@@ -90,58 +109,168 @@ export default function AdminDashboard() {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Fetch jobs & applications on mount
-  useEffect(() => {
-    async function fetchAdminData() {
-      try {
-        // Fetch Jobs
-        const jobsRes = await fetch(`${API_BASE}/api/admin/jobs`, { cache: "no-store" });
-        let fetchedJobs: Job[] = [];
-        if (jobsRes.ok) {
-          const jobsJson = await jobsRes.json();
-          fetchedJobs = jobsJson.data || jobsJson.jobs || [];
-          if (fetchedJobs.length > 0) setJobs(fetchedJobs);
-        }
+  const fetchAdminData = async (token: string) => {
+    setLoading(true);
+    try {
+      const headers = { "Authorization": `Bearer ${token}` };
 
-        // Fetch Applications
-        const appsRes = await fetch(`${API_BASE}/api/admin/applications`, { cache: "no-store" });
-        if (appsRes.ok) {
-          const appsJson = await appsRes.json();
-          const fetchedApps = appsJson.data || appsJson.applications || [];
-          if (fetchedApps.length > 0) setApplications(fetchedApps);
-        }
-
-        // Fetch Audits
-        const auditsRes = await fetch(`${API_BASE}/api/admin/audits`, { cache: "no-store" });
-        if (auditsRes.ok) {
-          const auditsJson = await auditsRes.json();
-          const fetchedAudits = auditsJson.data || auditsJson.audits || [];
-          if (fetchedAudits.length > 0) setAudits(fetchedAudits);
-        }
-
-        // Fetch Contact Leads
-        const leadsRes = await fetch(`${API_BASE}/api/admin/contact-leads`, { cache: "no-store" });
-        if (leadsRes.ok) {
-          const leadsJson = await leadsRes.json();
-          const fetchedLeads = leadsJson.data || leadsJson.leads || [];
-          if (fetchedLeads.length > 0) setContactLeads(fetchedLeads);
-        }
-
-        // Fetch Blogs Count
-        const blogsRes = await fetch(`${API_BASE}/api/admin/blogs`, { cache: "no-store" });
-        if (blogsRes.ok) {
-          const blogsJson = await blogsRes.json();
-          const fetchedBlogs = blogsJson.data || [];
-          setBlogsCount(fetchedBlogs.length);
-        }
-      } catch (err) {
-        console.warn("Backend admin endpoints not reachable. Using fallback mock database.");
-      } finally {
-        setLoading(false);
+      // Fetch Jobs
+      const jobsRes = await fetch(`${API_BASE}/api/admin/jobs`, { cache: "no-store", headers });
+      let fetchedJobs: Job[] = [];
+      if (jobsRes.ok) {
+        const jobsJson = await jobsRes.json();
+        fetchedJobs = jobsJson.data || jobsJson.jobs || [];
+        if (fetchedJobs.length > 0) setJobs(fetchedJobs);
       }
+
+      // Fetch Applications
+      const appsRes = await fetch(`${API_BASE}/api/admin/applications`, { cache: "no-store", headers });
+      if (appsRes.ok) {
+        const appsJson = await appsRes.json();
+        const fetchedApps = appsJson.data || appsJson.applications || [];
+        if (fetchedApps.length > 0) setApplications(fetchedApps);
+      }
+
+      // Fetch Audits
+      const auditsRes = await fetch(`${API_BASE}/api/admin/audits`, { cache: "no-store", headers });
+      if (auditsRes.ok) {
+        const auditsJson = await auditsRes.json();
+        const fetchedAudits = auditsJson.data || auditsJson.audits || [];
+        if (fetchedAudits.length > 0) setAudits(fetchedAudits);
+      }
+
+      // Fetch Contact Leads
+      const leadsRes = await fetch(`${API_BASE}/api/admin/contact-leads`, { cache: "no-store", headers });
+      if (leadsRes.ok) {
+        const leadsJson = await leadsRes.json();
+        const fetchedLeads = leadsJson.data || leadsJson.leads || [];
+        if (fetchedLeads.length > 0) setContactLeads(fetchedLeads);
+      }
+
+      // Fetch Blogs Count
+      const blogsRes = await fetch(`${API_BASE}/api/admin/blogs`, { cache: "no-store", headers });
+      if (blogsRes.ok) {
+        const blogsJson = await blogsRes.json();
+        const fetchedBlogs = blogsJson.data || [];
+        setBlogsCount(fetchedBlogs.length);
+      }
+    } catch (err) {
+      console.warn("Backend admin endpoints not reachable. Using fallback mock database.");
+    } finally {
+      setLoading(false);
+      setCheckingAuth(false);
     }
-    fetchAdminData();
+  };
+
+  // Fetch jobs & applications on mount (if authenticated)
+  useEffect(() => {
+    // Attempt auto-seed first just in case DB is fresh
+    fetch(`${API_BASE}/api/admin/auth/seed`).catch(() => {});
+
+    const token = localStorage.getItem("adminToken");
+    const storedUser = localStorage.getItem("adminUser");
+    if (token && storedUser) {
+      setIsLoggedIn(true);
+      setAdminUser(JSON.parse(storedUser));
+      fetchAdminData(token);
+    } else {
+      setCheckingAuth(false);
+      setLoading(false);
+    }
   }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!loginEmail.trim() || !loginPassword.trim()) {
+      setLoginError("Please enter email/username and password");
+      return;
+    }
+
+    setLoginError(null);
+    setLoginLoading(true);
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: loginEmail.trim(), password: loginPassword }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Invalid credentials");
+      }
+
+      localStorage.setItem("adminToken", data.token);
+      localStorage.setItem("adminUser", JSON.stringify(data.admin));
+
+      setIsLoggedIn(true);
+      setAdminUser(data.admin);
+      triggerNotification("success", "Logged in successfully!");
+
+      // Load data
+      await fetchAdminData(data.token);
+    } catch (err: any) {
+      setLoginError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminUser");
+    setIsLoggedIn(false);
+    setAdminUser(null);
+    triggerNotification("success", "Logged out successfully!");
+  };
+
+  const handleAddAdmin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newAdminName.trim() || !newAdminEmail.trim() || !newAdminPassword.trim()) {
+      triggerNotification("error", "Please fill in all fields");
+      return;
+    }
+
+    setAddAdminLoading(true);
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      const res = await fetch(`${API_BASE}/api/admin/auth/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({
+          name: newAdminName.trim(),
+          email: newAdminEmail.trim(),
+          password: newAdminPassword,
+          role: newAdminRole,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Failed to create admin");
+      }
+
+      triggerNotification("success", `Admin "${newAdminName}" created successfully!`);
+      
+      // Reset form
+      setNewAdminName("");
+      setNewAdminEmail("");
+      setNewAdminPassword("");
+      setNewAdminRole("editor");
+      setIsAddAdminDrawerOpen(false);
+    } catch (err: any) {
+      triggerNotification("error", err.message || "Failed to create admin");
+    } finally {
+      setAddAdminLoading(false);
+    }
+  };
 
   // Utility to trigger quick banners
   const triggerNotification = (type: "success" | "error", message: string) => {
@@ -272,11 +401,17 @@ export default function AdminDashboard() {
     };
 
     try {
+      const token = localStorage.getItem("adminToken");
+      const headers = {
+        "Content-Type": "application/json",
+        ...(token ? { "Authorization": `Bearer ${token}` } : {})
+      };
+
       if (editingJob) {
         // PUT Update Job
         const res = await fetch(`${API_BASE}/api/admin/jobs/${editingJob.id}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers,
           body: JSON.stringify(payload),
         });
 
@@ -290,7 +425,7 @@ export default function AdminDashboard() {
         // POST Create Job
         const res = await fetch(`${API_BASE}/api/admin/jobs`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers,
           body: JSON.stringify(payload),
         });
 
@@ -337,9 +472,13 @@ export default function AdminDashboard() {
   const handleToggleJobActive = async (job: Job) => {
     const newStatus = job.is_active === false ? true : false;
     try {
+      const token = localStorage.getItem("adminToken");
       const res = await fetch(`${API_BASE}/api/admin/jobs/${job.id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        },
         body: JSON.stringify({ is_active: newStatus }),
       });
       if (!res.ok) throw new Error("Failed to toggle status");
@@ -361,8 +500,10 @@ export default function AdminDashboard() {
     if (!deleteConfirmJobId) return;
 
     try {
+      const token = localStorage.getItem("adminToken");
       const res = await fetch(`${API_BASE}/api/admin/jobs/${deleteConfirmJobId}`, {
         method: "DELETE",
+        headers: token ? { "Authorization": `Bearer ${token}` } : {}
       });
       if (!res.ok) throw new Error("Failed to delete job");
 
@@ -382,9 +523,13 @@ export default function AdminDashboard() {
   // --- APPLICATION STATUS UPDATE ---
   const handleUpdateAppStatus = async (appId: string, newStatus: "pending" | "shortlisted" | "rejected") => {
     try {
+      const token = localStorage.getItem("adminToken");
       const res = await fetch(`${API_BASE}/api/admin/applications/${appId}/status`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { "Authorization": `Bearer ${token}` } : {})
+        },
         body: JSON.stringify({ status: newStatus }),
       });
       if (!res.ok) throw new Error("Failed to update status");
@@ -421,6 +566,100 @@ export default function AdminDashboard() {
       </span>
     );
   };
+
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col items-center justify-center font-sans">
+        <Loader2 className="w-10 h-10 text-brand-accent animate-spin mb-4" />
+        <p className="text-white/50 text-sm">Verifying credentials...</p>
+      </div>
+    );
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center p-6 relative overflow-hidden font-sans">
+        {/* Glowing background highlights */}
+        <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] rounded-full bg-brand-accent/5 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] rounded-full bg-[#3b82f6]/5 blur-[120px] pointer-events-none" />
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-md bg-white/[0.03] backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl relative z-10"
+        >
+          {/* Logo / Title */}
+          <div className="flex flex-col items-center mb-8">
+            <div className="w-12 h-12 rounded-2xl bg-brand-accent flex items-center justify-center mb-4 shadow-lg shadow-brand-accent/25">
+              <span className="text-black font-black text-xl">ID</span>
+            </div>
+            <h1 className="text-2xl font-black font-display uppercase tracking-tight text-white text-center">
+              Inquisitive Digital
+            </h1>
+            <p className="text-brand-accent text-[10px] font-extrabold uppercase tracking-widest mt-1">
+              Admin Portal
+            </p>
+          </div>
+
+          {loginError && (
+            <div className="mb-6 p-4 rounded-xl border border-red-500/20 bg-red-500/5 text-red-400 text-xs font-semibold flex items-center gap-3">
+              <AlertTriangle className="w-4 h-4 shrink-0" />
+              <span>{loginError}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="flex flex-col gap-2">
+              <label className="text-xs uppercase tracking-wider font-bold text-white/50">
+                Email or Username
+              </label>
+              <input
+                type="text"
+                required
+                value={loginEmail}
+                onChange={(e) => setLoginEmail(e.target.value)}
+                placeholder="admin"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-accent transition-all placeholder:text-white/20"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-xs uppercase tracking-wider font-bold text-white/50">
+                Password
+              </label>
+              <input
+                type="password"
+                required
+                value={loginPassword}
+                onChange={(e) => setLoginPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-accent transition-all placeholder:text-white/20"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loginLoading}
+              className="w-full py-4 rounded-xl bg-brand-accent hover:bg-white text-slate-900 font-display text-xs uppercase font-extrabold tracking-wider transition-all shadow-xl flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            >
+              {loginLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Logging in...</span>
+                </>
+              ) : (
+                <>
+                  <Lock className="w-4 h-4" />
+                  <span>Enter Dashboard</span>
+                </>
+              )}
+            </button>
+          </form>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col md:flex-row font-sans">
@@ -520,20 +759,36 @@ export default function AdminDashboard() {
             <Inbox className="w-4 h-4" />
             Contact Leads
           </button>
+
+          <div className="pt-4 mt-4 border-t border-white/5">
+            <button
+              onClick={() => setIsAddAdminDrawerOpen(true)}
+              className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-xs uppercase tracking-wider font-extrabold text-[#3b82f6] border border-[#3b82f6]/20 bg-[#3b82f6]/5 hover:bg-[#3b82f6]/10 hover:text-white transition-all"
+            >
+              <Plus className="w-4 h-4 animate-pulse" />
+              Add Admin
+            </button>
+          </div>
         </nav>
 
-        <div className="px-6 py-6 border-t border-white/5">
+        <div className="px-6 py-6 border-t border-white/5 flex flex-col gap-3">
           <a
             href="/"
             className="flex items-center gap-2 text-xs text-white/40 hover:text-white transition-colors"
           >
             <Eye className="w-4 h-4" /> Live Site
           </a>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 text-xs text-red-400/60 hover:text-red-400 transition-colors text-left"
+          >
+            <Lock className="w-4 h-4" /> Logout ({adminUser?.name || "Admin"})
+          </button>
         </div>
       </aside>
 
       {/* MOBILE BOTTOM NAV */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full bg-[#0d0d0d] border-t border-white/10 z-40 flex justify-around py-3 px-2">
+      <nav className="md:hidden fixed bottom-0 left-0 w-full bg-[#0d0d0d] border-t border-white/10 z-40 flex justify-around py-3 px-2 overflow-x-auto">
         <button
           onClick={() => setActiveTab("overview")}
           className={`flex flex-col items-center gap-1 text-[9px] uppercase tracking-wider font-bold transition-all ${
@@ -571,13 +826,18 @@ export default function AdminDashboard() {
           Blogs
         </button>
         <button
-          onClick={() => setActiveTab("contactLeads")}
-          className={`flex flex-col items-center gap-1 text-[9px] uppercase tracking-wider font-bold transition-all ${
-            activeTab === "contactLeads" ? "text-brand-accent" : "text-white/40"
-          }`}
+          onClick={() => setIsAddAdminDrawerOpen(true)}
+          className="flex flex-col items-center gap-1 text-[9px] uppercase tracking-wider font-bold text-[#3b82f6] transition-all"
         >
-          <Inbox className="w-5 h-5" />
-          Leads
+          <Plus className="w-5 h-5" />
+          +Admin
+        </button>
+        <button
+          onClick={handleLogout}
+          className="flex flex-col items-center gap-1 text-[9px] uppercase tracking-wider font-bold text-red-400/80 transition-all"
+        >
+          <Lock className="w-5 h-5" />
+          Logout
         </button>
       </nav>
 
@@ -1525,6 +1785,121 @@ export default function AdminDashboard() {
                   className="flex-1 py-3.5 rounded-xl border border-white/10 text-white/60 font-display text-xs uppercase font-extrabold tracking-wider hover:border-white/30 hover:text-white transition-all"
                 >
                   Cancel
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* --- ADD ADMIN DRAWER --- */}
+      <AnimatePresence>
+        {isAddAdminDrawerOpen && (
+          <div className="fixed inset-0 z-50 flex justify-end">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.6 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsAddAdminDrawerOpen(false)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-xs"
+            />
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="relative w-full max-w-xl bg-[#0d0d0d] border-l border-white/10 h-full shadow-2xl flex flex-col justify-between z-10"
+            >
+              <div className="p-6 border-b border-white/10 flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-display font-black uppercase tracking-tight text-white">Add New Admin</h3>
+                  <p className="text-xs text-brand-accent font-extrabold uppercase tracking-widest mt-1">
+                    Create a new administrator account
+                  </p>
+                </div>
+                <button
+                  onClick={() => setIsAddAdminDrawerOpen(false)}
+                  className="p-2 rounded-lg text-white/40 hover:text-white hover:bg-white/5"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-6">
+                <form onSubmit={handleAddAdmin} className="space-y-6" id="add-admin-form">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">Full Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={newAdminName}
+                      onChange={(e) => setNewAdminName(e.target.value)}
+                      placeholder="e.g. John Doe"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-brand-accent transition-colors placeholder:text-white/20 text-white"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">Email Address or Username</label>
+                    <input
+                      type="text"
+                      required
+                      value={newAdminEmail}
+                      onChange={(e) => setNewAdminEmail(e.target.value)}
+                      placeholder="e.g. admin or john@inquisitive.com"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-brand-accent transition-colors placeholder:text-white/20 text-white"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">Password</label>
+                    <input
+                      type="password"
+                      required
+                      value={newAdminPassword}
+                      onChange={(e) => setNewAdminPassword(e.target.value)}
+                      placeholder="Enter a secure password (min 5 chars)"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-brand-accent transition-colors placeholder:text-white/20 text-white"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">Role</label>
+                    <select
+                      value={newAdminRole}
+                      onChange={(e) => setNewAdminRole(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-brand-accent transition-colors text-white appearance-none"
+                    >
+                      <option value="editor" className="bg-[#0d0d0d]">Editor</option>
+                      <option value="admin" className="bg-[#0d0d0d]">Admin</option>
+                      <option value="super_admin" className="bg-[#0d0d0d]">Super Admin</option>
+                    </select>
+                  </div>
+                </form>
+              </div>
+
+              <div className="p-6 border-t border-white/10 flex gap-4">
+                <button
+                  type="button"
+                  onClick={() => setIsAddAdminDrawerOpen(false)}
+                  className="flex-1 py-4 rounded-xl border border-white/10 text-white/60 font-display text-xs uppercase font-extrabold tracking-wider hover:border-white/30 hover:text-white transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  form="add-admin-form"
+                  disabled={addAdminLoading}
+                  className="flex-1 py-4 rounded-xl bg-brand-accent hover:bg-white text-slate-900 font-display text-xs uppercase font-extrabold tracking-wider transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  {addAdminLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Creating...
+                    </>
+                  ) : (
+                    "Create Admin"
+                  )}
                 </button>
               </div>
             </motion.div>

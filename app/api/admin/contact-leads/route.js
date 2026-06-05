@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import ContactLead from '@/backend/src/models/ContactLead';
+import { verifyAuth } from '@/lib/auth';
 
-export async function GET() {
+export async function GET(request) {
   try {
+    await verifyAuth(request);
     await connectDB();
     const leads = await ContactLead.find().sort({ created_at: -1 }).lean();
 

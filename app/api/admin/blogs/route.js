@@ -3,9 +3,11 @@ import connectDB from "@/lib/mongodb";
 import Blog from "@/backend/src/models/Blog";
 import slugify from "slugify";
 import { sitemapState } from "@/lib/sitemapCache";
+import { verifyAuth } from "@/lib/auth";
 
 export async function GET(request) {
   try {
+    await verifyAuth(request);
     await connectDB();
 
     const blogs = await Blog.find().select("-content").sort({ createdAt: -1 });
@@ -24,6 +26,7 @@ export async function GET(request) {
 
 export async function POST(request) {
   try {
+    await verifyAuth(request);
     await connectDB();
 
     const payload = await request.json();
