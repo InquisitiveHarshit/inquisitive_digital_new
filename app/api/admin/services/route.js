@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
-import Service from "@/backend/src/models/Service";
+import Service from "@/lib/models/Service";
 import slugify from "slugify";
 import { sitemapState } from "@/lib/sitemapCache";
 
@@ -56,3 +56,4 @@ export async function POST(request) {
     );
   }
 }
+

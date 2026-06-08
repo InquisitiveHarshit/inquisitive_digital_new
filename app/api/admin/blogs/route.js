@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
-import Blog from "@/backend/src/models/Blog";
+import Blog from "@/lib/models/Blog";
 import slugify from "slugify";
 import { sitemapState } from "@/lib/sitemapCache";
 import { verifyAuth } from "@/lib/auth";
@@ -57,3 +57,4 @@ export async function POST(request) {
     );
   }
 }
+

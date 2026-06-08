@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import connectDB from "@/lib/mongodb";
-import Job from "@/backend/src/models/Job";
-import Application from "@/backend/src/models/Application";
+import Job from "@/lib/models/Job";
+import Application from "@/lib/models/Application";
 
 // Configure Cloudinary
 cloudinary.config({

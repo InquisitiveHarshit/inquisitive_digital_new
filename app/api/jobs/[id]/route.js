@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
-import Job from "@/backend/src/models/Job";
+import Job from "@/lib/models/Job";
 
 export async function GET(request, { params }) {
   try {

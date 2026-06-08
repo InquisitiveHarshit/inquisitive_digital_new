@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 // trigger reload
 import connectDB from "@/lib/mongodb";
-import Admin from "@/backend/src/models/Admin";
+import Admin from "@/lib/models/Admin";
 
 export async function GET(request) {
   try {
@@ -38,3 +38,4 @@ export async function GET(request) {
     );
   }
 }
+

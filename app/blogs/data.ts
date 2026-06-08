@@ -8,6 +8,7 @@ export interface BlogSubsection {
   subheading: string;
   text: string;
   listItems: string[];
+  metaLinking?: string;
   image?: BlogImage;
 }
 
@@ -16,6 +17,7 @@ export interface BlogSection {
   subheading?: string;
   text: string;
   listItems: string[];
+  metaLinking?: string;
   image?: BlogImage;
   subsections: BlogSubsection[];
 }

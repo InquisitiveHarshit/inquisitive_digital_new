@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
-import Audit from '@/backend/src/models/Audit';
+import Audit from '@/lib/models/Audit';
 import { verifyAuth } from '@/lib/auth';
 
 export async function GET(request) {
@@ -14,3 +14,4 @@ export async function GET(request) {
     return NextResponse.json({ success: false, message: err.message || 'Internal server error' }, { status: 500 });
   }
 }
+

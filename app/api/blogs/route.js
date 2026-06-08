@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
-import Blog from "@/backend/src/models/Blog";
+import Blog from "@/lib/models/Blog";
 
 export async function GET(request) {
   try {
@@ -27,3 +27,4 @@ export async function GET(request) {
     );
   }
 }
+

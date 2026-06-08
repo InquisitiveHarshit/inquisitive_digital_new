@@ -205,40 +205,74 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                 <div
                   className={`font-body text-base md:text-lg leading-loose prose max-w-none ${isLight
                     ? "prose-slate"
-                    : "prose-invert prose-p:text-slate-300 prose-headings:text-white prose-a:text-brand-accent prose-li:text-slate-300"
-                    } prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-2xl prose-h2:md:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-6 prose-ul:mb-6 prose-ul:list-disc prose-ul:pl-6`}
+                    : "prose-invert prose-p:text-slate-300 prose-headings:text-white prose-li:text-slate-300"
+                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-2xl prose-h2:md:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-6 prose-ul:mb-6 prose-ul:list-disc prose-ul:pl-6`}
                 >
-                  {blog.content.split("\n\n").map((paragraph, index) => {
-                    const trimmed = paragraph.trim();
-                    if (trimmed.startsWith("### ")) {
-                      return (
-                        <h3 key={index} className={isLight ? "text-slate-800" : "text-white"}>
-                          {trimmed.replace("### ", "")}
-                        </h3>
-                      );
+                  {(() => {
+                    const lines = blog.content.split("\n").map(l => l.trim());
+                    const elements = [];
+                    let currentList = [];
+                    let currentParagraph = [];
+
+                    const flushParagraph = () => {
+                      if (currentParagraph.length > 0) {
+                        elements.push(<p key={`p-${elements.length}`} dangerouslySetInnerHTML={{ __html: currentParagraph.join(" ") }} />);
+                        currentParagraph = [];
+                      }
+                    };
+
+                    const flushList = () => {
+                      if (currentList.length > 0) {
+                        elements.push(
+                          <ul key={`ul-${elements.length}`} className="list-disc pl-6 space-y-2 marker:text-brand-accent ml-4 my-6">
+                            {currentList.map((item, idx) => (
+                              <li key={idx} dangerouslySetInnerHTML={{ __html: item }} />
+                            ))}
+                          </ul>
+                        );
+                        currentList = [];
+                      }
+                    };
+
+                    for (let i = 0; i < lines.length; i++) {
+                      const line = lines[i];
+                      
+                      if (!line) {
+                        flushParagraph();
+                        flushList();
+                        continue;
+                      }
+
+                      if (line.startsWith("### ")) {
+                        flushParagraph();
+                        flushList();
+                        elements.push(
+                          <h3 key={`h3-${elements.length}`} className={isLight ? "text-slate-800" : "text-white"}>
+                            {line.replace("### ", "")}
+                          </h3>
+                        );
+                      } else if (line.startsWith("## ")) {
+                        flushParagraph();
+                        flushList();
+                        elements.push(
+                          <h2 key={`h2-${elements.length}`} className="text-brand-accent">
+                            {line.replace("## ", "")}
+                          </h2>
+                        );
+                      } else if (line.startsWith("- ") || line.startsWith("* ")) {
+                        flushParagraph();
+                        currentList.push(line.replace(/^[-*]\s+/, ""));
+                      } else {
+                        flushList();
+                        currentParagraph.push(line);
+                      }
                     }
-                    if (trimmed.startsWith("## ")) {
-                      return (
-                        <h2 key={index} className="text-brand-accent">
-                          {trimmed.replace("## ", "")}
-                        </h2>
-                      );
-                    }
-                    if (trimmed.startsWith("- ") || trimmed.startsWith("* ")) {
-                      const items = trimmed
-                        .split("\n")
-                        .filter((l) => l.trim().startsWith("- ") || l.trim().startsWith("* "))
-                        .map((l) => l.replace(/^[-*]\s+/, "").trim());
-                      return (
-                        <ul key={index} className="space-y-2">
-                          {items.map((item, i) => (
-                            <li key={i}>{item}</li>
-                          ))}
-                        </ul>
-                      );
-                    }
-                    return <p key={index}>{trimmed}</p>;
-                  })}
+
+                    flushParagraph();
+                    flushList();
+
+                    return elements;
+                  })()}
                 </div>
               )}
 
@@ -247,8 +281,8 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                 <div
                   className={`font-body text-base md:text-lg leading-loose prose max-w-none ${isLight
                     ? "prose-slate"
-                    : "prose-invert prose-p:text-slate-300 prose-headings:text-white prose-a:text-brand-accent prose-li:text-slate-300"
-                    } prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-2xl prose-h2:md:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-6 prose-ul:mb-6 prose-ul:list-disc prose-ul:pl-6`}
+                    : "prose-invert prose-p:text-slate-300 prose-headings:text-white prose-li:text-slate-300"
+                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-2xl prose-h2:md:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-6 prose-ul:mb-6 prose-ul:list-disc prose-ul:pl-6`}
                 >
                   {blog.sections.map((section, index) => (
                     <div key={index} className="mb-12">
@@ -257,7 +291,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                       )}
 
                       {section.subheading && (
-                        <h3 className={isLight ? "text-slate-800" : "text-white"}>
+                        <h3 className={`text-xl font-bold mb-4 ${isLight ? "text-slate-800" : "text-white"}`}>
                           {section.subheading}
                         </h3>
                       )}
@@ -273,11 +307,27 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                       )}
 
                       {section.listItems && section.listItems.length > 0 && (
-                        <ul>
+                        <ul className="list-disc pl-6 space-y-2 marker:text-brand-accent ml-4 my-6">
                           {section.listItems.map((item, i) => (
                             <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
                           ))}
                         </ul>
+                      )}
+
+                      {section.metaLinking && (
+                        <div
+                          className={`mt-6 p-4 rounded-lg border ${isLight ? "bg-slate-50 border-slate-200" : "bg-white/5 border-white/10"}`}
+                        >
+                          <h4 className={`text-sm font-bold uppercase mb-2 ${isLight ? "text-slate-900" : "text-white"}`}>Meta Linking</h4>
+                          <div
+                            className="text-brand-accent underline underline-offset-4 font-semibold"
+                            dangerouslySetInnerHTML={{
+                              __html: section.metaLinking.includes("<")
+                                ? section.metaLinking
+                                : section.metaLinking.split("\n").filter(l => l.trim()).map(l => `<p>${l}</p>`).join("")
+                            }}
+                          />
+                        </div>
                       )}
 
                       {section.subsections && section.subsections.length > 0 && (
@@ -285,7 +335,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                           {section.subsections.map((sub, subIdx) => (
                             <div key={subIdx}>
                               {sub.subheading && (
-                                <h3 className={isLight ? "text-slate-800" : "text-white"}>
+                                <h3 className={`text-lg font-bold mb-3 ${isLight ? "text-slate-800" : "text-white"}`}>
                                   {sub.subheading}
                                 </h3>
                               )}
@@ -299,11 +349,27 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                                 />
                               )}
                               {sub.listItems && sub.listItems.length > 0 && (
-                                <ul>
+                                <ul className="list-disc pl-6 space-y-2 marker:text-brand-accent ml-4 my-4">
                                   {sub.listItems.map((item, i) => (
                                     <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
                                   ))}
                                 </ul>
+                              )}
+                              
+                              {sub.metaLinking && (
+                                <div
+                                  className={`mt-4 p-4 rounded-lg border ${isLight ? "bg-slate-50 border-slate-200" : "bg-white/5 border-white/10"}`}
+                                >
+                                  <h4 className={`text-sm font-bold uppercase mb-2 ${isLight ? "text-slate-900" : "text-white"}`}>Meta Linking</h4>
+                                  <div
+                                    className="text-brand-accent underline underline-offset-4 font-semibold"
+                                    dangerouslySetInnerHTML={{
+                                      __html: sub.metaLinking.includes("<")
+                                        ? sub.metaLinking
+                                        : sub.metaLinking.split("\n").filter(l => l.trim()).map(l => `<p>${l}</p>`).join("")
+                                    }}
+                                  />
+                                </div>
                               )}
                             </div>
                           ))}

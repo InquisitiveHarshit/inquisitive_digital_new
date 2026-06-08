@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
-import Application from "@/backend/src/models/Application";
-import Job from "@/backend/src/models/Job"; // required for populate
+import Application from "@/lib/models/Application";
+import Job from "@/lib/models/Job"; // required for populate
 import { verifyAuth } from "@/lib/auth";
 
 export async function GET(request, { params }) {

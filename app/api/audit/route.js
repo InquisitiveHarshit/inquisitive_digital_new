@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
-import Audit from '@/backend/src/models/Audit';
+import Audit from '@/lib/models/Audit';
 
 export async function POST(request) {
   try {
@@ -22,3 +22,4 @@ export async function POST(request) {
     return NextResponse.json({ success: false, message: err.message || 'Internal server error' }, { status: 500 });
   }
 }
+

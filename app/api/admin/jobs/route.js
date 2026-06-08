@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
-import Job from "@/backend/src/models/Job";
+import Job from "@/lib/models/Job";
 import { verifyAuth } from "@/lib/auth";
 
 export async function GET(request) {
@@ -88,3 +88,4 @@ export async function POST(request) {
     );
   }
 }
+

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
-import Admin from "@/backend/src/models/Admin";
+import Admin from "@/lib/models/Admin";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET || "inquisitive_digital_super_secret_change_in_production";
@@ -70,3 +70,4 @@ export async function POST(request) {
     );
   }
 }
+

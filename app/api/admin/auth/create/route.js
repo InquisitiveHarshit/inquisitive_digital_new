@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
-import Admin from "@/backend/src/models/Admin";
+import Admin from "@/lib/models/Admin";
 import { verifyAuth } from "@/lib/auth";
 
 export async function POST(request) {
@@ -62,3 +62,4 @@ export async function POST(request) {
     );
   }
 }
+

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
-import ContactLead from '@/backend/src/models/ContactLead';
+import ContactLead from '@/lib/models/ContactLead';
 
 export async function POST(request) {
   try {
@@ -19,3 +19,4 @@ export async function POST(request) {
     return NextResponse.json({ success: false, message: err.message || 'Internal server error' }, { status: 500 });
   }
 }
+
