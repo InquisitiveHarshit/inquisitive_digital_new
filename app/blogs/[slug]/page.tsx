@@ -210,9 +210,9 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                 >
                   {(() => {
                     const lines = blog.content.split("\n").map(l => l.trim());
-                    const elements = [];
-                    let currentList = [];
-                    let currentParagraph = [];
+                    const elements: React.ReactNode[] = [];
+                    let currentList: string[] = [];
+                    let currentParagraph: string[] = [];
 
                     const flushParagraph = () => {
                       if (currentParagraph.length > 0) {
