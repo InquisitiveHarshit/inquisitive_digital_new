@@ -6,8 +6,8 @@ export async function GET(request) {
   try {
     await connectDB();
 
-    const services = await Service.find({ isActive: true })
-      .select("-description") // exclude heavy content from listing
+    const services = await Service.find({})
+      .select("slug title category shortDescription icon ctaText order")
       .sort({ order: 1, createdAt: -1 });
 
     return NextResponse.json({ success: true, count: services.length, data: services });

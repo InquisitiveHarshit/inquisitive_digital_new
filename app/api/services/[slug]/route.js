@@ -8,7 +8,7 @@ export async function GET(request, { params }) {
 
     const { slug } = await params;
 
-    const service = await Service.findOne({ slug: slug, isActive: true });
+    const service = await Service.findOne({ slug: slug });
     if (!service) {
       return NextResponse.json({ success: false, message: "Service not found" }, { status: 404 });
     }

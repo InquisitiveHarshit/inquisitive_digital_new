@@ -14,79 +14,56 @@ import {
   TrendingUp,
   Code,
   FileText,
-  Award,
+  Palette,
   ArrowRight,
+  Loader2,
 } from "lucide-react";
 
-interface ServiceDetail {
-  id: string;
+// Maps the icon string stored in MongoDB to the actual Lucide component
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Search,
+  Share2,
+  TrendingUp,
+  Code,
+  FileText,
+  Palette,
+};
+
+interface ServiceCard {
+  _id: string;
+  slug: string;
   title: string;
   category: string;
-  shortDesc: string;
-  detailedDesc: string;
-  icon: React.ComponentType<{ className?: string }>;
+  shortDescription: string;
+  icon: string;
   ctaText: string;
 }
 
 export default function ServicesPage() {
   const { themeMode } = useTheme();
 
-  const services: ServiceDetail[] = [
-    {
-      id: "seo-services",
-      title: "SEO, AEO & GEO",
-      category: "Search",
-      shortDesc: "Rank higher on Google and AI search with advanced optimization strategies.",
-      detailedDesc: "Our SEO campaigns focus on high-intent search terms that drive transactions. We optimize site architecture, build authority, and structure content to build permanent organic market share across search and AI engines.",
-      icon: Search,
-      ctaText: "Request Free SEO Audit",
-    },
-    {
-      id: "social-media-marketing",
-      title: "Social Media Marketing",
-      category: "Organic",
-      shortDesc: "Build brand awareness and engagement across all major platforms.",
-      detailedDesc: "We create cohesive content strategies across platforms that turn casual followers into passionate brand evangelists and high-value customers.",
-      icon: Share2,
-      ctaText: "Scale My Socials",
-    },
-    {
-      id: "performance-marketing",
-      title: "Performance Marketing",
-      category: "Paid Ads",
-      shortDesc: "Data-driven campaigns focused on ROI and measurable growth.",
-      detailedDesc: "Using structured funnels, pixel tracking, and predictive analytics, we scale paid advertising across social and search platforms to achieve optimal CAC/ROAS.",
-      icon: TrendingUp,
-      ctaText: "Launch Campaigns",
-    },
-    {
-      id: "web-development",
-      title: "Web Development",
-      category: "Web Tech",
-      shortDesc: "Modern, responsive, and conversion-focused websites.",
-      detailedDesc: "We build blazing-fast React and Next.js websites that pass Core Web Vitals with flying colors, offering an uncompromising experience that ranks higher.",
-      icon: Code,
-      ctaText: "Build My Website",
-    },
-    {
-      id: "content-marketing",
-      title: "Content Marketing & Blogging",
-      category: "Content",
-      shortDesc: "SEO-optimized content that attracts, engages, and converts your audience.",
-      detailedDesc: "We craft industry-leading blog series, service pages, and authoritative copy that positions your brand as the go-to resource in your market while driving sustainable organic growth.",
-      icon: FileText,
-      ctaText: "Build My Content Strategy",
-    },
-    {
-      id: "creative-services",
-      title: "Creative Services",
-      category: "Design",
-      shortDesc: "Elevate your brand with professional design, video production, and creative assets.",
-      detailedDesc: "From brand identity and marketing creatives to motion graphics and animation, we build premium visual ecosystems that strengthen your brand and drive marketing performance.",
-      icon: Award,
-      ctaText: "Start My Creative Project",
-    },
-  ];
+  const [services, setServices] = useState<ServiceCard[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchServices() {
+      try {
+        const res = await fetch("/api/services");
+        const json = await res.json();
+        if (json.success) {
+          setServices(json.data);
+        } else {
+          setError("Failed to load services.");
+        }
+      } catch {
+        setError("Failed to load services.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchServices();
+  }, []);
 
   const isLight = themeMode === "singular-light";
   const isDarkSingular = themeMode === "singular-dark";
@@ -198,59 +175,69 @@ export default function ServicesPage() {
           </div>
 
           {/* Grid Layout Container */}
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service) => {
-              const Icon = service.icon;
+          {loading ? (
+            <div className="relative z-10 flex items-center justify-center py-24">
+              <Loader2 className={`w-8 h-8 animate-spin ${isLight ? "text-slate-400" : "text-slate-500"}`} />
+            </div>
+          ) : error ? (
+            <div className="relative z-10 text-center py-24">
+              <p className={`font-body text-sm ${isLight ? "text-slate-500" : "text-slate-400"}`}>{error}</p>
+            </div>
+          ) : (
+            <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {services.map((service) => {
+                const Icon = ICON_MAP[service.icon] ?? Search;
 
-              return (
-                <Link
-                  key={service.id}
-                  href={`/services/${service.id}`}
-                  className={`group relative border-2 p-6 rounded-2xl bg-background cursor-pointer block transition-all duration-300 ${isLight
-                    ? "border-slate-900/10 hover:border-slate-800 shadow-slate-100/50 hover:shadow-slate-200/50"
-                    : "border-white/10 hover:border-white/20 shadow-black/40"
-                    }`}
-                  style={{
-                    boxShadow: "4px 4px 0px 0px rgba(0,0,0,0.05)"
-                  }}
-                >
-                  {/* Card Header Details */}
-                  <div className="flex items-center justify-between gap-4 mb-4">
-                    <span className={`font-body text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${isLight
-                      ? "bg-slate-100 text-slate-600 border border-slate-200/40"
-                      : "bg-white/5 text-slate-400 border border-white/5"
-                      }`}>
-                      {service.category}
-                    </span>
+                return (
+                  <Link
+                    key={service._id}
+                    href={`/services/${service.slug}`}
+                    className={`group relative border-2 p-6 rounded-2xl bg-background cursor-pointer block transition-all duration-300 ${isLight
+                      ? "border-slate-900/10 hover:border-slate-800 shadow-slate-100/50 hover:shadow-slate-200/50"
+                      : "border-white/10 hover:border-white/20 shadow-black/40"
+                      }`}
+                    style={{
+                      boxShadow: "4px 4px 0px 0px rgba(0,0,0,0.05)"
+                    }}
+                  >
+                    {/* Card Header Details */}
+                    <div className="flex items-center justify-between gap-4 mb-4">
+                      <span className={`font-body text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full ${isLight
+                        ? "bg-slate-100 text-slate-600 border border-slate-200/40"
+                        : "bg-white/5 text-slate-400 border border-white/5"
+                        }`}>
+                        {service.category}
+                      </span>
 
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border transition-all duration-300 group-hover:scale-110 ${isLight
-                      ? "bg-slate-50 border-slate-200 text-brand-accent"
-                      : "bg-[#141414] border-white/10 text-brand-accent"
-                      }`}>
-                      <Icon className="w-4 h-4 stroke-[2]" />
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border transition-all duration-300 group-hover:scale-110 ${isLight
+                        ? "bg-slate-50 border-slate-200 text-brand-accent"
+                        : "bg-[#141414] border-white/10 text-brand-accent"
+                        }`}>
+                        <Icon className="w-4 h-4 stroke-[2]" />
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Title */}
-                  <h3 className={`font-display text-lg font-black uppercase tracking-tight mb-2 transition-colors group-hover:text-brand-accent ${isLight ? "text-slate-900" : "text-white"
-                    }`}>
-                    {service.title}
-                  </h3>
+                    {/* Title */}
+                    <h3 className={`font-display text-lg font-black uppercase tracking-tight mb-2 transition-colors group-hover:text-brand-accent ${isLight ? "text-slate-900" : "text-white"
+                      }`}>
+                      {service.title}
+                    </h3>
 
-                  {/* Short description */}
-                  <p className={`font-body text-xs sm:text-sm leading-relaxed mb-6 ${isLight ? "text-slate-500" : "text-slate-400"
-                    }`}>
-                    {service.shortDesc}
-                  </p>
+                    {/* Short description */}
+                    <p className={`font-body text-xs sm:text-sm leading-relaxed mb-6 ${isLight ? "text-slate-500" : "text-slate-400"
+                      }`}>
+                      {service.shortDescription}
+                    </p>
 
-                  {/* Explore Link */}
-                  <div className="flex items-center text-[10px] font-display font-black uppercase tracking-widest text-brand-accent mt-auto group-hover:translate-x-1 transition-transform">
-                    Explore Solution <ArrowRight className="w-3 h-3 ml-2" />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+                    {/* Explore Link */}
+                    <div className="flex items-center text-[10px] font-display font-black uppercase tracking-widest text-brand-accent mt-auto group-hover:translate-x-1 transition-transform">
+                      Explore Solution <ArrowRight className="w-3 h-3 ml-2" />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
 
           {/* Quick Consultation Ribbon */}
           <motion.div

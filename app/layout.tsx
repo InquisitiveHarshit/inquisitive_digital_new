@@ -50,7 +50,7 @@ export default function RootLayout({
       className={`${beVietnam.variable} h-full antialiased scroll-smooth dark`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-background text-on-surface">
+      <body className="min-h-full flex flex-col bg-background text-on-surface" suppressHydrationWarning>
         <Script
           id="theme-init"
           strategy="beforeInteractive"

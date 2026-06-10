@@ -2,7 +2,7 @@ import { Search } from "lucide-react";
 import { ServiceFullDetail } from "../types";
 
 export const seoData: ServiceFullDetail = {
-  id: "seo",
+  id: "seo-services",
   title: "SEO / AEO / GEO",
   category: "Search",
   shortDesc: "Grow your business with our SEO Service. Improve rankings, visibility, traffic, and AI search presence.",

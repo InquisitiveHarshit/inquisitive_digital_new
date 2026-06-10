@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/layout/Header";
@@ -25,33 +25,173 @@ import {
   TrendingUp,
   Code,
   FileText,
+  Palette,
+  Loader2,
 } from "lucide-react";
 import { BlogCard } from "@/components/ui/BlogCard";
 import { blogs } from "@/app/blogs/data";
-import { ServiceFullDetail } from "../types";
-import { performanceMarketingData } from "../data/performance-marketing";
-import { seoData } from "../data/seo";
-import { socialMediaData } from "../data/social-media";
-import { webDevelopmentData } from "../data/web-development";
-import { contentMarketingData } from "../data/content-marketing";
-import { creativeServicesData } from "../data/creative-services";
 
+// Maps icon string from MongoDB to Lucide component
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Search,
+  Share2,
+  TrendingUp,
+  Code,
+  FileText,
+  Palette,
+};
+
+// ─── TypeScript interfaces for the MongoDB service document ───────────────────
+
+interface StatItem      { value: string; label: string; source?: string }
+interface BenefitItem   { title: string; desc: string }
+interface ServiceItem   { title: string; desc: string }
+interface PillItem      { title: string; desc: string }
+interface ProcessStep   { number: string; title: string; desc: string }
+interface WhyUsItem     { title: string; desc: string }
+interface OutcomeItem   { title: string; desc: string }
+interface PainPoint     { title: string; desc: string }
+interface LeadBenefit   { title: string; desc: string }
+interface FaqItem       { q: string; a: string }
+
+interface SubSection {
+  tag: string;
+  heading: string;
+  subheading: string;
+  description: string;
+  services: string[];
+}
+
+interface ServiceData {
+  _id: string;
+  slug: string;
+  title: string;
+  shortDescription: string;
+  description: string;
+  icon: string;
+  ctaText: string;
+  deliverables: string[];
+  painPoints: string[];
+  benefits: string[];
+  faq: FaqItem[];
+
+  heroSection?: { ctaText1?: string; ctaText2?: string };
+
+  statsSection?: {
+    tag: string;
+    heading: string;
+    stats: StatItem[];
+  };
+
+  whatIsSection?: {
+    tag: string;
+    heading: string;
+    description: string;
+    secondaryDescription: string;
+  };
+
+  whyMattersSection?: {
+    tag: string;
+    heading: string;
+    intro: string;
+    benefits: BenefitItem[];
+  };
+
+  servicesSection?: {
+    tag: string;
+    heading: string;
+    services: ServiceItem[];
+    aeo?: SubSection;
+    geo?: SubSection;
+    seoContent?: SubSection;
+    thoughtLeadership?: SubSection;
+    branding?: SubSection;
+    marketingCreative?: SubSection;
+    motionGraphics?: SubSection;
+  };
+
+  approachSection?: {
+    tag?: string;
+    heading?: string;
+    mainDescription?: string;
+    secondaryDescription?: string;
+    pills?: PillItem[];
+  };
+
+  deliverablesSection?: {
+    tag?: string;
+    heading?: string;
+    items?: string[];
+    itemSubtext?: string;
+    guaranteeText?: string;
+    guaranteeCtaText?: string;
+  };
+
+  processSection?: {
+    tag: string;
+    heading: string;
+    steps: ProcessStep[];
+  };
+
+  whyUsSection?: {
+    tag: string;
+    heading: string;
+    items: WhyUsItem[];
+  };
+
+  resultsSection?: {
+    tag: string;
+    heading: string;
+    description: string;
+    outcomes: OutcomeItem[];
+  };
+
+  inactionSection?: {
+    tag?: string;
+    heading?: string;
+    painPoints?: PainPoint[];
+  };
+
+  leadFormSection?: {
+    tag?: string;
+    heading?: string;
+    benefits?: LeadBenefit[];
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 export default function ServiceDetailPage() {
   const params = useParams();
   const router = useRouter();
   const serviceId = params?.serviceId as string;
 
-  const servicesData: Record<string, ServiceFullDetail> = {
-    "seo-services": seoData,
-    "social-media-marketing": socialMediaData,
-    "performance-marketing": performanceMarketingData,
-    "web-development": webDevelopmentData,
-    "content-marketing": contentMarketingData,
-    "creative-services": creativeServicesData,
-  };
+  // Service data fetched from MongoDB
+  const [service, setService] = useState<ServiceData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  const service = servicesData[serviceId];
+  useEffect(() => {
+    if (!serviceId) return;
+    async function fetchService() {
+      try {
+        const res = await fetch(`/api/services/${serviceId}`);
+        const json = await res.json();
+        if (json.success && json.data) {
+          setService(json.data);
+          // Scroll to top after data is loaded and rendered
+          setTimeout(() => window.scrollTo(0, 0), 10);
+        } else {
+          setNotFound(true);
+        }
+      } catch {
+        setNotFound(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchService();
+  }, [serviceId]);
 
   // Form State
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -73,7 +213,20 @@ export default function ServiceDetailPage() {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const toggleFaq = (index: number) => setOpenFaqIndex(openFaqIndex === index ? null : index);
 
-  if (!service) {
+  // Loading state
+  if (loading) {
+    return (
+      <div className="w-full bg-background text-on-surface font-body overflow-x-hidden antialiased min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-grow flex flex-col items-center justify-center">
+          <Loader2 className="w-10 h-10 animate-spin text-brand-accent" />
+        </main>
+      </div>
+    );
+  }
+
+  // Not found state
+  if (notFound || !service) {
     return (
       <div className="w-full bg-background text-on-surface font-body overflow-x-hidden antialiased min-h-screen flex flex-col">
         <Header />
@@ -88,8 +241,11 @@ export default function ServiceDetailPage() {
     );
   }
 
-  const Icon = service.icon;
+  // Resolve the icon from the string stored in MongoDB
+  const Icon = ICON_MAP[service.icon] ?? Search;
   const painPointIcons = [TrendingDown, AlertTriangle, Clock];
+
+
 
   return (
     <div className="w-full bg-background text-on-surface font-body selection:bg-brand-accent selection:text-background overflow-x-hidden antialiased relative">
@@ -131,7 +287,7 @@ export default function ServiceDetailPage() {
             transition={{ duration: 0.4, delay: 0.3, ease: "easeOut" }}
             className="font-body text-on-surface-variant text-lg sm:text-xl font-normal leading-relaxed max-w-2xl mb-8"
           >
-            {service.shortDesc}
+            {service.shortDescription}
           </motion.p>
 
           <motion.div
@@ -521,7 +677,7 @@ export default function ServiceDetailPage() {
                 viewport={{ once: true }}
                 className="font-display text-xl sm:text-2xl font-bold leading-relaxed text-on-surface"
               >
-                {service.approachSection?.mainDescription ?? service.detailedDesc}
+                {service.approachSection?.mainDescription ?? service.description}
               </motion.p>
               <motion.p
                 initial={{ opacity: 0, y: 15 }}

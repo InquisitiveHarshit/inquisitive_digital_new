@@ -2,7 +2,7 @@ import { Share2 } from "lucide-react";
 import { ServiceFullDetail } from "../types";
 
 export const socialMediaData: ServiceFullDetail = {
-  id: "social-media",
+  id: "social-media-marketing",
   category: "Social Media",
   icon: Share2,
 
