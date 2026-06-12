@@ -121,7 +121,7 @@ export default function AboutUsPage() {
               viewport={{ once: true }}
               className="text-center font-display text-4xl font-bold uppercase mb-16"
             >
-              Story of Flora Fountain
+              Story of Inquisitive Digital
             </motion.h2>
             
             <div className="flex flex-col gap-12 md:gap-0">
@@ -142,15 +142,15 @@ export default function AboutUsPage() {
                   <div className="hidden md:block w-[2px] h-64 bg-brand-accent/60 mx-4 shrink-0 rounded-full" />
 
                   <div className={`flex-1 w-full max-w-[480px] px-4 md:px-8 flex flex-col gap-6 ${item.reverse ? 'md:items-end md:text-right' : 'md:items-start md:text-left'} text-center`}>
+                    <span className={`font-display text-7xl md:text-8xl italic font-black text-transparent [-webkit-text-stroke:1px_#f5c200] leading-none ${item.reverse ? 'self-end' : 'self-start'}`} style={{ letterSpacing: "-3px" }}>
+                      {item.year}
+                    </span>
                     <div>
                       <h3 className="text-2xl md:text-3xl font-display font-bold mb-3">{item.title}</h3>
                       <p className={`text-[15px] leading-relaxed opacity-90 ${isLight ? 'text-slate-700' : 'text-slate-300'}`}>
                         {item.desc}
                       </p>
                     </div>
-                    <span className={`font-display text-7xl md:text-8xl italic font-black text-transparent [-webkit-text-stroke:1px_#f5c200] leading-none ${item.reverse ? 'self-end' : 'self-start'}`} style={{ letterSpacing: "-3px" }}>
-                      {item.year}
-                    </span>
                   </div>
                 </motion.div>
               ))}

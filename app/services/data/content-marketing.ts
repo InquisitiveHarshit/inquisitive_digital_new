@@ -22,7 +22,7 @@ export const contentMarketingData: ServiceFullDetail = {
     "Internal Linking Recommendations",
     "Performance Reporting",
   ],
-  ctaText: "Get Free Content Strategy Consultation",
+  ctaText: "Get FREE consultation",
   painPoints: [
     "Generic AI articles that search engines penalize for low quality.",
     "High-effort blog writing that fails to capture organic intent.",
@@ -60,7 +60,7 @@ export const contentMarketingData: ServiceFullDetail = {
     },
   ],
   heroSection: {
-    ctaText1: "Get Free Content Strategy Consultation",
+    ctaText1: "Get FREE consultation",
     ctaText2: "Explore Approach",
   },
   statsSection: {
@@ -254,7 +254,7 @@ export const contentMarketingData: ServiceFullDetail = {
   },
   whyUsSection: {
     tag: "WHY CHOOSE US",
-    heading: "Why Choose Inquisitive Digital?",
+    heading: "The Difference We Bring",
     items: [
       {
         title: "SEO Expertise",
@@ -284,7 +284,7 @@ export const contentMarketingData: ServiceFullDetail = {
   },
   resultsSection: {
     tag: "RESULTS YOU CAN EXPECT",
-    heading: "Results You Can Expect",
+    heading: "Real Results, Real Impact",
     description:
       "Our Content Writing & Blogging Service is designed to support sustainable growth and measurable business outcomes.",
     outcomes: [

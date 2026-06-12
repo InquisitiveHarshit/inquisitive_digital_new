@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   description: "No fluff. No vanity metrics. Just measurable growth for ambitious brands. We engineer digital marketing strategies built on hard data and absolute transparency.",
   metadataBase: new URL("https://inquisitivedigital.com"),
   icons: {
-    icon: '/logo_without_name.png',
+    icon: '/logo-3.png',
   },
   openGraph: {
     title: "Inquisitive Digital | Engineered Growth",

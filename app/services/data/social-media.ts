@@ -207,7 +207,7 @@ export const socialMediaData: ServiceFullDetail = {
 
   processSection: {
     tag: "OUR PROCESS",
-    heading: "Our Social Media Marketing Process",
+    heading: "The Roadmap to Higher Reach",
     steps: [
       {
         number: "01",
@@ -239,7 +239,7 @@ export const socialMediaData: ServiceFullDetail = {
 
   whyUsSection: {
     tag: "WHY CHOOSE US",
-    heading: "Why Choose Inquisitive Digital?",
+    heading: "The Difference We Bring",
     items: [
       {
         title: "Platform Expertise",
@@ -270,7 +270,7 @@ export const socialMediaData: ServiceFullDetail = {
 
   resultsSection: {
     tag: "RESULTS YOU CAN EXPECT",
-    heading: "Results You Can Expect",
+    heading: "Real Results, Real Impact",
     description: "Our Social Media Marketing Service is designed to create meaningful business outcomes and sustainable brand growth.",
     outcomes: [
       {

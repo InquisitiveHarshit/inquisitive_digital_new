@@ -721,75 +721,53 @@ export default function ServiceDetailPage() {
       </section>
 
       {/* SECTION 3 — OUR PROCESS */}
-      <section className="py-12 px-4 md:px-margin-desktop relative">
-        <div className="max-w-container-max mx-auto relative z-10">
-          <div className="text-center mb-10">
-            <motion.span
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="inline-block px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
-            >
-              THE PACE APPROACH
-            </motion.span>
-            <motion.h2
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface"
-            >
-              Our 4-Stage PACE Approach
-            </motion.h2>
-          </div>
+      {service.processSection && (
+        <section className="py-12 px-4 md:px-margin-desktop relative">
+          <div className="max-w-container-max mx-auto relative z-10">
+            <div className="text-center mb-10">
+              <motion.span
+                initial={{ opacity: 0, y: -10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="inline-block px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm"
+              >
+                {service.processSection.tag}
+              </motion.span>
+              <motion.h2
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-on-surface"
+              >
+                {service.processSection.heading}
+              </motion.h2>
+            </div>
 
-          <div className="relative">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
-              {[
-                {
-                  title: "PREPARE",
-                  subtitle: "DISCOVER | MODEL",
-                  desc: "Understand the business and its revenue funnel."
-                },
-                {
-                  title: "ACT",
-                  subtitle: "PLAN | EXECUTE",
-                  desc: "Identify opportunities and attack leverage points within that funnel."
-                },
-                {
-                  title: "CALIBRATE",
-                  subtitle: "MEASURE | ADAPT",
-                  desc: "Make necessary course corrections to further align actions with the desired results."
-                },
-                {
-                  title: "EVOLVE",
-                  subtitle: "ITERATE | OPTIMIZE",
-                  desc: "Constantly measure, adapt, and improve results at each identified lever in the funnel."
-                }
-              ].map((step, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1, ease: "easeOut" }}
-                  className="flex flex-col items-center text-center bg-surface-container-low p-6 rounded-2xl border border-outline-variant hover:bg-surface-container-high transition-colors duration-300 shadow-sm hover:shadow-md"
-                >
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-lg mb-4 transition-colors duration-300 bg-background border border-outline-variant shadow-sm ${idx === 0 || idx === 3 ? 'text-brand-accent bg-brand-accent/5' : 'text-on-surface-variant'}`}>
-                    0{idx + 1}
-                  </div>
-                  <h3 className="font-display text-base font-bold text-on-surface tracking-wide mb-1">{step.title}</h3>
-                  <div className="text-[9px] font-display font-extrabold uppercase tracking-wider text-brand-accent mb-3">
-                    {step.subtitle}
-                  </div>
-                  <p className="font-body text-xs text-on-surface-variant leading-relaxed opacity-90">
-                    {step.desc}
-                  </p>
-                </motion.div>
-              ))}
+            <div className="relative">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+                {service.processSection.steps.map((step, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1, ease: "easeOut" }}
+                    className="flex flex-col items-center text-center bg-surface-container-low p-6 rounded-2xl border border-outline-variant hover:bg-surface-container-high transition-colors duration-300 shadow-sm hover:shadow-md"
+                  >
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center font-display font-bold text-lg mb-4 transition-colors duration-300 bg-background border border-outline-variant shadow-sm ${idx === 0 || idx === service.processSection!.steps.length - 1 ? 'text-brand-accent bg-brand-accent/5' : 'text-on-surface-variant'}`}>
+                      {step.number}
+                    </div>
+                    <h3 className="font-display text-base font-bold text-on-surface tracking-wide mb-1">{step.title}</h3>
+                    <p className="font-body text-xs text-on-surface-variant leading-relaxed opacity-90">
+                      {step.desc}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* SECTION 4 — WHAT'S INCLUDED */}
       <section className="py-12 px-4 md:px-margin-desktop relative">

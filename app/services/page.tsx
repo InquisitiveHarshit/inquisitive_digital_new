@@ -256,15 +256,15 @@ export default function ServicesPage() {
               </h3>
               <p className={`font-body text-sm sm:text-base mb-8 max-w-lg mx-auto ${isLight ? "text-slate-600" : "text-slate-400"
                 }`}>
-                Book a direct growth workshop. We will audit your current channels and layout a high-performance roadmap completely free of charge.
+                Book a direct growth consultation. We will audit your current channels and layout a high-performance roadmap completely free of charge.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button href="#contact" className="w-full sm:w-auto font-body font-extrabold uppercase text-xs">
-                  Schedule Free Workshop
+                  Schedule Free Consultation
                 </Button>
                 <a
-                  href="https://wa.me/918700049448"
+                  href="https://wa.me/917310777430"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full border-2 font-body text-xs font-extrabold uppercase tracking-wider transition-colors duration-300 ${isLight

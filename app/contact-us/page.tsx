@@ -72,7 +72,7 @@ export default function ContactUsPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className={`font-body text-base sm:text-lg leading-relaxed max-w-2xl mx-auto mb-16 ${isLight ? "text-slate-600" : "text-slate-400"}`}
           >
-            Get in touch with our team to start scaling your brand today. You can email us at <a href="mailto:hello@inquisitivedigital.com" className="text-brand-accent font-bold hover:underline">hello@inquisitivedigital.com</a> or use the form below.
+            Get in touch with our team to start scaling your brand today. You can email us at <a href="mailto:hello@inquisitivedigital.com" className="text-brand-accent font-bold hover:underline">hello@inquisitivedigital.com</a>, call/WhatsApp us at <a href="tel:+917310777430" className="text-brand-accent font-bold hover:underline">+91 7310 777 430</a>, or use the form below.
           </motion.p>
         </div>
 

@@ -28,7 +28,7 @@ export const creativeServicesData: ServiceFullDetail = {
     "YouTube Thumbnail Design",
     "Creative Strategy Support",
   ],
-  ctaText: "Get Free Creative Consultation",
+  ctaText: "Get FREE consultation",
   painPoints: [
     "Brand visuals that fail to create a professional, trustworthy impression.",
     "Inconsistent design across platforms that weakens brand recognition.",
@@ -66,7 +66,7 @@ export const creativeServicesData: ServiceFullDetail = {
     },
   ],
   heroSection: {
-    ctaText1: "Get Free Creative Consultation",
+    ctaText1: "Get FREE consultation",
     ctaText2: "Explore Approach",
   },
   statsSection: {
@@ -134,6 +134,10 @@ export const creativeServicesData: ServiceFullDetail = {
         desc: "Develop a complete visual identity that reflects your brand values and positioning.",
       },
       {
+        title: "Video Editing & Motion Graphics",
+        desc: "Professional video content optimized for engagement and brand growth.",
+      },
+      {
         title: "Logo Design",
         desc: "Create memorable logos that strengthen brand recognition.",
       },
@@ -164,10 +168,6 @@ export const creativeServicesData: ServiceFullDetail = {
       {
         title: "Packaging Design",
         desc: "Creative packaging solutions that enhance product appeal.",
-      },
-      {
-        title: "Video Editing & Motion Graphics",
-        desc: "Professional video content optimized for engagement and brand growth.",
       },
       {
         title: "2D & 3D Animation",
@@ -311,7 +311,7 @@ export const creativeServicesData: ServiceFullDetail = {
   },
   whyUsSection: {
     tag: "WHY CHOOSE US",
-    heading: "Why Choose Inquisitive Digital?",
+    heading: "The Difference We Bring",
     items: [
       {
         title: "Creative Expertise",
@@ -341,7 +341,7 @@ export const creativeServicesData: ServiceFullDetail = {
   },
   resultsSection: {
     tag: "RESULTS YOU CAN EXPECT",
-    heading: "Results You Can Expect",
+    heading: "Real Results, Real Impact",
     description:
       "Our Creative Design & Video Production Service is built to improve brand visibility, engagement, and marketing performance.",
     outcomes: [

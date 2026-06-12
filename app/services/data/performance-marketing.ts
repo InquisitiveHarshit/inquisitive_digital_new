@@ -17,7 +17,7 @@ export const performanceMarketingData: ServiceFullDetail = {
     "YouTube Advertising Campaigns",
     "Conversion Tracking & Attribution Setup"
   ],
-  ctaText: "Get Free Performance Marketing Audit",
+  ctaText: "Get FREE consultation",
   painPoints: [
     "Losing customers to competitors.",
     "Wasting advertising budget.",
@@ -30,7 +30,7 @@ export const performanceMarketingData: ServiceFullDetail = {
   ],
 
   heroSection: {
-    ctaText1: "Get Free Performance Marketing Audit",
+    ctaText1: "Get FREE consultation",
     ctaText2: "Explore Approach"
   },
 
@@ -227,7 +227,7 @@ export const performanceMarketingData: ServiceFullDetail = {
 
   whyUsSection: {
     tag: "WHY CHOOSE US",
-    heading: "Why Choose Inquisitive Digital?",
+    heading: "The Difference We Bring",
     items: [
       {
         title: "Data-Driven Decision Making",
@@ -258,7 +258,7 @@ export const performanceMarketingData: ServiceFullDetail = {
 
   resultsSection: {
     tag: "RESULTS YOU CAN EXPECT",
-    heading: "Results You Can Expect",
+    heading: "Real Results, Real Impact",
     description: "Our Performance Marketing Service is designed to drive measurable business growth and sustainable profitability.",
     outcomes: [
       {

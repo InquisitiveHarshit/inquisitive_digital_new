@@ -19,7 +19,7 @@ export const webDevelopmentData: ServiceFullDetail = {
     "Contact Forms & Lead Capture"
   ],
   
-  ctaText: "Get Free Website Consultation",
+  ctaText: "Get FREE consultation",
   
   painPoints: [
     "Website loads too slowly.",
@@ -38,7 +38,7 @@ export const webDevelopmentData: ServiceFullDetail = {
   ],
 
   heroSection: {
-    "ctaText1": "Get Free Website Consultation",
+    "ctaText1": "Get FREE consultation",
     "ctaText2": "Explore Approach"
   },
 
@@ -232,7 +232,7 @@ export const webDevelopmentData: ServiceFullDetail = {
 
   whyUsSection: {
     "tag": "WHY CHOOSE US",
-    "heading": "Why Choose Inquisitive Digital?",
+    "heading": "The Difference We Bring",
     "items": [
       {
         "title": "Custom-Built Solutions",
@@ -263,7 +263,7 @@ export const webDevelopmentData: ServiceFullDetail = {
 
   resultsSection: {
     "tag": "RESULTS YOU CAN EXPECT",
-    "heading": "Results You Can Expect",
+    "heading": "Real Results, Real Impact",
     "description": "Our Web Development Service is designed to create measurable business impact and long-term digital success.",
     "outcomes": [
       {

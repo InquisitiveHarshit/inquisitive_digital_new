@@ -15,7 +15,7 @@ export const seoData: ServiceFullDetail = {
     "Answer Engine Optimization (AEO) for Featured Snippets",
     "Generative Engine Optimization (GEO) for AI Search",
   ],
-  ctaText: "Get Free SEO Strategy Consultation",
+  ctaText: "Get FREE consultation",
   painPoints: [
     "Missing out on high-intent search traffic due to low organic rankings.",
     "Over-relying on paid advertising budgets that drain ROI over time.",
@@ -37,7 +37,7 @@ export const seoData: ServiceFullDetail = {
     },
   ],
   heroSection: {
-    ctaText1: "Get Free SEO Strategy Consultation",
+    ctaText1: "Get FREE consultation",
     ctaText2: "Explore Approach"
   },
   approachSection: {
@@ -201,7 +201,7 @@ export const seoData: ServiceFullDetail = {
   },
   processSection: {
     tag: "OUR PROCESS",
-    heading: "Our SEO Process",
+    heading: "The Roadmap to Higher Rankings",
     steps: [
       {
         number: "01",
@@ -232,7 +232,7 @@ export const seoData: ServiceFullDetail = {
   },
   whyUsSection: {
     tag: "WHY CHOOSE US",
-    heading: "Why Choose Inquisitive Digital?",
+    heading: "The Difference We Bring",
     items: [
       {
         title: "Data-Driven Decision Making",
@@ -258,7 +258,7 @@ export const seoData: ServiceFullDetail = {
   },
   resultsSection: {
     tag: "RESULTS YOU CAN EXPECT",
-    heading: "Results You Can Expect",
+    heading: "Real Results, Real Impact",
     description: "Our SEO Service is designed to deliver measurable business outcomes. Depending on your industry and competition, businesses often experience:",
     outcomes: [
       {
