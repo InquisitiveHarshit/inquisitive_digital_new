@@ -52,7 +52,7 @@ export default function AboutUsPage() {
       quote: "MARKETING NARRATES, CONVERSION DELIVERS.",
       image: "https://res.cloudinary.com/dch9wvp1k/image/upload/v1780655758/da7gk6ye6fd6ponbjbge.jpg",
       socials: {
-        linkedin: "#",
+        linkedin: "https://www.linkedin.com/in/riddhimehta11/",
         email: "mailto:riddhi@inquisitivedigital.co"
       }
     },
@@ -63,7 +63,7 @@ export default function AboutUsPage() {
       quote: "MARKETING IS NO LONGER ABOUT THE STUFF YOU MAKE, BUT ABOUT THE STORIES YOU TELL.",
       image: "https://res.cloudinary.com/dvdfhripy/image/upload/v1755608915/IMG_7488_louka3.jpg",
       socials: {
-        linkedin: "#",
+        linkedin: "https://linkedin.com/in/krishana-maheshwari-404184178",
         email: "mailto:krishana@inquisitivedigital.co"
       }
     }
@@ -181,9 +181,28 @@ export default function AboutUsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.7, delay: 0.4 + index * 0.2 }}
-                className={`relative flex flex-col md:flex-row gap-8 p-8 border-2 rounded-xl bg-surface-container-low/50 backdrop-blur-sm ${isLight ? "border-slate-900" : "border-slate-800"}`}
-                style={{ boxShadow: `8px 8px 0px 0px ${isLight ? "#000" : "#f5c200"}` }}
+                whileHover={{ y: -4 }}
+                className={`relative flex flex-col md:flex-row gap-8 p-8 border-2 rounded-xl backdrop-blur-sm overflow-hidden ${
+                  isLight
+                    ? "border-slate-200 bg-gradient-to-br from-[#fffef5] via-white to-[#fff9e0]"
+                    : "border-slate-800 bg-surface-container-low/50"
+                }`}
+                style={{ boxShadow: isLight ? "8px 8px 0px 0px #f5c200" : `8px 8px 0px 0px #f5c200` }}
               >
+                {/* Subtle golden top sheen for light mode */}
+                {isLight && (
+                  <>
+                    <div className="pointer-events-none absolute top-0 left-0 right-0 h-[2px]" style={{ background: "linear-gradient(90deg, transparent, rgba(245,194,0,0.8) 40%, rgba(255,220,50,1) 60%, rgba(245,194,0,0.8) 80%, transparent)" }} />
+                    <div className="pointer-events-none absolute -top-16 -right-16 w-40 h-40 rounded-full" style={{ background: "radial-gradient(circle, rgba(245,194,0,0.18) 0%, transparent 70%)" }} />
+                    <div className="pointer-events-none absolute -bottom-12 -left-12 w-32 h-32 rounded-full" style={{ background: "radial-gradient(circle, rgba(245,194,0,0.12) 0%, transparent 70%)" }} />
+                  </>
+                )}
+                {!isLight && (
+                  <>
+                    <div className="pointer-events-none absolute top-0 left-0 right-0 h-[1px]" style={{ background: "linear-gradient(90deg, transparent, rgba(245,194,0,0.5) 50%, transparent)" }} />
+                    <div className="pointer-events-none absolute -top-16 -right-16 w-40 h-40 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(245,194,0,0.6) 0%, transparent 70%)" }} />
+                  </>
+                )}
                 {/* Photo */}
                 <div className="w-full md:w-48 h-48 flex-shrink-0 relative rounded-lg overflow-hidden border border-brand-accent/20 bg-gradient-to-br from-brand-accent/20 to-brand-accent/5 flex flex-col items-center justify-center text-center p-4">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,194,0,0.15)_0,transparent_70%)] pointer-events-none" />
@@ -217,7 +236,7 @@ export default function AboutUsPage() {
 
                   {/* Social links */}
                   <div className="flex gap-4 mt-6 pt-4 border-t border-brand-accent/10 relative z-20">
-                    <a href={founder.socials.linkedin} className="text-brand-accent hover:text-brand-accent/80 transition-colors p-1.5 rounded-full hover:bg-brand-accent/10" aria-label={`${founder.name} LinkedIn`}>
+                    <a href={founder.socials.linkedin} target="_blank" rel="noopener noreferrer" className="text-brand-accent hover:text-brand-accent/80 transition-colors p-1.5 rounded-full hover:bg-brand-accent/10" aria-label={`${founder.name} LinkedIn`}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                     </a>
                     <a href={founder.socials.email} className="text-brand-accent hover:text-brand-accent/80 transition-colors p-1.5 rounded-full hover:bg-brand-accent/10" aria-label={`Email ${founder.name}`}>
