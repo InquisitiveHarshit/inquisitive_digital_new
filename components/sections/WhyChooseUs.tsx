@@ -23,7 +23,7 @@ export const WhyChooseUs: React.FC = () => {
     {
       id: 1,
       title: "Proven Track Record",
-      desc: "Trusted by 500+ clients with consistent growth results.",
+      desc: "Trusted by 100+ clients with consistent growth results.",
       icon: Trophy,
     },
     {

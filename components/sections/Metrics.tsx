@@ -13,9 +13,9 @@ interface StatItem {
 
 export const Metrics: React.FC = () => {
   const stats: StatItem[] = [
-    { id: 1, value: "500+", label: "Happy Clients", delay: 0.1 },
-    { id: 2, value: "8+", label: "Years in Business", delay: 0.2 },
-    { id: 3, value: "1000+", label: "Projects Completed", delay: 0.3 },
+    { id: 1, value: "100+", label: "Happy Clients", delay: 0.1 },
+    { id: 2, value: "4+", label: "Years in Business", delay: 0.2 },
+    { id: 3, value: "500+", label: "Projects Completed", delay: 0.3 },
     { id: 4, value: "$2M+", label: "Ad Spend Managed", delay: 0.4 },
   ];
 
@@ -57,7 +57,7 @@ export const Metrics: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <Button href="#contact" variant="outline" className="px-6 py-3 text-sm">
+              <Button href="/about-us" variant="outline" className="px-6 py-3 text-sm">
                 Read More About Us →
               </Button>
             </motion.div>

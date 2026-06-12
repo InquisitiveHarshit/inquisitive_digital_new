@@ -17,7 +17,7 @@ export default function AboutUsPage() {
   const stats = [
     { value: "100+", label: "Brands Scaled", icon: TrendingUp },
     { value: "Clutch", label: "Top Marketing Partner", icon: Award },
-    { value: "8+ Yrs", label: "Strategic Experience", icon: Sparkles },
+    { value: "4+ Yrs", label: "Strategic Experience", icon: Sparkles },
   ];
 
   const timelineData = [

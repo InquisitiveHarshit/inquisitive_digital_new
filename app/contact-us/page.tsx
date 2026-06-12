@@ -14,6 +14,7 @@ export default function ContactUsPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    service: "",
     subject: "",
     message: "",
   });
@@ -35,7 +36,7 @@ export default function ContactUsPage() {
       }
 
       setIsSubmitted(true);
-      setFormData({ name: "", email: "", subject: "", message: "" });
+      setFormData({ name: "", email: "", service: "", subject: "", message: "" });
     } catch (error) {
       console.error(error);
     } finally {
@@ -44,7 +45,7 @@ export default function ContactUsPage() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -132,6 +133,36 @@ export default function ContactUsPage() {
                         Email Address
                       </label>
                     </div>
+                  </div>
+
+                  {/* Service Dropdown */}
+                  <div className="relative group">
+                    <select
+                      id="service"
+                      name="service"
+                      required
+                      value={formData.service}
+                      onChange={handleChange}
+                      className={`w-full bg-transparent border-b py-3 focus:outline-none focus:border-brand-accent transition-colors peer appearance-none cursor-pointer ${isLight ? "text-slate-900 border-slate-300" : "text-on-surface border-outline-variant/40"}`}
+                    >
+                      <option value="" disabled className={isLight ? "text-slate-500" : "text-slate-500"}>Select a Service</option>
+                      <option value="Performance Marketing" className={isLight ? "text-slate-900 bg-white" : "text-white bg-[#111111]"}>Performance Marketing</option>
+                      <option value="Search Engine Optimization" className={isLight ? "text-slate-900 bg-white" : "text-white bg-[#111111]"}>Search Engine Optimization</option>
+                      <option value="Social Media Management" className={isLight ? "text-slate-900 bg-white" : "text-white bg-[#111111]"}>Social Media Management</option>
+                      <option value="Web Development" className={isLight ? "text-slate-900 bg-white" : "text-white bg-[#111111]"}>Web Development</option>
+                      <option value="Creative Services" className={isLight ? "text-slate-900 bg-white" : "text-white bg-[#111111]"}>Creative Services</option>
+                      <option value="Content Marketing" className={isLight ? "text-slate-900 bg-white" : "text-white bg-[#111111]"}>Content Marketing</option>
+                      <option value="Other" className={isLight ? "text-slate-900 bg-white" : "text-white bg-[#111111]"}>Other</option>
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                      <svg className={`w-4 h-4 ${isLight ? "text-slate-500" : "text-on-surface-variant"}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                    <label
+                      htmlFor="service"
+                      className={`absolute left-0 -top-4 uppercase tracking-widest text-xs transition-all duration-300 pointer-events-none ${isLight ? "text-brand-accent" : "text-brand-accent"}`}
+                    >
+                      Interested Service
+                    </label>
                   </div>
 
                   {/* Subject Input */}

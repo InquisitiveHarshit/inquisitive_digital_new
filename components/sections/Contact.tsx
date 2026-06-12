@@ -2,10 +2,12 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { Send, CheckCircle2 } from "lucide-react";
 import { Button } from "../ui/Button";
 
 export const Contact: React.FC = () => {
+  const pathname = usePathname();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -53,6 +55,10 @@ export const Contact: React.FC = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  if (pathname === '/about-us' || pathname === '/careers' || pathname === '/contact-us') {
+    return null;
+  }
 
   return (
     <section className="w-full py-section-gap px-6 md:px-margin-desktop bg-surface-container-low/30 relative" id="contact">

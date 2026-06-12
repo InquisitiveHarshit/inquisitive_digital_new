@@ -113,13 +113,6 @@ export const Testimonials: React.FC = () => {
           ))}
         </div>
 
-        {/* Action Button */}
-        <div className="flex justify-center">
-          <Button href="#contact" variant="outline" className="px-8 py-4">
-            View All Reviews →
-          </Button>
-        </div>
-
       </div>
     </section>
   );

@@ -166,7 +166,7 @@ export const Hero: React.FC = () => {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                ⭐ 500+ Clients Served | 8+ Years of Excellence
+                ⭐ 100+ Clients Served | 4+ Years of Excellence
               </motion.div>
             ) : (
               <motion.div
@@ -180,7 +180,7 @@ export const Hero: React.FC = () => {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                ⭐ 500+ Clients Served | 8+ Years of Excellence
+                ⭐ 100+ Clients Served | 4+ Years of Excellence
               </motion.div>
             )}
           </AnimatePresence>
@@ -254,7 +254,7 @@ export const Hero: React.FC = () => {
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
                 <a
-                  href="#contact"
+                  href="/contact-us"
                   className="bg-brand-accent text-background hover:bg-white border-2 border-brand-accent hover:border-white font-body font-bold text-[10px] sm:text-xs py-3 sm:py-4.5 px-3 sm:px-10 rounded-sm transition-all duration-300 shadow-[0_6px_24px_rgba(245,194,0,0.22)] hover:shadow-[0_6px_30px_rgba(255,255,255,0.25)] select-none uppercase flex items-center justify-center flex-1 sm:flex-none"
                 >
                   Get Free Consultation
@@ -277,7 +277,7 @@ export const Hero: React.FC = () => {
               >
                 {/* Primary Button */}
                 <a
-                  href="#contact"
+                  href="/contact-us"
                   className={`font-body font-extrabold text-[10px] sm:text-sm py-3 sm:py-4 px-3 sm:px-10 rounded-full transition-all duration-300 select-none cursor-pointer flex items-center justify-center border-2 flex-1 sm:flex-none hover:scale-[1.02] ${themeMode === "singular-dark"
                     ? "bg-brand-accent text-black border-brand-accent hover:bg-white hover:text-black hover:border-white shadow-[3px_3px_0px_rgba(255,255,255,0.2)] sm:shadow-[4px_4px_0px_rgba(255,255,255,0.2)]"
                     : "bg-brand-accent text-black border-black hover:bg-black hover:text-brand-accent hover:border-brand-accent shadow-[3px_3px_0px_rgba(0,0,0,1)] sm:shadow-[4px_4px_0px_rgba(0,0,0,1)]"

@@ -212,7 +212,7 @@ export const BookingSteps: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.5 }}
         >
-          <Button href="#contact" variant="primary" className="px-12 py-5 text-sm shadow-[0_6px_24px_rgba(245,194,0,0.3)]">
+          <Button href="/contact-us" variant="primary" className="px-12 py-5 text-sm shadow-[0_6px_24px_rgba(245,194,0,0.3)]">
             Book An Appointment Now
           </Button>
         </motion.div>
