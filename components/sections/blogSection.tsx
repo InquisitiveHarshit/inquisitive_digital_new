@@ -1,46 +1,40 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "../ui/Button";
 import { BlogCard } from "../ui/BlogCard";
 
+const API_BASE = "";
+
+const FALLBACK_IMAGES = [
+  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+  "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
+  "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=600&q=80",
+];
+
 export const Insights: React.FC = () => {
-  const articles = [
-    {
-      id: 1,
-      slug: "seo-strategies-2026",
-      date: "May 10, 2026",
-      readTime: "5 min read",
-      category: "SEO",
-      title: "Top SEO Strategies for 2026: Dominating Search with AI",
-      desc: "Learn how to optimize your content for both traditional search engines and emerging AI discovery platforms.",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
-      delay: 0.1,
-    },
-    {
-      id: 2,
-      slug: "maximizing-social-media-roi",
-      date: "May 15, 2026",
-      readTime: "7 min read",
-      category: "PERFORMANCE MARKETING",
-      title: "Maximizing Your Social Media ROI in a Crowded Market",
-      desc: "Stop wasting ad spend. Here is a data-driven approach to targeting and converting your ideal audience.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
-      delay: 0.2,
-    },
-    {
-      id: 3,
-      slug: "the-power-of-brutalist-design",
-      date: "May 20, 2026",
-      readTime: "4 min read",
-      category: "WEB DESIGN",
-      title: "The Power of Brutalist Web Design in B2B SaaS",
-      desc: "Why some of the fastest-growing startups are ditching safe, corporate designs for bold, brutalist aesthetics.",
-      image: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=600&q=80",
-      delay: 0.3,
-    },
-  ];
+  const [articles, setArticles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchBlogs() {
+      try {
+        const res = await fetch(`${API_BASE}/api/blogs`, { cache: "no-store" });
+        if (!res.ok) throw new Error("API unavailable");
+        const json = await res.json();
+        const blogsArray = json.data || json.blogs;
+        if (blogsArray && blogsArray.length > 0) {
+          setArticles(blogsArray.slice(0, 3));
+        }
+      } catch {
+        // Silently fail if API is unavailable
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchBlogs();
+  }, []);
 
   return (
     <section className="w-full py-section-gap px-6 md:px-margin-desktop bg-surface-container-low/30 border-b border-outline-variant/30" id="insights">
@@ -72,20 +66,33 @@ export const Insights: React.FC = () => {
 
         {/* Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {articles.map((article) => (
-            <div key={article.id}>
-              <BlogCard
-                slug={article.slug}
-                date={article.date}
-                readTime={article.readTime}
-                category={article.category}
-                title={article.title}
-                desc={article.desc}
-                image={article.image}
-                delay={article.delay}
+          {loading ? (
+            [1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="rounded-xl border-2 h-[420px] animate-pulse bg-surface-container-high border-outline-variant/30"
               />
+            ))
+          ) : articles.length > 0 ? (
+            articles.map((article, index) => (
+              <div key={article.id || article._id || index}>
+                <BlogCard
+                  slug={article.slug}
+                  date={article.date}
+                  readTime={article.readTime}
+                  category={article.category}
+                  title={article.title}
+                  desc={article.excerpt}
+                  image={article.imageUrl || FALLBACK_IMAGES[index % 3]}
+                  delay={index * 0.1}
+                />
+              </div>
+            ))
+          ) : (
+            <div className="col-span-3 text-center py-10 text-on-surface-variant">
+              No insights available at the moment.
             </div>
-          ))}
+          )}
         </div>
 
         {/* Action Button */}

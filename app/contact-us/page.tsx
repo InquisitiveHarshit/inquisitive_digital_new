@@ -164,10 +164,10 @@ export default function ContactUsPage() {
           >
             Get in touch with our team to start scaling your brand today. Email us at{" "}
             <a
-              href="mailto:hello@inquisitivedigital.com"
+              href="mailto:info@inquisitivedigital.com"
               className="text-brand-accent font-bold hover:underline"
             >
-              hello@inquisitivedigital.com
+              info@inquisitivedigital.com
             </a>
             , call/WhatsApp at{" "}
             <a

@@ -515,10 +515,10 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                     Or reach out via email
                   </p>
                   <a
-                    href="mailto:hello@inquisitivedigital.co"
+                    href="mailto:info@inquisitivedigital.com"
                     className="text-sm font-bold transition-colors text-brand-accent hover:underline underline-offset-4"
                   >
-                    hello@inquisitivedigital.co
+                    info@inquisitivedigital.com
                   </a>
                 </div>
               </div>
