@@ -33,12 +33,27 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://inquisitivedigital.com"),
   icons: {
     icon: '/logo-3.png',
+    apple: '/logo-3.png',
   },
   openGraph: {
     title: "Inquisitive Digital | Engineered Growth",
     description: "No fluff. No vanity metrics. Just measurable growth for ambitious brands.",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: '/logo-3.png',
+        width: 1200,
+        height: 630,
+        alt: 'Inquisitive Digital Logo',
+      }
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Inquisitive Digital | Engineered Growth",
+    description: "No fluff. No vanity metrics. Just measurable growth for ambitious brands.",
+    images: ['/logo-3.png'],
   },
 };
 
