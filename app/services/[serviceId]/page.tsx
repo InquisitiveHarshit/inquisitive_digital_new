@@ -197,6 +197,7 @@ export default function ServiceDetailPage() {
 
   // Form State
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({ fullName: "", email: "", website: "", challenge: "" });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -204,10 +205,29 @@ export default function ServiceDetailPage() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.fullName && formData.email && formData.website) {
+    if (!formData.fullName || !formData.email || !formData.website || !formData.challenge) return;
+    
+    setIsSubmitting(true);
+    try {
+      const payload = new FormData();
+      payload.append("name", formData.fullName);
+      payload.append("email", formData.email);
+      payload.append("website", formData.website);
+      payload.append("message", formData.challenge);
+
+      const res = await fetch("/api/audit", {
+        method: "POST",
+        body: payload,
+      });
+
+      if (!res.ok) throw new Error("Failed to submit audit request");
       setFormSubmitted(true);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -1191,8 +1211,8 @@ export default function ServiceDetailPage() {
                       <textarea name="challenge" rows={3} value={formData.challenge} onChange={handleInputChange} placeholder="What's your biggest growth challenge?" className="w-full bg-surface-container-low border border-outline-variant rounded-2xl px-5 py-3 text-xs font-body text-on-surface placeholder-on-surface-variant/70 focus:border-brand-accent/50 focus:bg-background focus:ring-4 focus:ring-brand-accent/10 focus:outline-none transition-all duration-300 resize-none"></textarea>
                     </div>
 
-                    <button type="submit" className="w-full bg-brand-accent text-background font-display font-bold text-xs uppercase tracking-wider py-3 rounded-full transition-all duration-300 hover:shadow-[0_8px_20px_rgb(245,194,0,0.3)] hover:-translate-y-0.5 mt-2">
-                      CONTACT US →
+                    <button type="submit" disabled={isSubmitting} className="w-full bg-brand-accent text-background font-display font-bold text-xs uppercase tracking-wider py-3 rounded-full transition-all duration-300 hover:shadow-[0_8px_20px_rgb(245,194,0,0.3)] hover:-translate-y-0.5 mt-2 disabled:opacity-70 disabled:cursor-not-allowed">
+                      {isSubmitting ? "PROCESSING..." : "CONTACT US →"}
                     </button>
                   </form>
                 ) : (
