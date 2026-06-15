@@ -179,8 +179,10 @@ export default function ServiceDetailPage() {
         const json = await res.json();
         if (json.success && json.data) {
           setService(json.data);
-          // Scroll to top after data is loaded and rendered
-          setTimeout(() => window.scrollTo(0, 0), 10);
+          // Scroll to top after data is loaded and rendered to avoid browser scroll restoration issues
+          setTimeout(() => {
+            window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+          }, 100);
         } else {
           setNotFound(true);
         }
