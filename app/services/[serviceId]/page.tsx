@@ -43,16 +43,16 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
 
 // ─── TypeScript interfaces for the MongoDB service document ───────────────────
 
-interface StatItem      { value: string; label: string; source?: string }
-interface BenefitItem   { title: string; desc: string }
-interface ServiceItem   { title: string; desc: string }
-interface PillItem      { title: string; desc: string }
-interface ProcessStep   { number: string; title: string; desc: string }
-interface WhyUsItem     { title: string; desc: string }
-interface OutcomeItem   { title: string; desc: string }
-interface PainPoint     { title: string; desc: string }
-interface LeadBenefit   { title: string; desc: string }
-interface FaqItem       { q: string; a: string }
+interface StatItem { value: string; label: string; source?: string }
+interface BenefitItem { title: string; desc: string }
+interface ServiceItem { title: string; desc: string }
+interface PillItem { title: string; desc: string }
+interface ProcessStep { number: string; title: string; desc: string }
+interface WhyUsItem { title: string; desc: string }
+interface OutcomeItem { title: string; desc: string }
+interface PainPoint { title: string; desc: string }
+interface LeadBenefit { title: string; desc: string }
+interface FaqItem { q: string; a: string }
 
 interface SubSection {
   tag: string;
@@ -485,7 +485,7 @@ export default function ServiceDetailPage() {
                 {service.servicesSection.heading}
               </motion.h2>
             </div>
-            
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
               {service.servicesSection.services.map((item, idx) => (
                 <motion.div
@@ -579,11 +579,10 @@ export default function ServiceDetailPage() {
                       initial={{ opacity: 0, x: idx === 0 ? -20 : 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
-                      className={`p-6 lg:p-8 rounded-3xl border shadow-sm relative overflow-hidden ${
-                        idx === 0
+                      className={`p-6 lg:p-8 rounded-3xl border shadow-sm relative overflow-hidden ${idx === 0
                           ? "bg-background border-outline-variant"
                           : "bg-brand-accent/5 border-brand-accent/20"
-                      }`}
+                        }`}
                     >
                       <div className="absolute top-0 right-0 w-32 h-32 bg-brand-accent/5 rounded-bl-full -z-10" />
                       <span className="inline-block px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm">
@@ -617,11 +616,10 @@ export default function ServiceDetailPage() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: idx * 0.1 }}
-                      className={`p-6 rounded-3xl border shadow-sm relative overflow-hidden ${
-                        idx === 1
+                      className={`p-6 rounded-3xl border shadow-sm relative overflow-hidden ${idx === 1
                           ? "bg-brand-accent/5 border-brand-accent/20"
                           : "bg-background border-outline-variant"
-                      }`}
+                        }`}
                     >
                       <div className="absolute top-0 right-0 w-24 h-24 bg-brand-accent/5 rounded-bl-full -z-10" />
                       <span className="inline-block px-3 py-1 rounded-full bg-surface-container-low border border-outline-variant text-brand-accent font-display font-bold text-[10px] uppercase tracking-widest mb-3 shadow-sm">
@@ -806,9 +804,9 @@ export default function ServiceDetailPage() {
                 </div>
                 <div>
                   <h4 className="font-display font-bold text-base text-on-surface tracking-wide mb-1">{deliverable}</h4>
-                  <p className="font-body text-xs text-on-surface-variant leading-relaxed opacity-90">
+                  {/* <p className="font-body text-xs text-on-surface-variant leading-relaxed opacity-90">
                     {service.deliverablesSection?.itemSubtext ?? "Engineered to align directly with your overall growth trajectory."}
-                  </p>
+                  </p> */}
                 </div>
               </motion.div>
             ))}
@@ -860,7 +858,7 @@ export default function ServiceDetailPage() {
                 {service.processSection.heading}
               </motion.h2>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
               {service.processSection.steps.map((step, idx) => (
                 <motion.div
@@ -905,7 +903,7 @@ export default function ServiceDetailPage() {
                 {service.whyUsSection.heading}
               </motion.h2>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {service.whyUsSection.items.map((item, idx) => (
                 <motion.div
@@ -958,7 +956,7 @@ export default function ServiceDetailPage() {
                 {service.resultsSection.description}
               </motion.p>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {service.resultsSection.outcomes.map((outcome, idx) => (
                 <motion.div
@@ -977,47 +975,47 @@ export default function ServiceDetailPage() {
           </div>
         </section>
       ) : (
-      /* SECTION 5 — RESULTS STRIP (Fallback) */
-      <section className="py-12 px-4 md:px-margin-desktop">
-        <div className="max-w-container-max mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-            {[
-              { val: "312%", label: "Net Sales Expansion", sub: "For lifestyle brand" },
-              { val: "4.8x", label: "Sustained Client ROI", sub: "Across Q3 deployments" },
-              { val: "-64%", label: "Decrease in CAC", sub: "Within 60 days" },
-              { val: "₹25Cr+", label: "Margin Generated", sub: "Bottom-line pipeline" }
-            ].map((stat, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="bg-surface-container-low rounded-2xl p-6 flex flex-col items-center text-center transition-transform duration-300 hover:-translate-y-1 border border-outline-variant hover:shadow-sm"
-              >
-                <span className="block font-display text-3xl lg:text-4xl font-extrabold text-brand-accent tracking-tight mb-2">{stat.val}</span>
-                <span className="font-body text-on-surface-variant text-[10px] uppercase tracking-widest font-bold">{stat.label}</span>
-                <span className="font-body text-[10px] font-normal text-on-surface-variant opacity-80 block mt-3">{stat.sub}</span>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <p className="font-display text-xl sm:text-2xl font-medium text-on-surface leading-snug mb-6 opacity-90">
-              "Inquisitive Digital stopped the guessing games. They restructured our entire setup and developed optimized custom funnels in under two weeks."
-            </p>
-            <div className="inline-flex flex-col items-center bg-surface-container-low border border-outline-variant px-5 py-2.5 rounded-full shadow-sm">
-              <span className="block font-display font-bold text-on-surface text-xs tracking-wide">Vikram Mehta</span>
-              <span className="font-body text-on-surface-variant text-[9px] uppercase tracking-widest font-semibold mt-0.5 opacity-90">CMO, Zenith Luxury Goods</span>
+        /* SECTION 5 — RESULTS STRIP (Fallback) */
+        <section className="py-12 px-4 md:px-margin-desktop">
+          <div className="max-w-container-max mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+              {[
+                { val: "312%", label: "Net Sales Expansion", sub: "For lifestyle brand" },
+                { val: "4.8x", label: "Sustained Client ROI", sub: "Across Q3 deployments" },
+                { val: "-64%", label: "Decrease in CAC", sub: "Within 60 days" },
+                { val: "₹25Cr+", label: "Margin Generated", sub: "Bottom-line pipeline" }
+              ].map((stat, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="bg-surface-container-low rounded-2xl p-6 flex flex-col items-center text-center transition-transform duration-300 hover:-translate-y-1 border border-outline-variant hover:shadow-sm"
+                >
+                  <span className="block font-display text-3xl lg:text-4xl font-extrabold text-brand-accent tracking-tight mb-2">{stat.val}</span>
+                  <span className="font-body text-on-surface-variant text-[10px] uppercase tracking-widest font-bold">{stat.label}</span>
+                  <span className="font-body text-[10px] font-normal text-on-surface-variant opacity-80 block mt-3">{stat.sub}</span>
+                </motion.div>
+              ))}
             </div>
-          </motion.div>
-        </div>
-      </section>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="max-w-3xl mx-auto text-center"
+            >
+              <p className="font-display text-xl sm:text-2xl font-medium text-on-surface leading-snug mb-6 opacity-90">
+                "Inquisitive Digital stopped the guessing games. They restructured our entire setup and developed optimized custom funnels in under two weeks."
+              </p>
+              <div className="inline-flex flex-col items-center bg-surface-container-low border border-outline-variant px-5 py-2.5 rounded-full shadow-sm">
+                <span className="block font-display font-bold text-on-surface text-xs tracking-wide">Vikram Mehta</span>
+                <span className="font-body text-on-surface-variant text-[9px] uppercase tracking-widest font-semibold mt-0.5 opacity-90">CMO, Zenith Luxury Goods</span>
+              </div>
+            </motion.div>
+          </div>
+        </section>
       )}
 
       {/* SECTION 6 — THE COST OF NOT ACTING */}
@@ -1045,45 +1043,45 @@ export default function ServiceDetailPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {(service.inactionSection?.painPoints
               ? service.inactionSection.painPoints.map((p, index) => {
-                  const DynamicIcon = painPointIcons[index % painPointIcons.length];
-                  return (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: "-50px" }}
-                      transition={{ delay: index * 0.1, ease: "easeOut" }}
-                      className="bg-background p-6 rounded-2xl border border-outline-variant transition-transform duration-300 hover:-translate-y-1 hover:shadow-sm text-center flex flex-col items-center shadow-sm"
-                    >
-                      <div className="w-12 h-12 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-on-surface mb-4 shadow-sm">
-                        <DynamicIcon className="w-5 h-5 opacity-80 text-brand-accent" />
-                      </div>
-                      <h3 className="font-display text-base font-bold tracking-wide text-on-surface mb-3">{p.title}</h3>
-                      <p className="font-body text-xs font-normal text-on-surface-variant leading-relaxed opacity-90">{p.desc}</p>
-                    </motion.div>
-                  );
-                })
+                const DynamicIcon = painPointIcons[index % painPointIcons.length];
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ delay: index * 0.1, ease: "easeOut" }}
+                    className="bg-background p-6 rounded-2xl border border-outline-variant transition-transform duration-300 hover:-translate-y-1 hover:shadow-sm text-center flex flex-col items-center shadow-sm"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-on-surface mb-4 shadow-sm">
+                      <DynamicIcon className="w-5 h-5 opacity-80 text-brand-accent" />
+                    </div>
+                    <h3 className="font-display text-base font-bold tracking-wide text-on-surface mb-3">{p.title}</h3>
+                    <p className="font-body text-xs font-normal text-on-surface-variant leading-relaxed opacity-90">{p.desc}</p>
+                  </motion.div>
+                );
+              })
               : service.painPoints.map((point, index) => {
-                  const DynamicIcon = painPointIcons[index % painPointIcons.length];
-                  return (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: "-50px" }}
-                      transition={{ delay: index * 0.1, ease: "easeOut" }}
-                      className="bg-background p-6 rounded-2xl border border-outline-variant transition-transform duration-300 hover:-translate-y-1 hover:shadow-sm text-center flex flex-col items-center shadow-sm"
-                    >
-                      <div className="w-12 h-12 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-on-surface mb-4 shadow-sm">
-                        <DynamicIcon className="w-5 h-5 opacity-80 text-brand-accent" />
-                      </div>
-                      <h3 className="font-display text-base font-bold tracking-wide text-on-surface mb-3">{point}</h3>
-                      <p className="font-body text-xs font-normal text-on-surface-variant leading-relaxed opacity-90">
-                        Every day spent running unoptimized campaigns allows your closest competitors to lock down crucial real estate and audiences.
-                      </p>
-                    </motion.div>
-                  );
-                })
+                const DynamicIcon = painPointIcons[index % painPointIcons.length];
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ delay: index * 0.1, ease: "easeOut" }}
+                    className="bg-background p-6 rounded-2xl border border-outline-variant transition-transform duration-300 hover:-translate-y-1 hover:shadow-sm text-center flex flex-col items-center shadow-sm"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-on-surface mb-4 shadow-sm">
+                      <DynamicIcon className="w-5 h-5 opacity-80 text-brand-accent" />
+                    </div>
+                    <h3 className="font-display text-base font-bold tracking-wide text-on-surface mb-3">{point}</h3>
+                    <p className="font-body text-xs font-normal text-on-surface-variant leading-relaxed opacity-90">
+                      Every day spent running unoptimized campaigns allows your closest competitors to lock down crucial real estate and audiences.
+                    </p>
+                  </motion.div>
+                );
+              })
             )}
           </div>
         </div>
@@ -1114,41 +1112,41 @@ export default function ServiceDetailPage() {
               <div className="space-y-4">
                 {(service.leadFormSection?.benefits
                   ? service.leadFormSection.benefits.map((b, idx) => (
-                      <motion.div
-                        key={idx}
-                        initial={{ opacity: 0, x: -15 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: idx * 0.1 }}
-                        className="flex items-start gap-4 bg-background p-4 rounded-2xl border border-outline-variant shadow-sm"
-                      >
-                        <div className="w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-brand-accent flex-shrink-0">
-                          <Check className="w-4 h-4 stroke-[3]" />
-                        </div>
-                        <div>
-                          <h4 className="font-display font-bold text-on-surface text-base mb-0.5">{b.title}</h4>
-                          <p className="font-body font-normal text-xs text-on-surface-variant opacity-90">{b.desc}</p>
-                        </div>
-                      </motion.div>
-                    ))
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, x: -15 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.1 }}
+                      className="flex items-start gap-4 bg-background p-4 rounded-2xl border border-outline-variant shadow-sm"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-brand-accent flex-shrink-0">
+                        <Check className="w-4 h-4 stroke-[3]" />
+                      </div>
+                      <div>
+                        <h4 className="font-display font-bold text-on-surface text-base mb-0.5">{b.title}</h4>
+                        <p className="font-body font-normal text-xs text-on-surface-variant opacity-90">{b.desc}</p>
+                      </div>
+                    </motion.div>
+                  ))
                   : service.benefits.map((benefit, idx) => (
-                      <motion.div
-                        key={idx}
-                        initial={{ opacity: 0, x: -15 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: idx * 0.1 }}
-                        className="flex items-start gap-4 bg-background p-4 rounded-2xl border border-outline-variant shadow-sm"
-                      >
-                        <div className="w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-brand-accent flex-shrink-0">
-                          <Check className="w-4 h-4 stroke-[3]" />
-                        </div>
-                        <div>
-                          <h4 className="font-display font-bold text-on-surface text-base mb-0.5">{benefit}</h4>
-                          <p className="font-body font-normal text-xs text-on-surface-variant opacity-90">Our senior engineers map out exactly how this will impact your bottom line.</p>
-                        </div>
-                      </motion.div>
-                    ))
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, x: -15 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.1 }}
+                      className="flex items-start gap-4 bg-background p-4 rounded-2xl border border-outline-variant shadow-sm"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-surface-container-low border border-outline-variant flex items-center justify-center text-brand-accent flex-shrink-0">
+                        <Check className="w-4 h-4 stroke-[3]" />
+                      </div>
+                      <div>
+                        <h4 className="font-display font-bold text-on-surface text-base mb-0.5">{benefit}</h4>
+                        <p className="font-body font-normal text-xs text-on-surface-variant opacity-90">Our senior engineers map out exactly how this will impact your bottom line.</p>
+                      </div>
+                    </motion.div>
+                  ))
                 )}
               </div>
             </div>
