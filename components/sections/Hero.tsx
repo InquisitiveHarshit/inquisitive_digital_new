@@ -325,7 +325,7 @@ export const Hero: React.FC = () => {
               </div>
               <div className="text-left">
                 <div className="font-display font-black text-base sm:text-xl leading-none">
-                  ₹50Cr+
+                  $2M+
                 </div>
                 <div className={`font-body text-[10px] sm:text-xs mt-1 font-semibold ${
                   themeMode === "singular-dark" ? "text-slate-400" : "text-slate-500"

@@ -9,7 +9,7 @@ export const FloatingWhatsApp: React.FC = () => {
       href="https://wa.me/917310777430" // Replace with actual business number or use generic link
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-8 right-8 z-[100] bg-[#25D366] text-white p-4 rounded-full shadow-2xl flex items-center justify-center focus:outline-none"
+      className="fixed bottom-8 right-8 z-[100] bg-[#25D366] text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center focus:outline-none"
       aria-label="Chat on WhatsApp"
       whileHover={{ scale: 1.1, rotate: 5 }}
       whileTap={{ scale: 0.9 }}

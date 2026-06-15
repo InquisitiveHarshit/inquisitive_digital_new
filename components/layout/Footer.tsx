@@ -94,6 +94,7 @@ export const Footer: React.FC = () => {
             <a className={linkClass} href="/services/social-media">Social Media Marketing</a>
             <a className={linkClass} href="/services/web-development">Web Development</a>
             <a className={linkClass} href="/services/content-writing">Content Marketing</a>
+            <a className={linkClass} href="/services/creative-services">Creative Services</a>
           </div>
         </div>
 
