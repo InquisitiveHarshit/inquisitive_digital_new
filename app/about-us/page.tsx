@@ -135,14 +135,14 @@ export default function AboutUsPage() {
                   className={`flex flex-col md:flex-row items-center justify-center py-8 md:py-12 w-full ${item.reverse ? 'md:flex-row-reverse' : ''}`}
                 >
                   <div className="flex-1 w-full max-w-[420px] flex justify-center px-4 md:px-8 mb-8 md:mb-0">
-                    <img src={item.img} alt={item.title} className="w-full h-auto rounded-xl object-cover" style={{ boxShadow: `6px 6px 0px 0px ${isLight ? "#000" : "#f5c200"}` }} />
+                    <img src={item.img} alt={item.title} className="w-full h-auto rounded-xl object-cover mb-2 mr-2" style={{ boxShadow: `6px 6px 0px 0px ${isLight ? "#000" : "#f5c200"}` }} />
                   </div>
 
                   {/* Divider for desktop */}
                   <div className="hidden md:block w-[2px] h-64 bg-brand-accent/60 mx-4 shrink-0 rounded-full" />
 
-                  <div className={`flex-1 w-full max-w-[480px] px-4 md:px-8 flex flex-col gap-6 ${item.reverse ? 'md:items-end md:text-right' : 'md:items-start md:text-left'} text-center`}>
-                    <span className={`font-display text-7xl md:text-8xl italic font-black text-transparent [-webkit-text-stroke:1px_#f5c200] leading-none ${item.reverse ? 'self-end' : 'self-start'}`} style={{ letterSpacing: "-3px" }}>
+                  <div className={`flex-1 w-full max-w-[480px] px-4 md:px-8 flex flex-col gap-5 md:gap-6 ${item.reverse ? 'md:items-end md:text-right' : 'md:items-start md:text-left'} text-center md:text-left items-center`}>
+                    <span className={`font-display text-7xl md:text-8xl italic font-black text-transparent [-webkit-text-stroke:1px_#f5c200] leading-none ${item.reverse ? 'md:self-end' : 'md:self-start'}`} style={{ letterSpacing: "-3px" }}>
                       {item.year}
                     </span>
                     <div>
@@ -182,7 +182,7 @@ export default function AboutUsPage() {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.7, delay: 0.4 + index * 0.2 }}
                 whileHover={{ y: -4 }}
-                className={`relative flex flex-col md:flex-row gap-8 p-8 border-2 rounded-xl backdrop-blur-sm overflow-hidden ${
+                className={`relative flex flex-col md:flex-row gap-6 md:gap-8 p-6 md:p-8 border-2 rounded-xl backdrop-blur-sm overflow-hidden ${
                   isLight
                     ? "border-slate-200 bg-gradient-to-br from-[#fffef5] via-white to-[#fff9e0]"
                     : "border-slate-800 bg-surface-container-low/50"
@@ -203,10 +203,9 @@ export default function AboutUsPage() {
                     <div className="pointer-events-none absolute -top-16 -right-16 w-40 h-40 rounded-full opacity-20" style={{ background: "radial-gradient(circle, rgba(245,194,0,0.6) 0%, transparent 70%)" }} />
                   </>
                 )}
-                {/* Photo */}
-                <div className="w-full md:w-48 h-48 flex-shrink-0 relative rounded-lg overflow-hidden border border-brand-accent/20 bg-gradient-to-br from-brand-accent/20 to-brand-accent/5 flex flex-col items-center justify-center text-center p-4">
+                <div className="w-full h-72 sm:h-80 md:w-48 md:h-48 flex-shrink-0 relative rounded-lg overflow-hidden border border-brand-accent/20 bg-gradient-to-br from-brand-accent/20 to-brand-accent/5 flex flex-col items-center justify-center text-center p-4">
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(245,194,0,0.15)_0,transparent_70%)] pointer-events-none" />
-                  <img src={founder.image} alt={founder.name} className="absolute inset-0 w-full h-full object-cover z-10 rounded-lg" />
+                  <img src={founder.image} alt={founder.name} className="absolute inset-0 w-full h-full object-cover object-top z-10 rounded-lg" />
                 </div>
 
                 {/* Info & Quote details */}
