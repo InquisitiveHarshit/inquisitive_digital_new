@@ -1,15 +1,7 @@
 import { NextResponse } from "next/server";
-import { v2 as cloudinary } from "cloudinary";
 import connectDB from "@/lib/mongodb";
 import Job from "@/lib/models/Job";
 import Application from "@/lib/models/Application";
-
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
 
 export async function POST(request, { params }) {
   try {
@@ -50,19 +42,27 @@ export async function POST(request, { params }) {
       );
     }
 
-    // Convert file to base64 for Cloudinary upload
+    // Convert file to buffer
     const arrayBuffer = await resumeFile.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    const b64 = buffer.toString("base64");
-    const dataURI = `data:${resumeFile.type};base64,${b64}`;
 
-    // Upload to Cloudinary
-    // We use raw resource_type since resumes could be PDF or DOCX
-    const uploadResult = await cloudinary.uploader.upload(dataURI, {
-      folder: "inquisitive-digital/resumes",
-      resource_type: "auto",
-      public_id: `${Date.now()}-${resumeFile.name.replace(/\s/g, "_")}`,
-    });
+    // Save to local public/uploads directory
+    const { promises: fsPromises } = await import("fs");
+    const path = await import("path");
+
+    const uploadDir = path.join(process.cwd(), "public", "uploads", "resumes");
+    
+    // Ensure directory exists
+    try {
+      await fsPromises.access(uploadDir);
+    } catch {
+      await fsPromises.mkdir(uploadDir, { recursive: true });
+    }
+
+    const filename = `${Date.now()}-${resumeFile.name.replace(/\s/g, "_")}`;
+    const filePath = path.join(uploadDir, filename);
+
+    await fsPromises.writeFile(filePath, buffer);
 
     // Save Application record
     const application = await Application.create({
@@ -71,7 +71,7 @@ export async function POST(request, { params }) {
       email,
       phone,
       cover_letter: coverLetter,
-      resume_url: uploadResult.secure_url,
+      resume_url: `/uploads/resumes/${filename}`,
       resume_original_name: resumeFile.name,
     });
 
