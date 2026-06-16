@@ -208,7 +208,7 @@ export default function ServiceDetailPage() {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.fullName || !formData.email || !formData.website || !formData.challenge) return;
-    
+
     setIsSubmitting(true);
     try {
       const payload = new FormData();
@@ -602,8 +602,8 @@ export default function ServiceDetailPage() {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       className={`p-6 lg:p-8 rounded-3xl border shadow-sm relative overflow-hidden ${idx === 0
-                          ? "bg-background border-outline-variant"
-                          : "bg-brand-accent/5 border-brand-accent/20"
+                        ? "bg-background border-outline-variant"
+                        : "bg-brand-accent/5 border-brand-accent/20"
                         }`}
                     >
                       <div className="absolute top-0 right-0 w-32 h-32 bg-brand-accent/5 rounded-bl-full -z-10" />
@@ -639,8 +639,8 @@ export default function ServiceDetailPage() {
                       viewport={{ once: true }}
                       transition={{ delay: idx * 0.1 }}
                       className={`p-6 rounded-3xl border shadow-sm relative overflow-hidden ${idx === 1
-                          ? "bg-brand-accent/5 border-brand-accent/20"
-                          : "bg-background border-outline-variant"
+                        ? "bg-brand-accent/5 border-brand-accent/20"
+                        : "bg-background border-outline-variant"
                         }`}
                     >
                       <div className="absolute top-0 right-0 w-24 h-24 bg-brand-accent/5 rounded-bl-full -z-10" />
@@ -1223,7 +1223,7 @@ export default function ServiceDetailPage() {
                     <h3 className="font-display text-on-surface text-2xl font-extrabold tracking-tight">Message Received</h3>
                     <p className="font-body text-xs font-normal text-on-surface-variant leading-relaxed max-w-sm mx-auto">
                       Thank you, <span className="text-on-surface font-bold">{formData.fullName}</span>. Our engineers are analyzing <span className="text-brand-accent font-bold">{formData.website}</span>.
-                      Your custom video breakdown will be delivered to <span className="text-on-surface font-bold">{formData.email}</span> within 48 hours.
+                      Your custom report will be delivered to <span className="text-on-surface font-bold">{formData.email}</span> within 48 hours.
                     </p>
                     <div className="pt-4">
                       <button onClick={() => { setFormSubmitted(false); setFormData({ fullName: "", email: "", website: "", challenge: "" }) }} className="font-display text-[10px] font-bold text-brand-accent uppercase tracking-widest hover:underline bg-surface-container-low border border-outline-variant px-4 py-1.5 rounded-full shadow-sm">Submit another</button>
