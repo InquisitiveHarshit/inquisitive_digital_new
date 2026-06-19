@@ -18,10 +18,15 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     const protocol =
       process.env.NODE_ENV === "production" ? "https" : "http";
     const baseUrl = `${protocol}://${host}`;
+    const apiUrl = `${baseUrl}/api/services/${serviceId}`;
 
-    const res = await fetch(`${baseUrl}/api/services/${serviceId}`, {
+    console.log(`[generateMetadata] Fetching: ${apiUrl}`);
+
+    const res = await fetch(apiUrl, {
       next: { revalidate: 3600 },
     });
+
+    console.log(`[generateMetadata] Response status: ${res.status}`);
 
     if (res.ok) {
       const json = await res.json();
@@ -30,17 +35,22 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
           json.data;
         const t = metaTitle || `${title} | Inquisitive Digital`;
         const d = metaDescription || shortDescription;
+        const canonicalUrl = `https://inquisitivedigital.com/services/${serviceId}`;
 
         return {
           title: t,
           description: d,
-          openGraph: { title: t, description: d },
+          alternates: { canonical: canonicalUrl },
+          openGraph: { title: t, description: d, url: canonicalUrl },
           twitter: { card: "summary_large_image", title: t, description: d },
         };
       }
+    } else {
+      const text = await res.text();
+      console.error(`[generateMetadata] API error ${res.status}:`, text);
     }
   } catch (error) {
-    console.error("[generateMetadata] service error:", error);
+    console.error("[generateMetadata] service fetch failed:", error);
   }
 
   return {

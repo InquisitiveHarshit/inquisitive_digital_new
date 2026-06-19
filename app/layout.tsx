@@ -31,6 +31,9 @@ export const metadata: Metadata = {
   title: "Digital Marketing Agency in India | SEO, PPC & Social Media",
   description: "Looking for a top digital marketing agency in India? Inquisitive Digital delivers expert SEO, Google Ads, social media & performance marketing. 100+ brands scaled. Get a free consultation today!",
   metadataBase: new URL("https://inquisitivedigital.com"),
+  alternates: {
+    canonical: "https://inquisitivedigital.com/",
+  },
   icons: {
     icon: '/logo-3.png',
     apple: '/logo-3.png',
@@ -40,6 +43,7 @@ export const metadata: Metadata = {
     description: "Looking for a top digital marketing agency in India? Inquisitive Digital delivers expert SEO, Google Ads, social media & performance marketing. 100+ brands scaled. Get a free consultation today!",
     type: "website",
     locale: "en_US",
+    url: "https://inquisitivedigital.com/",
     images: [
       {
         url: '/logo-3.png',
