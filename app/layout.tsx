@@ -28,16 +28,16 @@ const beVietnam = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Inquisitive Digital | Engineered Growth",
-  description: "No fluff. No vanity metrics. Just measurable growth for ambitious brands. We engineer digital marketing strategies built on hard data and absolute transparency.",
+  title: "Digital Marketing Agency in India | SEO, PPC & Social Media",
+  description: "Looking for a top digital marketing agency in India? Inquisitive Digital delivers expert SEO, Google Ads, social media & performance marketing. 100+ brands scaled. Get a free consultation today!",
   metadataBase: new URL("https://inquisitivedigital.com"),
   icons: {
     icon: '/logo-3.png',
     apple: '/logo-3.png',
   },
   openGraph: {
-    title: "Inquisitive Digital | Engineered Growth",
-    description: "No fluff. No vanity metrics. Just measurable growth for ambitious brands.",
+    title: "Digital Marketing Agency in India | SEO, PPC & Social Media",
+    description: "Looking for a top digital marketing agency in India? Inquisitive Digital delivers expert SEO, Google Ads, social media & performance marketing. 100+ brands scaled. Get a free consultation today!",
     type: "website",
     locale: "en_US",
     images: [
@@ -51,8 +51,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Inquisitive Digital | Engineered Growth",
-    description: "No fluff. No vanity metrics. Just measurable growth for ambitious brands.",
+    title: "Digital Marketing Agency in India | SEO, PPC & Social Media",
+    description: "Looking for a top digital marketing agency in India? Inquisitive Digital delivers expert SEO, Google Ads, social media & performance marketing. 100+ brands scaled. Get a free consultation today!",
     images: ['/logo-3.png'],
   },
 };
