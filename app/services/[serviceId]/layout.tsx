@@ -10,44 +10,29 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const serviceId = params.serviceId;
 
   try {
-    // Dynamically derive the base URL from the incoming request headers.
-    // This works on localhost AND on Hostinger/Vercel/any host without
-    // needing NEXT_PUBLIC_APP_URL env variables.
-    const headersList = await headers();
-    const host = headersList.get("host");
-    const protocol =
-      process.env.NODE_ENV === "production" ? "https" : "http";
-    const baseUrl = `${protocol}://${host}`;
-    const apiUrl = `${baseUrl}/api/services/${serviceId}`;
+    const connectDB = (await import("@/lib/mongodb")).default;
+    const Service = (await import("@/lib/models/Service")).default;
 
-    console.log(`[generateMetadata] Fetching: ${apiUrl}`);
+    await connectDB();
+    const service = await Service.findOne({ slug: serviceId }).lean();
 
-    const res = await fetch(apiUrl, {
-      next: { revalidate: 3600 },
-    });
+    if (service) {
+      const metaTitle = (service as any).metaTitle;
+      const title = (service as any).title;
+      const metaDescription = (service as any).metaDescription;
+      const shortDescription = (service as any).shortDescription;
 
-    console.log(`[generateMetadata] Response status: ${res.status}`);
+      const t = metaTitle || `${title} | Inquisitive Digital`;
+      const d = metaDescription || shortDescription;
+      const canonicalUrl = `https://www.inquisitivedigital.com/services/${serviceId}`;
 
-    if (res.ok) {
-      const json = await res.json();
-      if (json.success && json.data) {
-        const { metaTitle, metaDescription, title, shortDescription } =
-          json.data;
-        const t = metaTitle || `${title} | Inquisitive Digital`;
-        const d = metaDescription || shortDescription;
-        const canonicalUrl = `https://inquisitivedigital.com/services/${serviceId}`;
-
-        return {
-          title: t,
-          description: d,
-          alternates: { canonical: canonicalUrl },
-          openGraph: { title: t, description: d, url: canonicalUrl },
-          twitter: { card: "summary_large_image", title: t, description: d },
-        };
-      }
-    } else {
-      const text = await res.text();
-      console.error(`[generateMetadata] API error ${res.status}:`, text);
+      return {
+        title: t,
+        description: d,
+        alternates: { canonical: canonicalUrl },
+        openGraph: { title: t, description: d, url: canonicalUrl },
+        twitter: { card: "summary_large_image", title: t, description: d },
+      };
     }
   } catch (error) {
     console.error("[generateMetadata] service fetch failed:", error);

@@ -22,8 +22,8 @@ archive.on('error', function(err) {
 
 archive.pipe(output);
 
-// Define exactly what to include in the ZIP (the source files)
 const directories = [
+  '.next',
   'app',
   'assets',
   'backend',

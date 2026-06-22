@@ -6,7 +6,7 @@ import Blog from "@/lib/models/Blog";
 export const dynamic = "force-dynamic"; // always regenerate, never cache statically
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://inquisitivedigital.com";
+  const baseUrl = "https://www.inquisitivedigital.com";
 
   // Static pages
   const staticRoutes: MetadataRoute.Sitemap = [

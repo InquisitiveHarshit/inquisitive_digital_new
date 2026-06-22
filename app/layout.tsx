@@ -30,9 +30,21 @@ const beVietnam = localFont({
 export const metadata: Metadata = {
   title: "Digital Marketing Agency in India | SEO, PPC & Social Media",
   description: "Looking for a top digital marketing agency in India? Inquisitive Digital delivers expert SEO, Google Ads, social media & performance marketing. 100+ brands scaled. Get a free consultation today!",
-  metadataBase: new URL("https://inquisitivedigital.com"),
+  metadataBase: new URL("https://www.inquisitivedigital.com"),
   alternates: {
-    canonical: "https://inquisitivedigital.com/",
+    canonical: "https://www.inquisitivedigital.com/",
+  },
+  authors: [{ name: "Inquisitive Digital" }],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   icons: {
     icon: '/logo-3.png',
@@ -43,7 +55,7 @@ export const metadata: Metadata = {
     description: "Looking for a top digital marketing agency in India? Inquisitive Digital delivers expert SEO, Google Ads, social media & performance marketing. 100+ brands scaled. Get a free consultation today!",
     type: "website",
     locale: "en_US",
-    url: "https://inquisitivedigital.com/",
+    url: "https://www.inquisitivedigital.com/",
     images: [
       {
         url: '/logo-3.png',

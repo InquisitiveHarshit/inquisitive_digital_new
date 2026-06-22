@@ -10,34 +10,29 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   const slug = params.slug;
 
   try {
-    // Dynamically derive the base URL from the incoming request headers.
-    // This works on localhost AND on Hostinger/Vercel/any host without
-    // needing NEXT_PUBLIC_APP_URL env variables.
-    const headersList = await headers();
-    const host = headersList.get("host");
-    const protocol =
-      process.env.NODE_ENV === "production" ? "https" : "http";
-    const baseUrl = `${protocol}://${host}`;
+    const connectDB = (await import("@/lib/mongodb")).default;
+    const Blog = (await import("@/lib/models/Blog")).default;
 
-    const res = await fetch(`${baseUrl}/api/blogs/${slug}`, {
-      next: { revalidate: 3600 },
-    });
+    await connectDB();
+    const blog = await Blog.findOne({ slug: slug }).lean();
 
-    if (res.ok) {
-      const json = await res.json();
-      if (json.success && json.data) {
-        const { metaTitle, metaDescription, title, excerpt } = json.data;
-        const t = metaTitle || `${title} | Inquisitive Digital`;
-        const d =
-          metaDescription || excerpt || "Read our latest blog post.";
+    if (blog) {
+      const metaTitle = (blog as any).metaTitle;
+      const title = (blog as any).title;
+      const metaDescription = (blog as any).metaDescription;
+      const excerpt = (blog as any).excerpt;
 
-        return {
-          title: t,
-          description: d,
-          openGraph: { title: t, description: d },
-          twitter: { card: "summary_large_image", title: t, description: d },
-        };
-      }
+      const t = metaTitle || `${title} | Inquisitive Digital`;
+      const d = metaDescription || excerpt || "Read our latest blog post.";
+      const canonicalUrl = `https://www.inquisitivedigital.com/blogs/${slug}`;
+
+      return {
+        title: t,
+        description: d,
+        alternates: { canonical: canonicalUrl },
+        openGraph: { title: t, description: d, url: canonicalUrl },
+        twitter: { card: "summary_large_image", title: t, description: d },
+      };
     }
   } catch (error) {
     console.error("[generateMetadata] blog error:", error);
