@@ -175,7 +175,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
               transition={{ delay: 0.3 }}
               className="lg:col-span-2"
             >
-              {blog.imageUrl && (
+              {(blog.heroImage?.url || blog.heroImageUrl || blog.imageUrl) && (
                 <motion.div
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -184,8 +184,8 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                     }`}
                 >
                   <img
-                    src={blog.imageUrl}
-                    alt={blog.title}
+                    src={blog.heroImage?.url || blog.heroImageUrl || blog.imageUrl}
+                    alt={blog.heroImage?.alt || blog.title}
                     className="w-full h-full object-cover"
                   />
                 </motion.div>
@@ -193,7 +193,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
 
               {blog.excerpt && (
                 <p
-                  className={`text-lg md:text-xl leading-relaxed mb-8 font-medium ${isLight ? "text-slate-700" : "text-white/80"
+                  className={`text-base md:text-lg leading-relaxed mb-8 font-medium ${isLight ? "text-slate-700" : "text-white/80"
                     }`}
                 >
                   {blog.excerpt}
@@ -203,10 +203,10 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
               {/* Blog Markdown-like Content (Legacy fallback) */}
               {blog.content && (
                 <div
-                  className={`font-body text-base md:text-lg leading-loose prose max-w-none ${isLight
+                  className={`font-body text-sm md:text-base leading-relaxed prose max-w-none ${isLight
                     ? "prose-slate"
                     : "prose-invert prose-p:text-slate-300 prose-headings:text-white prose-li:text-slate-300"
-                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-2xl prose-h2:md:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-6 prose-ul:mb-6 prose-ul:list-disc prose-ul:pl-6`}
+                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-2xl prose-h2:md:text-4xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:md:text-2xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
                 >
                   {(() => {
                     const lines = blog.content.split("\n").map(l => l.trim());
@@ -279,10 +279,10 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
               {/* Structured Sections */}
               {blog.sections && blog.sections.length > 0 && (
                 <div
-                  className={`font-body text-base md:text-lg leading-loose prose max-w-none ${isLight
+                  className={`font-body text-sm md:text-base leading-relaxed prose max-w-none ${isLight
                     ? "prose-slate"
                     : "prose-invert prose-p:text-slate-300 prose-headings:text-white prose-li:text-slate-300"
-                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-2xl prose-h2:md:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-6 prose-ul:mb-6 prose-ul:list-disc prose-ul:pl-6`}
+                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-2xl prose-h2:md:text-4xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-xl prose-h3:md:text-2xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
                 >
                   {blog.sections.map((section, index) => (
                     <div key={index} className="mb-12">
@@ -291,7 +291,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                       )}
 
                       {section.subheading && (
-                        <h3 className={`text-xl font-bold mb-4 ${isLight ? "text-slate-800" : "text-white"}`}>
+                        <h3 className={`text-xl md:text-2xl font-bold mb-4 ${isLight ? "text-slate-800" : "text-white"}`}>
                           {section.subheading}
                         </h3>
                       )}
@@ -335,7 +335,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                           {section.subsections.map((sub, subIdx) => (
                             <div key={subIdx}>
                               {sub.subheading && (
-                                <h3 className={`text-lg font-bold mb-3 ${isLight ? "text-slate-800" : "text-white"}`}>
+                                <h3 className={`text-xl font-bold mb-3 ${isLight ? "text-slate-800" : "text-white"}`}>
                                   {sub.subheading}
                                 </h3>
                               )}
@@ -404,7 +404,7 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
                           {faq.question}
                         </h3>
                         <div
-                          className={`text-base leading-relaxed ${isLight ? "text-slate-600" : "text-slate-300"}`}
+                          className={`text-sm md:text-base leading-relaxed ${isLight ? "text-slate-600" : "text-slate-300"}`}
                           dangerouslySetInnerHTML={{ __html: faq.answer }}
                         />
                       </div>

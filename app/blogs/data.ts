@@ -42,6 +42,7 @@ export interface BlogPost {
   tags?: string[];
   imageUrl?: string;
   heroImage?: BlogImage;
+  heroImageUrl?: string;
   sections?: BlogSection[];
   faqs?: BlogFAQ[];
   author?: string;
