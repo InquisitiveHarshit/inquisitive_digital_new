@@ -46,7 +46,11 @@ const files = [
 directories.forEach(dir => {
   if (fs.existsSync(dir)) {
     console.log(`Adding folder: ${dir}`);
-    archive.directory(dir + '/', dir);
+    if (dir === '.next') {
+      archive.glob('**/*', { cwd: dir, ignore: ['cache/**', 'dev/**'] }, { prefix: dir });
+    } else {
+      archive.directory(dir + '/', dir);
+    }
   }
 });
 
