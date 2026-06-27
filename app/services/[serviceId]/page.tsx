@@ -25,5 +25,17 @@ export default async function ServiceDetailPage({ params }: { params: Promise<{ 
     console.error("[ServiceDetailPage] Error fetching service:", error);
   }
 
-  return <ServiceDetailClient initialService={initialService} />;
+  const schema = initialService?.schemaData || null;
+
+  return (
+    <>
+      {schema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      )}
+      <ServiceDetailClient initialService={initialService} />
+    </>
+  );
 }
