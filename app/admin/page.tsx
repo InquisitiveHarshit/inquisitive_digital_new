@@ -1565,28 +1565,64 @@ export default function AdminDashboard() {
                 <div className="space-y-3">
                   <span className="text-xs uppercase tracking-wider font-bold text-white/50 block">Attached Resume</span>
                   <div className="border border-white/10 rounded-xl p-4.5 flex items-center justify-between bg-white/5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-brand-accent/10 flex items-center justify-center text-brand-accent">
-                        <FileText className="w-5 h-5" />
+                    {selectedApp.resume_url ? (
+                      <>
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-lg bg-brand-accent/10 flex items-center justify-center text-brand-accent">
+                            <FileText className="w-5 h-5" />
+                          </div>
+                          <div className="text-left max-w-[150px] sm:max-w-[200px]">
+                            <p className="text-sm font-bold truncate text-white">
+                              {selectedApp.resume_original_name || "candidate_resume.pdf"}
+                            </p>
+                            <p className="text-xs text-white/40">Click to view/download file</p>
+                          </div>
+                        </div>
+                        
+                        {/* Download & Delete Buttons */}
+                        <div className="flex gap-2">
+                          <a
+                            href={`${API_BASE}${selectedApp.resume_url}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-3 rounded-xl bg-brand-accent text-slate-900 hover:bg-white transition-all flex items-center justify-center"
+                            title="Download Resume"
+                          >
+                            <Download className="w-4 h-4" />
+                          </a>
+                          <button
+                            onClick={async () => {
+                              if (!confirm("Are you sure you want to permanently delete this resume from the database?")) return;
+                              try {
+                                const res = await fetch(`${API_BASE}${selectedApp.resume_url}`, { method: 'DELETE' });
+                                if (res.ok) {
+                                  // Update the local state to reflect deletion
+                                  const updatedApp = { ...selectedApp, resume_url: "" };
+                                  setSelectedApp(updatedApp);
+                                  setApplications(prev => prev.map(app => app.id === updatedApp.id ? updatedApp : app));
+                                  alert("Resume cleared successfully");
+                                } else {
+                                  alert("Failed to clear resume");
+                                }
+                              } catch (e) {
+                                alert("An error occurred");
+                              }
+                            }}
+                            className="p-3 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center"
+                            title="Delete Resume Data"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center text-white/30">
+                          <FileText className="w-5 h-5" />
+                        </div>
+                        <p className="text-sm italic text-white/40">Resume has been cleared</p>
                       </div>
-                      <div className="text-left max-w-[200px] sm:max-w-xs">
-                        <p className="text-sm font-bold truncate text-white">
-                          {selectedApp.resume_original_name || "candidate_resume.pdf"}
-                        </p>
-                        <p className="text-xs text-white/40">Click to view/download file</p>
-                      </div>
-                    </div>
-                    
-                    {/* Download Button */}
-                    <a
-                      href={`${API_BASE}${selectedApp.resume_url}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-3 rounded-xl bg-brand-accent text-slate-900 hover:bg-white transition-all flex items-center justify-center"
-                      title="Download Resume"
-                    >
-                      <Download className="w-4 h-4" />
-                    </a>
+                    )}
                   </div>
                 </div>
               </div>

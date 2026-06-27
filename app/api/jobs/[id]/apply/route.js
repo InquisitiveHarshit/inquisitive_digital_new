@@ -46,34 +46,22 @@ export async function POST(request, { params }) {
     const arrayBuffer = await resumeFile.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Save to local public/uploads directory
-    const { promises: fsPromises } = await import("fs");
-    const path = await import("path");
-
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "resumes");
-    
-    // Ensure directory exists
-    try {
-      await fsPromises.access(uploadDir);
-    } catch {
-      await fsPromises.mkdir(uploadDir, { recursive: true });
-    }
-
-    const filename = `${Date.now()}-${resumeFile.name.replace(/\s/g, "_")}`;
-    const filePath = path.join(uploadDir, filename);
-
-    await fsPromises.writeFile(filePath, buffer);
-
     // Save Application record
-    const application = await Application.create({
+    const application = new Application({
       job_id: id,
       full_name: name,
       email,
       phone,
       cover_letter: coverLetter,
-      resume_url: `/uploads/resumes/${filename}`,
       resume_original_name: resumeFile.name,
+      resume_content_type: resumeFile.type || "application/pdf",
+      resume_data: buffer,
     });
+    
+    // Set a dynamic URL that routes to our new GET endpoint
+    application.resume_url = `/api/resumes/${application._id}`;
+    
+    await application.save();
 
     return NextResponse.json(
       { success: true, data: { id: application.id } },
