@@ -18,6 +18,8 @@ import {
   ChevronUp,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import GoogleDocsPasteModal from "@/components/admin/GoogleDocsPasteModal";
+import { parseGoogleDocsHtml } from "@/lib/utils/htmlParser";
 
 const API_BASE = "";
 
@@ -113,6 +115,9 @@ export default function BlogsAdmin() {
 
   // Upload state
   const [uploadingImage, setUploadingImage] = useState(false);
+
+  // Paste Modal
+  const [isPasteModalOpen, setIsPasteModalOpen] = useState(false);
 
   // Delete Confirm
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
@@ -259,8 +264,32 @@ export default function BlogsAdmin() {
   };
 
   /* ═══════════════════════════════════════════════════════════════════════════
-     IMAGE UPLOAD
+     IMAGE UPLOAD & DOCS PASTE
      ═══════════════════════════════════════════════════════════════════════ */
+     
+  const handleGoogleDocsParse = (html: string) => {
+    const parsed = parseGoogleDocsHtml(html);
+    
+    if (parsed.title) setFormTitle(parsed.title);
+    if (parsed.slug) setFormSlug(parsed.slug);
+    if (parsed.category) setFormCategory(parsed.category);
+    if (parsed.author) setFormAuthor(parsed.author);
+    if (parsed.excerpt) setFormExcerpt(parsed.excerpt);
+    if (parsed.seoTitle) setFormSeoTitle(parsed.seoTitle);
+    if (parsed.seoDescription) setFormSeoDesc(parsed.seoDescription);
+
+    if (parsed.intro) {
+      setFormIntro((prev) => prev ? prev + "\n\n" + parsed.intro : parsed.intro);
+    }
+    if (parsed.sections.length > 0) {
+      setFormSections((prev) => [...prev, ...parsed.sections]);
+    }
+    if (parsed.faqs.length > 0) {
+      setFormFaqs((prev) => [...prev, ...parsed.faqs]);
+    }
+
+    notify("success", "Successfully parsed content from Google Docs!");
+  };
   
   const handleHeroImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -505,12 +534,23 @@ export default function BlogsAdmin() {
               {blogs.length} total &middot; {blogs.filter((b) => b.isActive).length} published &middot; {blogs.filter((b) => !b.isActive).length} drafts
             </p>
           </div>
-          <button
-            onClick={() => openDrawer(null)}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-brand-accent text-slate-900 font-display text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-all shadow-xl self-start sm:self-auto"
-          >
-            <Plus className="w-4 h-4" /> New Blog Post
-          </button>
+          <div className="flex items-center gap-3 self-start sm:self-auto">
+            <button
+              onClick={() => {
+                openDrawer(null);
+                setIsPasteModalOpen(true);
+              }}
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 text-white font-display text-xs uppercase font-extrabold tracking-wider hover:bg-white/20 transition-all shadow-xl"
+            >
+              Paste from Google Docs
+            </button>
+            <button
+              onClick={() => openDrawer(null)}
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-brand-accent text-slate-900 font-display text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-all shadow-xl"
+            >
+              <Plus className="w-4 h-4" /> New Blog Post
+            </button>
+          </div>
         </div>
 
         <div className="bg-white/5 border border-white/10 p-5 rounded-2xl flex flex-wrap gap-4 items-center">
@@ -807,6 +847,12 @@ export default function BlogsAdmin() {
           </div>
         )}
       </AnimatePresence>
+
+      <GoogleDocsPasteModal
+        isOpen={isPasteModalOpen}
+        onClose={() => setIsPasteModalOpen(false)}
+        onParse={handleGoogleDocsParse}
+      />
     </>
   );
 }
