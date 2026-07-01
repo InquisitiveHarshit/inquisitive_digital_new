@@ -121,7 +121,7 @@ export default function BlogDetailClient({
                   className={`font-body text-sm md:text-base leading-relaxed prose max-w-none ${isLight
                     ? "prose-slate"
                     : "prose-invert prose-p:text-slate-300 prose-headings:text-white prose-li:text-slate-300"
-                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-3xl prose-h2:md:text-5xl prose-h2:mt-16 prose-h2:mb-8 prose-h3:text-xl prose-h3:md:text-2xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
+                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-xl prose-h2:md:text-3xl prose-h2:mt-4 prose-h2:mb-4 prose-h3:text-lg prose-h3:md:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
                 >
                   {(() => {
                     const lines = blog.content.split("\n").map(l => l.trim());
@@ -170,7 +170,7 @@ export default function BlogDetailClient({
                         flushParagraph();
                         flushList();
                         elements.push(
-                          <h2 key={`h2-${elements.length}`} className="text-brand-accent text-3xl md:text-5xl font-display font-black uppercase mb-8 mt-16">
+                          <h2 key={`h2-${elements.length}`} className="text-brand-accent text-xl md:text-3xl font-display font-black uppercase mb-4 mt-4">
                             {line.replace("## ", "")}
                           </h2>
                         );
@@ -197,16 +197,16 @@ export default function BlogDetailClient({
                   className={`font-body text-sm md:text-base leading-relaxed prose max-w-none ${isLight
                     ? "prose-slate"
                     : "prose-invert prose-p:text-slate-300 prose-headings:text-white prose-li:text-slate-300"
-                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-3xl prose-h2:md:text-5xl prose-h2:mt-16 prose-h2:mb-8 prose-h3:text-xl prose-h3:md:text-2xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
+                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-xl prose-h2:md:text-3xl prose-h2:mt-4 prose-h2:mb-4 prose-h3:text-lg prose-h3:md:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
                 >
                   {blog.sections.map((section, index) => (
                     <div key={index} className="mb-12">
                       {section.heading && (
-                        <h2 className="text-brand-accent text-3xl md:text-5xl font-display font-black uppercase mb-8 mt-16">{section.heading}</h2>
+                        <h2 className="text-brand-accent text-xl md:text-3xl font-display font-black uppercase mb-4 mt-4">{section.heading}</h2>
                       )}
 
                       {section.subheading && (
-                        <h3 className={`text-xl md:text-2xl font-bold mb-4 ${isLight ? "text-slate-800" : "text-white"}`}>
+                        <h3 className={`text-lg md:text-xl font-bold mb-4 ${isLight ? "text-slate-800" : "text-white"}`}>
                           {section.subheading}
                         </h3>
                       )}
@@ -530,7 +530,7 @@ export default function BlogDetailClient({
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className={`text-3xl md:text-5xl font-display font-black uppercase mb-6 ${isLight ? "text-slate-900" : "text-white"
+              className={`text-xl md:text-3xl font-display font-black uppercase mb-6 ${isLight ? "text-slate-900" : "text-white"
                 }`}
             >
               Read More <span className="text-brand-accent">Articles</span>
