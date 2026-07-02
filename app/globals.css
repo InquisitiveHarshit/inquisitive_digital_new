@@ -102,3 +102,78 @@ body {
 .gold-glow-pulse {
   animation: goldGlowPulse 4s infinite ease-in-out;
 }
+
+/* ─── Blog Content: Preserve Google Docs inline formatting ───────────────────
+   Tailwind's `prose` plugin resets font-weight/style/decoration on elements.
+   These overrides ensure that inline styles exported from Google Docs
+   (bold, italic, underline, color) are respected on the live blog page.
+   ──────────────────────────────────────────────────────────────────────────── */
+.blog-content span[style*="font-weight:700"],
+.blog-content span[style*="font-weight: 700"] {
+  font-weight: 700 !important;
+}
+.blog-content span[style*="font-weight:600"],
+.blog-content span[style*="font-weight: 600"] {
+  font-weight: 600 !important;
+}
+.blog-content span[style*="font-style:italic"],
+.blog-content span[style*="font-style: italic"] {
+  font-style: italic !important;
+}
+.blog-content span[style*="text-decoration:underline"],
+.blog-content span[style*="text-decoration: underline"] {
+  text-decoration: underline !important;
+}
+.blog-content strong {
+  font-weight: 700 !important;
+}
+.blog-content em {
+  font-style: italic !important;
+}
+.blog-content u {
+  text-decoration: underline !important;
+}
+
+/* ─── Blog Content: List Styles (for <ul>/<ol> rendered via dangerouslySetInnerHTML) ── */
+.blog-content ul {
+  list-style-type: disc !important;
+  padding-left: 1.75rem !important;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+.blog-content ol {
+  list-style-type: decimal !important;
+  padding-left: 1.75rem !important;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+.blog-content li {
+  display: list-item !important;
+  margin-bottom: 0.4rem !important;
+}
+.blog-content li::marker {
+  color: #f5c200;
+}
+
+/* ─── Blog Content: Heading Styles ────────────────────────────────────────── */
+.blog-content h3 {
+  font-size: 1.125rem !important;
+  font-weight: 700 !important;
+  margin-top: 2rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+/* ─── Blog Content: Paragraph spacing ─────────────────────────────────────── */
+.blog-content p {
+  margin-bottom: 1rem !important;
+}
+
+/* ─── Blog Content: Links ──────────────────────────────────────────────────── */
+.blog-content a {
+  color: #f5c200 !important;
+  text-decoration: underline !important;
+  font-weight: 600 !important;
+}
+.blog-content a:hover {
+  opacity: 0.8 !important;
+}

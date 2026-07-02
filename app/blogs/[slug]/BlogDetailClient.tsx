@@ -194,7 +194,7 @@ export default function BlogDetailClient({
               {/* Structured Sections */}
               {blog.sections && blog.sections.length > 0 && (
                 <div
-                  className={`font-body text-sm md:text-base leading-relaxed prose max-w-none ${isLight
+                  className={`blog-content font-body text-sm md:text-base leading-relaxed prose max-w-none ${isLight
                     ? "prose-slate"
                     : "prose-invert prose-p:text-slate-300 prose-headings:text-white prose-li:text-slate-300"
                     } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-xl prose-h2:md:text-3xl prose-h2:mt-4 prose-h2:mb-4 prose-h3:text-lg prose-h3:md:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
@@ -221,7 +221,7 @@ export default function BlogDetailClient({
                         />
                       )}
 
-                      {section.listItems && section.listItems.length > 0 && (
+                      {section.listItems && section.listItems.length > 0 && !(section.text && (section.text.includes('<ul>') || section.text.includes('<ol>'))) && (
                         <ul className="list-disc pl-6 space-y-2 marker:text-brand-accent ml-4 my-6">
                           {section.listItems.map((item, i) => (
                             <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
@@ -263,7 +263,7 @@ export default function BlogDetailClient({
                                   }}
                                 />
                               )}
-                              {sub.listItems && sub.listItems.length > 0 && (
+                              {sub.listItems && sub.listItems.length > 0 && !(sub.text && (sub.text.includes('<ul>') || sub.text.includes('<ol>'))) && (
                                 <ul className="list-disc pl-6 space-y-2 marker:text-brand-accent ml-4 my-4">
                                   {sub.listItems.map((item, i) => (
                                     <li key={i} dangerouslySetInnerHTML={{ __html: item }} />

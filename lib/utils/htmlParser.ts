@@ -12,12 +12,77 @@ export interface ParsedResult {
 }
 
 /**
+ * Reads the Google Docs <style> block via regex and maps class names
+ * (like .c11) to whether they apply bold, italic, or underline.
+ */
+function extractGoogleDocsFormattingClasses(css: string) {
+  const boldClasses = new Set<string>();
+  const italicClasses = new Set<string>();
+  const underlineClasses = new Set<string>();
+
+  const ruleMatches = css.matchAll(/\.(c\d+)\s*\{([^}]+)\}/g);
+  for (const match of ruleMatches) {
+    const cls = match[1];
+    const body = match[2];
+    if (/font-weight\s*:\s*(700|bold)/i.test(body))  boldClasses.add(cls);
+    if (/font-style\s*:\s*italic/i.test(body))        italicClasses.add(cls);
+    if (/text-decoration[^;]*underline/i.test(body))  underlineClasses.add(cls);
+  }
+
+  return { boldClasses, italicClasses, underlineClasses };
+}
+
+/**
+ * Replaces <span class="cN">text</span> with semantic <strong>, <em>, <u> tags.
+ * Strips class-only spans (no formatting) leaving just plain text.
+ */
+function convertGoogleDocsSpans(
+  html: string,
+  boldClasses: Set<string>,
+  italicClasses: Set<string>,
+  underlineClasses: Set<string>
+): string {
+  return html.replace(/<span\s+class="([^"]*)">([\s\S]*?)<\/span>/g, (_, classAttr, content) => {
+    const classes = classAttr.split(/\s+/);
+    const isBold      = classes.some((c: string) => boldClasses.has(c));
+    const isItalic    = classes.some((c: string) => italicClasses.has(c));
+    const isUnderline = classes.some((c: string) => underlineClasses.has(c));
+
+    let result = content;
+    if (isUnderline) result = `<u>${result}</u>`;
+    if (isItalic)    result = `<em>${result}</em>`;
+    if (isBold)      result = `<strong>${result}</strong>`;
+    return result;
+  });
+}
+
+/**
  * Parses raw HTML pasted from Google Docs into our Blog schema format.
+ *
+ * Key design:
+ * - H2 tags → new sections (with heading field)
+ * - H3 tags → embedded as <h3> HTML inside section.text (preserves document order)
+ * - <p> tags → wrapped as <p> HTML inside section.text
+ * - <ul>/<ol> → both stored in listItems[] (for Admin UI) AND appended as HTML to section.text (for blog page order)
+ * - Everything within a section flows into section.text as one ordered HTML blob
  */
 export function parseGoogleDocsHtml(htmlString: string): ParsedResult {
-  // Use native DOMParser to parse the HTML string in the browser
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, "text/html");
+
+  // Extract formatting classes from embedded Google Docs CSS
+  const styleElements = Array.from(doc.querySelectorAll("style"));
+  const cssText = styleElements.map(el => el.textContent || "").join("\n");
+  const { boldClasses, italicClasses, underlineClasses } = extractGoogleDocsFormattingClasses(cssText);
+
+  /** Clean raw innerHTML from Google Docs: convert spans, fix entities */
+  function cleanHtml(raw: string): string {
+    let html = convertGoogleDocsSpans(raw, boldClasses, italicClasses, underlineClasses);
+    html = html.replace(/<span[^>]*><\/span>/g, ""); // strip empty spans
+    html = html.replace(/&lt;/g, "<").replace(/&gt;/g, ">");  // fix escaped HTML
+    html = html.replace(/&rdquo;|&ldquo;|\u201d|\u201c/g, '"'); // fix smart quotes
+    return html.trim();
+  }
 
   const result: ParsedResult = {
     title: "",
@@ -33,14 +98,11 @@ export function parseGoogleDocsHtml(htmlString: string): ParsedResult {
   };
 
   let currentSection: any = null;
-  let currentSubsection: any = null;
   let inFaqSection = false;
-  let foundFirstParagraph = false;
+  let inIntro = true; // true until we hit first H2
 
-  // State machine for form labels
   let expectingField: keyof ParsedResult | null = null;
 
-  // Walk through the body's direct children
   const nodes = Array.from(doc.body.childNodes);
 
   for (let i = 0; i < nodes.length; i++) {
@@ -48,192 +110,139 @@ export function parseGoogleDocsHtml(htmlString: string): ParsedResult {
     if (node.nodeType !== Node.ELEMENT_NODE) continue;
 
     const tagName = node.tagName.toLowerCase();
+    const plainText = node.textContent?.trim() || "";
+    const lowerPlain = plainText.toLowerCase();
 
-    // Ignore empty tags, but preserve images or elements that might be styled blocks
-    if (node.textContent?.trim() === "" && tagName !== "img" && tagName !== "br" && tagName !== "hr") {
-      continue;
-    }
+    // Skip empty nodes (allow <br>, <hr>, <img>)
+    if (!plainText && tagName !== "br" && tagName !== "hr" && tagName !== "img") continue;
 
-    let plainText = node.textContent?.trim() || "";
-    let lowerPlain = plainText.toLowerCase();
-
-    // -- INLINE FIELD MATCHING (e.g., "Title:- Some title") --
-    const inlineMatch = plainText.match(/^(Primary Keyword|Title|URL Slug|Slug|Category|Author|Intro Paragraph|Card Excerpt|Excerpt|SEO Title|SEO Meta Title|Description|SEO Description|SEO Meta Description)[\s*]*[:-]+\s*(.+)$/i);
+    // ── Metadata: inline match (e.g. "Title: My Blog Post") ─────────────────
+    const inlineMatch = plainText.match(
+      /^(Primary Keyword|Title|URL Slug|Slug|Category|Author|Intro Paragraph|Card Excerpt|Excerpt|SEO Title|SEO Meta Title|Description|SEO Description|SEO Meta Description)[\s*]*[:-]+\s*(.+)$/i
+    );
     if (inlineMatch) {
-      const fieldName = inlineMatch[1].toLowerCase();
-      const fieldValue = inlineMatch[2].trim();
-      
-      if (fieldName.includes("title") && !fieldName.includes("seo")) result.title = fieldValue;
-      else if (fieldName.includes("slug")) result.slug = fieldValue;
-      else if (fieldName.includes("category")) result.category = fieldValue;
-      else if (fieldName.includes("author")) result.author = fieldValue;
-      else if (fieldName.includes("intro")) result.intro = result.intro ? result.intro + "\n\n" + fieldValue : fieldValue;
-      else if (fieldName.includes("excerpt")) result.excerpt = fieldValue;
-      else if (fieldName.includes("seo title")) result.seoTitle = fieldValue;
-      else if (fieldName.includes("description")) result.seoDescription = fieldValue;
-      else if (fieldName.includes("keyword")) {
-         // Primary keyword can be added to tags or SEO Title if empty
-         if (!result.seoTitle) result.seoTitle = fieldValue;
-      }
+      const key = inlineMatch[1].toLowerCase();
+      const val = inlineMatch[2].trim();
+      if (key.includes("title") && !key.includes("seo")) result.title = val;
+      else if (key.includes("slug"))        result.slug = val;
+      else if (key.includes("category"))    result.category = val;
+      else if (key.includes("author"))      result.author = val;
+      else if (key.includes("intro"))       result.intro = result.intro ? result.intro + "\n\n" + val : val;
+      else if (key.includes("excerpt"))     result.excerpt = val;
+      else if (key.includes("seo title"))   result.seoTitle = val;
+      else if (key.includes("description")) result.seoDescription = val;
+      else if (key.includes("keyword") && !result.seoTitle) result.seoTitle = val;
       continue;
     }
 
-    // 1. Check if this node is exactly a form label (next node will be the value)
-    if (
-      lowerPlain === "title *" || lowerPlain === "title" || lowerPlain === "title:"
-    ) {
-      expectingField = "title";
+    // ── Metadata: label-then-value pattern ───────────────────────────────────
+    const labelMap: Record<string, keyof ParsedResult> = {
+      "title": "title", "title *": "title", "title:": "title",
+      "url slug": "slug", "url slug (optional - autogenerated if empty)": "slug", "slug:": "slug",
+      "category": "category", "category *": "category", "category:": "category",
+      "author": "author", "author:": "author",
+      "intro paragraph": "intro", "intro paragraph:": "intro",
+      "card excerpt": "excerpt", "card excerpt:": "excerpt",
+      "seo meta title": "seoTitle", "seo meta title:": "seoTitle",
+      "seo meta description": "seoDescription", "seo meta description:": "seoDescription",
+    };
+    if (labelMap[lowerPlain]) {
+      expectingField = labelMap[lowerPlain];
       continue;
     }
-    if (
-      lowerPlain === "url slug (optional - autogenerated if empty)" ||
-      lowerPlain === "url slug" || lowerPlain === "slug:"
-    ) {
-      expectingField = "slug";
-      continue;
-    }
-    if (lowerPlain === "category *" || lowerPlain === "category" || lowerPlain === "category:") {
-      expectingField = "category";
-      continue;
-    }
-    if (lowerPlain === "author" || lowerPlain === "author:") {
-      expectingField = "author";
-      continue;
-    }
-    if (lowerPlain === "intro paragraph" || lowerPlain === "intro paragraph:") {
-      expectingField = "intro";
-      continue;
-    }
-    if (lowerPlain === "card excerpt" || lowerPlain === "card excerpt:") {
-      expectingField = "excerpt";
-      continue;
-    }
-    if (lowerPlain === "seo meta title" || lowerPlain === "seo meta title:") {
-      expectingField = "seoTitle";
-      continue;
-    }
-    if (lowerPlain === "seo meta description" || lowerPlain === "seo meta description:") {
-      expectingField = "seoDescription";
-      continue;
-    }
-
-    // Ignore noise from the form
-    if (/^(1\. basics|e\.g\. 10-seo-strategies|inquisitive digital|2\. hero image|upload from computer|or|paste cloudinary url\.\.\.|3\. content sections|paste from google docs|add section|no sections added yet\. click "add section" to begin writing\.|4\. faqs|add faq|5\. seo & settings)$/i.test(lowerPlain)) {
-      continue;
-    }
-
-    // 2. If we were expecting a field, fill it and reset
     if (expectingField) {
-      // If the field is a string in ParsedResult
       if (typeof result[expectingField] === "string") {
-        (result as any)[expectingField] = node.innerHTML.trim(); // use innerHTML for intro/excerpt formatting, or text for basics
-        if (["title", "slug", "category", "author", "seoTitle", "seoDescription"].includes(expectingField)) {
-           (result as any)[expectingField] = plainText; // strip HTML for these basic fields
-        }
+        const basic = ["title", "slug", "category", "author", "seoTitle", "seoDescription"];
+        (result as any)[expectingField] = basic.includes(expectingField)
+          ? plainText
+          : node.innerHTML.trim();
       }
       expectingField = null;
       continue;
     }
 
-    // 3. Title (H1)
+    // ── Skip admin UI noise ───────────────────────────────────────────────────
+    if (/^(1\. basics|e\.g\. 10-seo-strategies|inquisitive digital|2\. hero image|upload from computer|or|paste cloudinary url\.\.\.|3\. content sections|paste from google docs|add section|no sections added yet\. click "add section" to begin writing\.|4\. faqs|add faq|5\. seo & settings)$/i.test(lowerPlain)) {
+      continue;
+    }
+
+    // ── H1: Blog title ────────────────────────────────────────────────────────
     if (tagName === "h1") {
       if (!result.title) result.title = plainText;
       continue;
     }
 
-    // 4. Sections & FAQs (H2)
+    // ── H2: Start a new section ───────────────────────────────────────────────
     if (tagName === "h2") {
-      const headingText = plainText;
-      
-      // Check if it's the FAQ section
-      if (headingText.toLowerCase().includes("faq") || headingText.toLowerCase().includes("frequently asked questions")) {
+      if (lowerPlain.includes("faq") || lowerPlain.includes("frequently asked questions")) {
         inFaqSection = true;
         currentSection = null;
       } else {
         inFaqSection = false;
+        inIntro = false;
         currentSection = {
-          heading: headingText,
+          heading: plainText,
           subheading: "",
           text: "",
           listItems: [],
           image: { url: "", alt: "" },
-          subsections: []
+          subsections: [],
         };
         result.sections.push(currentSection);
-        currentSubsection = null;
       }
       continue;
     }
 
-    // 5. Subsections or FAQ Questions (H3)
+    // ── H3: Embed as <h3> in section.text to preserve document order ──────────
     if (tagName === "h3") {
-      const text = plainText;
       if (inFaqSection) {
-        result.faqs.push({
-          question: text,
-          answer: "",
-          tag: "FAQ"
-        });
+        result.faqs.push({ question: plainText, answer: "", tag: "FAQ" });
       } else if (currentSection) {
-        currentSubsection = {
-          subheading: text,
-          text: "",
-          listItems: [],
-          image: { url: "", alt: "" }
-        };
-        currentSection.subsections.push(currentSubsection);
+        const h3Block = `<h3>${plainText}</h3>`;
+        currentSection.text = currentSection.text
+          ? currentSection.text + "\n\n" + h3Block
+          : h3Block;
       }
       continue;
     }
 
-    // 6. Paragraphs, Spans, Divs -> Text or Answers
+    // ── Paragraphs ────────────────────────────────────────────────────────────
     if (tagName === "p" || tagName === "span" || tagName === "div") {
-      let text = node.innerHTML.trim();
-      
-      // Clean up weird google docs meta charset tags or empty spans if any
-      text = text.replace(/<span[^>]*><\/span>/g, "");
-      
-      if (!text) continue;
+      const cleaned = cleanHtml(node.innerHTML.trim());
+      if (!cleaned) continue;
 
-      if (inFaqSection) {
-        if (result.faqs.length > 0) {
-          const lastFaq = result.faqs[result.faqs.length - 1];
-          lastFaq.answer = lastFaq.answer ? lastFaq.answer + "<br><br>" + text : text;
-        }
-      } else if (!foundFirstParagraph && !currentSection) {
-        // Collect intro paragraphs if no explicit "Intro Paragraph" was found yet
-        if (!result.intro) {
-          result.intro = text;
-        } else {
-          result.intro += "\n\n" + text;
-        }
-      } else if (currentSubsection) {
-        currentSubsection.text = currentSubsection.text ? currentSubsection.text + "\n\n" + text : text;
+      const pBlock = `<p>${cleaned}</p>`;
+
+      if (inFaqSection && result.faqs.length > 0) {
+        const faq = result.faqs[result.faqs.length - 1];
+        faq.answer = faq.answer ? faq.answer + "<br><br>" + cleaned : cleaned;
+      } else if (inIntro || !currentSection) {
+        result.intro = result.intro ? result.intro + "\n\n" + pBlock : pBlock;
       } else if (currentSection) {
-        currentSection.text = currentSection.text ? currentSection.text + "\n\n" + text : text;
-      }
-      
-      if (!inFaqSection && !currentSection) {
-        foundFirstParagraph = true;
+        currentSection.text = currentSection.text
+          ? currentSection.text + "\n\n" + pBlock
+          : pBlock;
       }
       continue;
     }
 
-    // 7. Lists -> listItems
+    // ── Lists: stored in both listItems[] and section.text HTML ───────────────
     if (tagName === "ul" || tagName === "ol") {
-      const lis = Array.from(node.querySelectorAll("li")).map(li => li.innerHTML.trim());
+      const lis = Array.from(node.querySelectorAll("li")).map(li =>
+        cleanHtml(li.innerHTML.trim())
+      );
       if (lis.length === 0) continue;
 
-      if (inFaqSection) {
-         if (result.faqs.length > 0) {
-           const lastFaq = result.faqs[result.faqs.length - 1];
-           // Map lists to text with hyphens for FAQs
-           lastFaq.answer += "<br>" + lis.map(li => "• " + li).join("<br>");
-         }
-      } else if (currentSubsection) {
-        currentSubsection.listItems.push(...lis);
+      const listHtml = `<${tagName}>\n${lis.map(li => `  <li>${li}</li>`).join("\n")}\n</${tagName}>`;
+
+      if (inFaqSection && result.faqs.length > 0) {
+        const faq = result.faqs[result.faqs.length - 1];
+        faq.answer += "<br>" + lis.map((li: string) => "• " + li).join("<br>");
       } else if (currentSection) {
         currentSection.listItems.push(...lis);
+        currentSection.text = currentSection.text
+          ? currentSection.text + "\n\n" + listHtml
+          : listHtml;
       }
       continue;
     }
