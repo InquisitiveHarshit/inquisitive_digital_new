@@ -248,5 +248,17 @@ export function parseGoogleDocsHtml(htmlString: string): ParsedResult {
     }
   }
 
+  // Enforce a 30-word limit on the excerpt
+  if (result.excerpt) {
+    // Strip any HTML tags that might have been captured
+    let cleanExcerpt = result.excerpt.replace(/<[^>]*>?/gm, '');
+    const words = cleanExcerpt.split(/\s+/).filter(w => w.trim() !== "");
+    if (words.length > 30) {
+      result.excerpt = words.slice(0, 30).join(" ") + "...";
+    } else {
+      result.excerpt = cleanExcerpt;
+    }
+  }
+
   return result;
 }
