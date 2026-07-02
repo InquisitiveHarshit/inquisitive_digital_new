@@ -272,10 +272,13 @@ export default function GoogleDocsPasteModal({
                   <span className="text-xs font-bold uppercase tracking-wider text-white/40">Raw HTML</span>
                   <span className="ml-auto text-xs text-white/25">{inputHtml.length.toLocaleString()} chars</span>
                 </div>
-                <div className="flex-1 overflow-y-auto p-4">
-                  <pre className="text-[11px] text-white/40 font-mono whitespace-pre-wrap break-all leading-relaxed">
-                    {inputHtml}
-                  </pre>
+                <div className="flex-1 p-4 flex flex-col min-h-0">
+                  <textarea
+                    className="flex-1 w-full bg-transparent text-[11px] text-white/40 font-mono whitespace-pre-wrap leading-relaxed focus:outline-none resize-none"
+                    value={inputHtml}
+                    onChange={(e) => setInputHtml(e.target.value)}
+                    spellCheck={false}
+                  />
                 </div>
               </div>
 

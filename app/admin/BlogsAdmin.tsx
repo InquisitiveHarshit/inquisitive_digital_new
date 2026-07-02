@@ -341,23 +341,7 @@ export default function BlogsAdmin() {
     setFormSections(updated);
   };
 
-  const addSectionListItem = (sectionIdx: number) => {
-    const updated = [...formSections];
-    updated[sectionIdx].listItems.push("");
-    setFormSections(updated);
-  };
 
-  const updateSectionListItem = (sectionIdx: number, itemIdx: number, value: string) => {
-    const updated = [...formSections];
-    updated[sectionIdx].listItems[itemIdx] = value;
-    setFormSections(updated);
-  };
-
-  const removeSectionListItem = (sectionIdx: number, itemIdx: number) => {
-    const updated = [...formSections];
-    updated[sectionIdx].listItems = updated[sectionIdx].listItems.filter((_, i) => i !== itemIdx);
-    setFormSections(updated);
-  };
 
   const addSubsection = (sectionIdx: number) => {
     const updated = [...formSections];
@@ -412,7 +396,14 @@ export default function BlogsAdmin() {
       category: formCategory.trim(),
       tags: formTags.split(",").map((t) => t.trim()).filter(Boolean),
       heroImage: formHeroImage,
-      sections: formSections,
+      sections: formSections.map(sec => ({
+        ...sec,
+        listItems: sec.listItems ? sec.listItems.filter(item => item.trim() !== '') : [],
+        subsections: (sec.subsections || []).map(sub => ({
+          ...sub,
+          listItems: sub.listItems ? sub.listItems.filter(item => item.trim() !== '') : []
+        }))
+      })),
       faqs: formFaqs,
       author: formAuthor.trim() || "Inquisitive Digital",
       isActive: formIsActive,
@@ -729,17 +720,14 @@ export default function BlogsAdmin() {
 
                           {/* List Items */}
                           <div className="space-y-2 pl-4 border-l-2 border-white/10">
-                            <div className="flex justify-between items-center">
-                              <label className="text-[10px] uppercase tracking-wider font-bold text-white/50">Bullet Points</label>
-                              <button type="button" onClick={() => addSectionListItem(sIdx)} className="text-[10px] uppercase font-bold text-white/40 hover:text-brand-accent flex items-center gap-1"><Plus className="w-3 h-3"/> Add Bullet</button>
-                            </div>
-                            {sec.listItems.map((li, liIdx) => (
-                              <div key={liIdx} className="flex gap-2 items-center">
-                                <span className="w-1.5 h-1.5 rounded-full bg-brand-accent shrink-0" />
-                                <input type="text" value={li} onChange={(e) => updateSectionListItem(sIdx, liIdx, e.target.value)} className="flex-1 bg-black/50 border border-white/10 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-brand-accent" />
-                                <button type="button" onClick={() => removeSectionListItem(sIdx, liIdx)} className="p-1.5 text-white/30 hover:text-red-400 rounded-lg"><X className="w-4 h-4" /></button>
-                              </div>
-                            ))}
+                            <label className="text-[10px] uppercase tracking-wider font-bold text-white/50">Bullet Points (One per line)</label>
+                            <textarea
+                              rows={3}
+                              value={sec.listItems ? sec.listItems.join('\n') : ''}
+                              onChange={(e) => updateSection(sIdx, "listItems", e.target.value.split('\n'))}
+                              placeholder="Paste or type bullet points here..."
+                              className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent resize-y"
+                            />
                           </div>
 
                           {/* Subsections */}
@@ -758,6 +746,16 @@ export default function BlogsAdmin() {
                                 <div className="flex flex-col gap-1">
                                   <label className="text-[9px] uppercase tracking-wider font-bold text-white/40">Text</label>
                                   <textarea rows={2} value={sub.text} onChange={(e) => updateSubsection(sIdx, subIdx, "text", e.target.value)} className="w-full bg-white/5 border border-white/5 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent resize-y" />
+                                </div>
+                                <div className="flex flex-col gap-1 mt-2">
+                                  <label className="text-[9px] uppercase tracking-wider font-bold text-white/40">Bullet Points (One per line)</label>
+                                  <textarea
+                                    rows={2}
+                                    value={sub.listItems ? sub.listItems.join('\n') : ''}
+                                    onChange={(e) => updateSubsection(sIdx, subIdx, "listItems", e.target.value.split('\n'))}
+                                    placeholder="Paste or type bullet points here..."
+                                    className="w-full bg-white/5 border border-white/5 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent resize-y"
+                                  />
                                 </div>
                               </div>
                             ))}
