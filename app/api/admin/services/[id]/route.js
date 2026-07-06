@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import connectDB from "@/lib/mongodb";
 import Service from "@/lib/models/Service";
 import slugify from "slugify";
@@ -48,6 +49,8 @@ export async function PUT(request, { params }) {
     }
 
     sitemapState.bust();
+    revalidatePath("/services"); // refresh the services listing page
+    revalidatePath(`/services/${service.slug}`); // refresh the individual service page
     return NextResponse.json({ success: true, data: service });
   } catch (err) {
     console.error(`[ERROR] PUT /api/admin/services/${params?.id}:`, err.message);
@@ -77,6 +80,7 @@ export async function DELETE(request, { params }) {
     }
     
     sitemapState.bust();
+    revalidatePath("/services"); // refresh the services listing page
     return NextResponse.json({ success: true, message: "Service deleted successfully" });
   } catch (err) {
     console.error(`[ERROR] DELETE /api/admin/services/${params?.id}:`, err.message);

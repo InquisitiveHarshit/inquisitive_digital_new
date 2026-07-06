@@ -71,6 +71,9 @@ export const metadata: Metadata = {
     description: "Looking for a top digital marketing agency in India? Inquisitive Digital delivers expert SEO, Google Ads, social media & performance marketing. 100+ brands scaled. Get a free consultation today!",
     images: ['/logo-3.png'],
   },
+  verification: {
+    google: 'bg-LPkwEOzutYD3t8llWQTnh38MgjJObyIlp0x-grP4',
+  },
 };
 
 export default function RootLayout({

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import connectDB from "@/lib/mongodb";
 import Blog from "@/lib/models/Blog";
 import slugify from "slugify";
@@ -40,6 +41,7 @@ export async function POST(request) {
     const blog = await Blog.create(payload);
 
     sitemapState.bust(); // invalidate sitemap cache
+    revalidatePath("/blogs"); // instantly refresh the /blogs listing page
     return NextResponse.json({ success: true, data: blog }, { status: 201 });
   } catch (err) {
     console.error("[ERROR] POST /api/admin/blogs:", err.message);

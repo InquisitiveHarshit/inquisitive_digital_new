@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import connectDB from "@/lib/mongodb";
 import Service from "@/lib/models/Service";
 import slugify from "slugify";
@@ -35,6 +36,7 @@ export async function POST(request) {
     const service = await Service.create(payload);
 
     sitemapState.bust();
+    revalidatePath("/services"); // instantly refresh the /services listing page
     return NextResponse.json({ success: true, data: service }, { status: 201 });
   } catch (err) {
     console.error("[ERROR] POST /api/admin/services:", err.message);

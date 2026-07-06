@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import connectDB from "@/lib/mongodb";
 import Blog from "@/lib/models/Blog";
 import slugify from "slugify";
@@ -53,6 +54,8 @@ export async function PUT(request, { params }) {
     }
 
     sitemapState.bust();
+    revalidatePath("/blogs"); // refresh the blogs listing page
+    revalidatePath(`/blogs/${blog.slug}`); // refresh the individual blog page
     return NextResponse.json({ success: true, data: blog });
   } catch (err) {
     console.error(`[ERROR] PUT /api/admin/blogs/${params?.id}:`, err.message);
@@ -83,6 +86,7 @@ export async function DELETE(request, { params }) {
     }
     
     sitemapState.bust();
+    revalidatePath("/blogs"); // refresh the blogs listing page
     return NextResponse.json({ success: true, message: "Blog deleted successfully" });
   } catch (err) {
     console.error(`[ERROR] DELETE /api/admin/blogs/${params?.id}:`, err.message);
