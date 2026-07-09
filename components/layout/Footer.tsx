@@ -89,11 +89,11 @@ export const Footer: React.FC = () => {
         <div className="flex flex-col">
           <h4 className={headingClass}>Our Services</h4>
           <div className="flex flex-col gap-3">
-            <a className={linkClass} href="/services/seo">SEO / AEO / GEO</a>
+            <a className={linkClass} href="/services/seo-services">SEO / AEO / GEO</a>
             <a className={linkClass} href="/services/performance-marketing">Performance Marketing</a>
-            <a className={linkClass} href="/services/social-media">Social Media Marketing</a>
+            <a className={linkClass} href="/services/social-media-marketing">Social Media Marketing</a>
             <a className={linkClass} href="/services/web-development">Web Development</a>
-            <a className={linkClass} href="/services/content-writing">Content Marketing</a>
+            <a className={linkClass} href="/services/content-marketing">Content Marketing</a>
             <a className={linkClass} href="/services/creative-services">Creative Services</a>
           </div>
         </div>
