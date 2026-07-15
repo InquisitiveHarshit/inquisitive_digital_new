@@ -17,9 +17,9 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     const blog = await Blog.findOne({ slug: slug }).lean();
 
     if (blog) {
-      const metaTitle = (blog as any).metaTitle;
+      const metaTitle = (blog as any).seoTitle;
       const title = (blog as any).title;
-      const metaDescription = (blog as any).metaDescription;
+      const metaDescription = (blog as any).seoDescription;
       const excerpt = (blog as any).excerpt;
 
       const t = metaTitle || `${title} | Inquisitive Digital`;

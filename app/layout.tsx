@@ -88,6 +88,15 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col bg-background text-on-surface" suppressHydrationWarning>
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-PP1W9VBGJF" strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-PP1W9VBGJF');
+          `}
+        </Script>
         <Script
           id="theme-init"
           strategy="beforeInteractive"
