@@ -113,7 +113,7 @@ export const Header: React.FC = () => {
         </a>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-10">
+        <nav className="hidden lg:flex items-center gap-6 xl:gap-10">
           {/* Home Link */}
           <a
             className={`font-body text-xs uppercase tracking-wider font-semibold transition-all duration-300 relative after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[2px] hover:after:w-full after:transition-all after:duration-300 ${isLight
@@ -271,7 +271,7 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Contact Us Button */}
-          <div className="hidden md:flex flex-col items-center gap-1.5">
+          <div className="hidden lg:flex flex-col items-center gap-1.5">
             <a
               href="/contact-us"
               className={`inline-flex items-center justify-center font-body font-extrabold uppercase tracking-wider text-[11px] py-2.5 px-6 transition-all duration-300 select-none cursor-pointer border-2 hover:scale-[1.03] ${
@@ -290,7 +290,7 @@ export const Header: React.FC = () => {
           {/* Mobile Toggle */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`md:hidden p-2 transition-colors focus:outline-none ${isLight
+            className={`lg:hidden p-2 transition-colors focus:outline-none ${isLight
               ? "text-slate-800 hover:text-brand-accent"
               : isDarkSingular
                 ? "text-white hover:text-brand-accent"
@@ -306,7 +306,7 @@ export const Header: React.FC = () => {
       {/* Mobile Nav Drawer */}
       {isOpen && (
         <div
-          className={`md:hidden fixed top-[81px] left-0 w-full h-[calc(100vh-81px)] overflow-y-auto z-40 flex flex-col items-center justify-start gap-8 py-12 transition-all duration-300 border-t ${isLight
+          className={`lg:hidden fixed top-[81px] left-0 w-full h-[calc(100vh-81px)] overflow-y-auto z-40 flex flex-col items-center justify-start gap-8 py-12 transition-all duration-300 border-t ${isLight
             ? "bg-white/98 backdrop-blur-lg border-slate-100"
             : isDarkSingular
               ? "bg-[#0a0a0a]/98 backdrop-blur-lg border-white/10"

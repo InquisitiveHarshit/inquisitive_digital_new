@@ -25,10 +25,10 @@ export const Metrics: React.FC = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-brand-accent/3 blur-[120px] pointer-events-none" />
 
       <div className="max-w-container-max mx-auto relative z-10 w-full">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter lg:items-center">
 
           {/* Headline & Paragraph Column */}
-          <div className="md:col-span-7 mb-12 md:mb-0 pr-0 md:pr-10">
+          <div className="lg:col-span-7 mb-12 lg:mb-0 pr-0 lg:pr-10">
             <motion.h2
               className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-on-surface uppercase leading-tight tracking-tight mb-4"
               initial={{ opacity: 0, y: 30 }}
@@ -64,7 +64,7 @@ export const Metrics: React.FC = () => {
           </div>
 
           {/* Stats Grid Column */}
-          <div className="md:col-span-5 grid grid-cols-2 gap-x-8 gap-y-8">
+          <div className="lg:col-span-5 grid grid-cols-2 gap-x-8 gap-y-8">
             {stats.map((stat) => (
               <motion.div
                 key={stat.id}

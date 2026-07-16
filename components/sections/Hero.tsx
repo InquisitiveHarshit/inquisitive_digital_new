@@ -9,7 +9,7 @@ export const Hero: React.FC = () => {
 
   return (
     <section
-      className={`relative w-full min-h-screen flex items-center justify-center pt-36 sm:pt-40 md:pt-32 pb-section-gap px-6 md:px-margin-desktop transition-colors duration-700 overflow-hidden border-b ${themeMode === "singular-light"
+      className={`relative w-full min-h-[80vh] lg:min-h-screen flex items-center justify-center pt-32 sm:pt-36 md:pt-40 lg:pt-44 pb-section-gap px-6 md:px-margin-desktop transition-colors duration-700 overflow-hidden border-b ${themeMode === "singular-light"
         ? "bg-[#fdfcfb] border-[#e8dcc4]/30"
         : themeMode === "singular-dark"
           ? "bg-[#0a0a0a] border-white/10"
@@ -86,15 +86,15 @@ export const Hero: React.FC = () => {
           /* Singular Theme Background Elements (Light & Dark Variants) */
           <motion.div
             key="singular-bg"
-            className="absolute inset-0 w-[100vw] h-[100vh] z-0 pointer-events-none overflow-hidden"
+            className="absolute inset-0 w-[100vw] h-full z-0 pointer-events-none overflow-hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            {/* ---- MOBILE BACKGROUND (hidden on md+) ---- */}
+            {/* ---- MOBILE + TABLET BACKGROUND (hidden on lg+) ---- */}
             {themeMode === "singular-light" ? (
-              <div className="md:hidden absolute inset-0 w-full h-full bg-[#fdfcfb]">
+              <div className="lg:hidden absolute inset-0 w-full h-full bg-[#fdfcfb]">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#fcfbf9] via-[#f8f6f0] to-[#f4f0e6]" />
                 <div className="absolute -top-[10%] -right-[20%] w-[400px] h-[400px] sm:-top-[15%] sm:-right-[10%] sm:w-[500px] sm:h-[500px] rounded-full bg-[#fdfdfc] shadow-[-20px_20px_60px_rgba(210,195,170,0.4)] border border-[#f0e8d5]/50" />
                 <div className="absolute -bottom-[10%] -left-[20%] w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] rounded-full bg-gradient-to-tr from-[#f0e8d5]/60 to-transparent blur-3xl" />
@@ -110,7 +110,7 @@ export const Hero: React.FC = () => {
                 <div className="absolute bottom-[30%] right-[30%] w-80 h-80 bg-white rounded-full blur-[100px] opacity-70" />
               </div>
             ) : (
-              <div className="md:hidden absolute inset-0 w-full h-full bg-[#0a0a0a]">
+              <div className="lg:hidden absolute inset-0 w-full h-full bg-[#0a0a0a]">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#0f0f0f] via-[#0a0a0a] to-[#050505]" />
                 <div className="absolute -top-[10%] -right-[20%] w-[400px] h-[400px] sm:-top-[15%] sm:-right-[10%] sm:w-[500px] sm:h-[500px] rounded-full bg-[#111111] shadow-[-20px_20px_60px_rgba(0,0,0,0.5)] border border-[#222222]/50" />
                 <div className="absolute -bottom-[10%] -left-[20%] w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] rounded-full bg-gradient-to-tr from-[#dca743]/10 to-transparent blur-3xl" />
@@ -127,9 +127,9 @@ export const Hero: React.FC = () => {
               </div>
             )}
 
-            {/* ---- DESKTOP BACKGROUND (hidden below md) — original first version ---- */}
+            {/* ---- DESKTOP BACKGROUND (hidden below lg) — original first version ---- */}
             {/* Top-Right Yellow Brand Fluid Blob */}
-            <div className="hidden md:block absolute top-0 right-0 w-[35%] h-[70%] pointer-events-none opacity-90">
+            <div className="hidden lg:block absolute top-0 right-0 w-[35%] h-[70%] pointer-events-none opacity-90">
               <svg className="w-full h-full" viewBox="0 0 500 500" preserveAspectRatio="xMaxYMin slice" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <motion.path
                   d="M 500 0 C 400 0, 310 80, 310 200 C 310 330, 430 380, 500 320 Z"
@@ -147,7 +147,7 @@ export const Hero: React.FC = () => {
             </div>
 
             {/* Bottom-Left Overlapping Blobs */}
-            <div className="hidden md:block absolute bottom-0 left-0 w-[48%] h-[60%] pointer-events-none">
+            <div className="hidden lg:block absolute bottom-0 left-0 w-[48%] h-[60%] pointer-events-none">
               <svg className="w-full h-full" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <motion.path
                   d="M 0 500 C 0 350, 90 350, 110 500 Z"
@@ -177,7 +177,7 @@ export const Hero: React.FC = () => {
             </div>
 
             {/* Sweep curved lines (desktop only) */}
-            <svg className="hidden md:block absolute inset-0 w-full h-full opacity-35" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="hidden lg:block absolute inset-0 w-full h-full opacity-35" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M -50 200 C 150 180, 250 380, 500 280 C 750 180, 600 450, 900 400" stroke={themeMode === "singular-dark" ? "#333" : "#e2e8f0"} strokeWidth="2" />
               <path d="M 100 -50 C 200 150, 180 350, 450 300 C 720 250, 800 650, 1100 500" stroke={themeMode === "singular-dark" ? "#222" : "#f1f5f9"} strokeWidth="1.5" />
             </svg>
@@ -224,7 +224,7 @@ export const Hero: React.FC = () => {
             {themeMode === "brutalist" ? (
               <motion.h1
                 key="brutalist-headline"
-                className="font-display text-[32px] sm:text-6xl md:text-7xl lg:text-[80px] font-extrabold uppercase mb-6 leading-[1.1] sm:leading-[1.05] tracking-tighter w-full"
+                className="font-display text-[32px] sm:text-5xl md:text-6xl lg:text-[80px] font-extrabold uppercase mb-6 leading-[1.1] sm:leading-[1.05] tracking-tighter w-full"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -30 }}
@@ -242,7 +242,7 @@ export const Hero: React.FC = () => {
             ) : (
               <motion.h1
                 key="singular-headline"
-                className={`font-body text-[32px] sm:text-6xl md:text-7xl lg:text-[82px] font-black leading-[1.1] sm:leading-[1.05] tracking-tight w-full uppercase mb-6 sm:mb-8 select-none ${themeMode === "singular-dark" ? "text-white" : "text-[#111111]"
+                className={`font-body text-[32px] sm:text-5xl md:text-6xl lg:text-[82px] font-black leading-[1.1] sm:leading-[1.05] tracking-tight w-full uppercase mb-5 sm:mb-6 md:mb-8 select-none ${themeMode === "singular-dark" ? "text-white" : "text-[#111111]"
                   }`}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -263,7 +263,7 @@ export const Hero: React.FC = () => {
           {/* Animated Description */}
           <motion.p
             key={`desc-${themeMode}`}
-            className={`font-body text-sm sm:text-lg md:text-xl max-w-4xl mx-auto mb-10 sm:mb-12 leading-relaxed px-4 sm:px-0 ${themeMode === "singular-light"
+            className={`font-body text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto mb-8 sm:mb-10 md:mb-12 leading-relaxed px-4 sm:px-8 md:px-0 ${themeMode === "singular-light"
               ? "text-slate-700 font-medium"
               : themeMode === "singular-dark"
                 ? "text-slate-300 font-medium"
@@ -281,7 +281,7 @@ export const Hero: React.FC = () => {
             {themeMode === "brutalist" ? (
               <motion.div
                 key="dark-ctas"
-                className="flex flex-row gap-3 sm:gap-6 justify-center w-full sm:w-auto px-4 sm:px-0"
+                className="flex flex-row gap-3 sm:gap-4 md:gap-6 justify-center w-full sm:w-auto px-4 sm:px-8 md:px-0"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
@@ -289,13 +289,13 @@ export const Hero: React.FC = () => {
               >
                 <a
                   href="/contact-us"
-                  className="bg-brand-accent text-background hover:bg-white border-2 border-brand-accent hover:border-white font-body font-bold text-[10px] sm:text-xs py-3 sm:py-4.5 px-3 sm:px-10 rounded-sm transition-all duration-300 shadow-[0_6px_24px_rgba(245,194,0,0.22)] hover:shadow-[0_6px_30px_rgba(255,255,255,0.25)] select-none uppercase flex items-center justify-center flex-1 sm:flex-none"
+                  className="bg-brand-accent text-background hover:bg-white border-2 border-brand-accent hover:border-white font-body font-bold text-[10px] sm:text-xs md:text-sm py-3 md:py-4 px-3 sm:px-8 md:px-10 rounded-sm transition-all duration-300 shadow-[0_6px_24px_rgba(245,194,0,0.22)] hover:shadow-[0_6px_30px_rgba(255,255,255,0.25)] select-none uppercase flex items-center justify-center flex-1 sm:flex-none"
                 >
                   Get Free Consultation
                 </a>
                 <a
                   href="#contact"
-                  className="bg-transparent text-brand-accent border-2 border-brand-accent/60 hover:border-brand-accent hover:bg-brand-accent/5 font-body font-bold text-[10px] sm:text-xs py-3 sm:py-4.5 px-3 sm:px-10 rounded-sm transition-all duration-300 select-none uppercase flex items-center justify-center flex-1 sm:flex-none"
+                  className="bg-transparent text-brand-accent border-2 border-brand-accent/60 hover:border-brand-accent hover:bg-brand-accent/5 font-body font-bold text-[10px] sm:text-xs md:text-sm py-3 md:py-4 px-3 sm:px-8 md:px-10 rounded-sm transition-all duration-300 select-none uppercase flex items-center justify-center flex-1 sm:flex-none"
                 >
                   Free Website Audit
                 </a>
@@ -303,7 +303,7 @@ export const Hero: React.FC = () => {
             ) : (
               <motion.div
                 key="light-ctas"
-                className="flex flex-row gap-3 sm:gap-6 justify-center w-full sm:w-auto z-10 px-4 sm:px-0"
+                className="flex flex-row gap-3 sm:gap-4 md:gap-6 justify-center w-full sm:w-auto z-10 px-4 sm:px-8 md:px-0"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
@@ -312,7 +312,7 @@ export const Hero: React.FC = () => {
                 {/* Primary Button */}
                 <a
                   href="/contact-us"
-                  className={`font-body font-extrabold text-[10px] sm:text-sm py-3 sm:py-4 px-3 sm:px-10 rounded-full transition-all duration-300 select-none cursor-pointer flex items-center justify-center border-2 flex-1 sm:flex-none hover:scale-[1.02] ${themeMode === "singular-dark"
+                  className={`font-body font-extrabold text-[10px] sm:text-xs md:text-sm py-3 md:py-4 px-3 sm:px-8 md:px-10 rounded-full transition-all duration-300 select-none cursor-pointer flex items-center justify-center border-2 flex-1 sm:flex-none hover:scale-[1.02] ${themeMode === "singular-dark"
                     ? "bg-brand-accent text-black border-brand-accent hover:bg-white hover:text-black hover:border-white shadow-[3px_3px_0px_rgba(255,255,255,0.2)] sm:shadow-[4px_4px_0px_rgba(255,255,255,0.2)]"
                     : "bg-brand-accent text-black border-black hover:bg-black hover:text-brand-accent hover:border-brand-accent shadow-[3px_3px_0px_rgba(0,0,0,1)] sm:shadow-[4px_4px_0px_rgba(0,0,0,1)]"
                     }`}
@@ -322,7 +322,7 @@ export const Hero: React.FC = () => {
                 {/* Secondary Button */}
                 <a
                   href="#contact"
-                  className={`font-body font-extrabold text-[10px] sm:text-sm py-3 sm:py-4 px-3 sm:px-10 rounded-full transition-all duration-300 select-none cursor-pointer flex items-center justify-center border-2 flex-1 sm:flex-none hover:scale-[1.02] ${themeMode === "singular-dark"
+                  className={`font-body font-extrabold text-[10px] sm:text-xs md:text-sm py-3 md:py-4 px-3 sm:px-8 md:px-10 rounded-full transition-all duration-300 select-none cursor-pointer flex items-center justify-center border-2 flex-1 sm:flex-none hover:scale-[1.02] ${themeMode === "singular-dark"
                     ? "bg-transparent text-white border-white hover:bg-brand-accent hover:text-black hover:border-brand-accent shadow-[3px_3px_0px_rgba(245,194,0,0.5)] sm:shadow-[4px_4px_0px_rgba(245,194,0,0.5)]"
                     : "bg-black text-white border-black hover:bg-white hover:text-black shadow-[3px_3px_0px_rgba(245,194,0,1)] sm:shadow-[4px_4px_0px_rgba(245,194,0,1)]"
                     }`}
@@ -338,7 +338,7 @@ export const Hero: React.FC = () => {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className={`mt-12 w-full max-w-lg mx-auto p-4 sm:p-5 rounded-2xl border flex items-center justify-between shadow-lg transition-colors duration-500 z-10 relative ${
+            className={`mt-10 sm:mt-12 w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto p-4 sm:p-5 rounded-2xl border flex items-center justify-between shadow-lg transition-colors duration-500 z-10 relative ${
               themeMode === "singular-dark"
                 ? "bg-[#141414] border-white/10 text-white shadow-black/40"
                 : themeMode === "singular-light"
