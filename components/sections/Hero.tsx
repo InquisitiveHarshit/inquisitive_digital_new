@@ -194,7 +194,7 @@ export const Hero: React.FC = () => {
             {themeMode === "brutalist" ? (
               <motion.div
                 key="dark-badge"
-                className="inline-flex items-center gap-2 border-2 border-brand-accent/80 bg-surface/80 backdrop-blur-md px-6 py-2.5 mb-8 rounded-full text-xs font-body font-bold tracking-wider uppercase text-brand-accent shadow-[0_0_20px_rgba(245,194,0,0.2)]"
+                className="inline-flex items-center gap-1.5 sm:gap-2 border-2 border-brand-accent/80 bg-surface/80 backdrop-blur-md px-4 sm:px-6 py-2 sm:py-2.5 mb-6 sm:mb-8 rounded-full text-[10px] sm:text-xs font-body font-bold tracking-wider uppercase text-brand-accent shadow-[0_0_20px_rgba(245,194,0,0.2)] text-center"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
@@ -205,7 +205,7 @@ export const Hero: React.FC = () => {
             ) : (
               <motion.div
                 key="light-badge"
-                className={`inline-flex items-center gap-2 px-6 py-2.5 mb-8 rounded-full text-xs font-body font-bold tracking-wider uppercase shadow-sm ${themeMode === "singular-dark"
+                className={`inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2 sm:py-2.5 mb-6 sm:mb-8 rounded-full text-[10px] sm:text-xs font-body font-bold tracking-wider uppercase shadow-sm text-center ${themeMode === "singular-dark"
                   ? "bg-[#f5c200]/10 border border-[#f5c200]/30 text-brand-accent"
                   : "bg-[#f5c200]/10 border border-[#f5c200]/30 text-slate-700"
                   }`}
