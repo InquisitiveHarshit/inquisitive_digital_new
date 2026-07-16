@@ -9,8 +9,8 @@ export const Hero: React.FC = () => {
 
   return (
     <section
-      className={`relative w-full min-h-screen flex items-center justify-center pt-24 md:pt-32 pb-section-gap px-6 md:px-margin-desktop transition-colors duration-700 overflow-hidden border-b ${themeMode === "singular-light"
-        ? "bg-white border-slate-100"
+      className={`relative w-full min-h-screen flex items-center justify-center pt-36 sm:pt-40 md:pt-32 pb-section-gap px-6 md:px-margin-desktop transition-colors duration-700 overflow-hidden border-b ${themeMode === "singular-light"
+        ? "bg-[#fdfcfb] border-[#e8dcc4]/30"
         : themeMode === "singular-dark"
           ? "bg-[#0a0a0a] border-white/10"
           : "bg-[#0f0e0e] border-outline-variant/30"
@@ -92,6 +92,42 @@ export const Hero: React.FC = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
+            {/* ---- MOBILE BACKGROUND (hidden on md+) ---- */}
+            {themeMode === "singular-light" ? (
+              <div className="md:hidden absolute inset-0 w-full h-full bg-[#fdfcfb]">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#fcfbf9] via-[#f8f6f0] to-[#f4f0e6]" />
+                <div className="absolute -top-[10%] -right-[20%] w-[400px] h-[400px] sm:-top-[15%] sm:-right-[10%] sm:w-[500px] sm:h-[500px] rounded-full bg-[#fdfdfc] shadow-[-20px_20px_60px_rgba(210,195,170,0.4)] border border-[#f0e8d5]/50" />
+                <div className="absolute -bottom-[10%] -left-[20%] w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] rounded-full bg-gradient-to-tr from-[#f0e8d5]/60 to-transparent blur-3xl" />
+                <svg className="absolute inset-0 w-full h-full opacity-60 pointer-events-none" viewBox="0 0 1440 900" fill="none" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M -100 900 C 200 700, 300 300, 800 200" stroke="#d4af37" strokeWidth="1" strokeOpacity="0.3" />
+                  <path d="M -50 950 C 300 800, 400 400, 900 300" stroke="#d4af37" strokeWidth="0.5" strokeOpacity="0.2" />
+                  <path d="M 0 1000 C 400 900, 500 500, 1000 400" stroke="#d4af37" strokeWidth="0.5" strokeOpacity="0.1" />
+                </svg>
+                <div className="absolute top-[25%] left-[-2%] sm:left-[5%] w-24 h-24 sm:w-32 sm:h-32 opacity-30" style={{ backgroundImage: 'radial-gradient(#d4af37 2px, transparent 2px)', backgroundSize: '24px 24px' }} />
+                <div className="absolute bottom-[20%] right-[-2%] sm:right-[5%] w-16 h-24 sm:w-24 sm:h-32 opacity-30" style={{ backgroundImage: 'radial-gradient(#d4af37 2px, transparent 2px)', backgroundSize: '24px 24px' }} />
+                <div className="absolute bottom-[35%] right-[5%] sm:right-[15%] w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#fceabb] via-[#f8b500] to-[#b38600] shadow-[0_10px_20px_rgba(248,181,0,0.4)]" />
+                <div className="absolute top-[20%] left-[20%] w-64 h-64 bg-white rounded-full blur-[80px] opacity-70" />
+                <div className="absolute bottom-[30%] right-[30%] w-80 h-80 bg-white rounded-full blur-[100px] opacity-70" />
+              </div>
+            ) : (
+              <div className="md:hidden absolute inset-0 w-full h-full bg-[#0a0a0a]">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0f0f0f] via-[#0a0a0a] to-[#050505]" />
+                <div className="absolute -top-[10%] -right-[20%] w-[400px] h-[400px] sm:-top-[15%] sm:-right-[10%] sm:w-[500px] sm:h-[500px] rounded-full bg-[#111111] shadow-[-20px_20px_60px_rgba(0,0,0,0.5)] border border-[#222222]/50" />
+                <div className="absolute -bottom-[10%] -left-[20%] w-[400px] h-[400px] sm:w-[600px] sm:h-[600px] rounded-full bg-gradient-to-tr from-[#dca743]/10 to-transparent blur-3xl" />
+                <svg className="absolute inset-0 w-full h-full opacity-60 pointer-events-none" viewBox="0 0 1440 900" fill="none" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M -100 900 C 200 700, 300 300, 800 200" stroke="#d4af37" strokeWidth="1" strokeOpacity="0.2" />
+                  <path d="M -50 950 C 300 800, 400 400, 900 300" stroke="#d4af37" strokeWidth="0.5" strokeOpacity="0.1" />
+                  <path d="M 0 1000 C 400 900, 500 500, 1000 400" stroke="#d4af37" strokeWidth="0.5" strokeOpacity="0.05" />
+                </svg>
+                <div className="absolute top-[25%] left-[-2%] sm:left-[5%] w-24 h-24 sm:w-32 sm:h-32 opacity-20" style={{ backgroundImage: 'radial-gradient(#d4af37 2px, transparent 2px)', backgroundSize: '24px 24px' }} />
+                <div className="absolute bottom-[20%] right-[-2%] sm:right-[5%] w-16 h-24 sm:w-24 sm:h-32 opacity-20" style={{ backgroundImage: 'radial-gradient(#d4af37 2px, transparent 2px)', backgroundSize: '24px 24px' }} />
+                <div className="absolute bottom-[35%] right-[5%] sm:right-[15%] w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-[#fceabb] via-[#f8b500] to-[#b38600] shadow-[0_10px_20px_rgba(0,0,0,0.5)]" />
+                <div className="absolute top-[20%] left-[20%] w-64 h-64 bg-[#dca743] rounded-full blur-[120px] opacity-10" />
+                <div className="absolute bottom-[30%] right-[30%] w-80 h-80 bg-[#dca743] rounded-full blur-[150px] opacity-10" />
+              </div>
+            )}
+
+            {/* ---- DESKTOP BACKGROUND (hidden below md) — original first version ---- */}
             {/* Top-Right Yellow Brand Fluid Blob */}
             <div className="hidden md:block absolute top-0 right-0 w-[35%] h-[70%] pointer-events-none opacity-90">
               <svg className="w-full h-full" viewBox="0 0 500 500" preserveAspectRatio="xMaxYMin slice" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -110,10 +146,9 @@ export const Hero: React.FC = () => {
               </svg>
             </div>
 
-            {/* Bottom-Left Overlapping Blobs (Black/Grey and Gold-Yellow) */}
-            <div className="absolute bottom-0 left-0 w-[90%] md:w-[48%] h-[60%] pointer-events-none">
+            {/* Bottom-Left Overlapping Blobs */}
+            <div className="hidden md:block absolute bottom-0 left-0 w-[48%] h-[60%] pointer-events-none">
               <svg className="w-full h-full" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Dark Base Blob */}
                 <motion.path
                   d="M 0 500 C 0 350, 90 350, 110 500 Z"
                   fill={themeMode === "singular-dark" ? "#1a1a1a" : "#111111"}
@@ -126,7 +161,6 @@ export const Hero: React.FC = () => {
                   }}
                   transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
                 />
-                {/* Gold-Yellow Brand Blob */}
                 <motion.path
                   d="M 0 500 C 80 460, 240 450, 280 400 C 320 340, 190 350, 0 500 Z"
                   fill="#f5c200"
@@ -142,8 +176,8 @@ export const Hero: React.FC = () => {
               </svg>
             </div>
 
-            {/* Sweep curved lines */}
-            <svg className="absolute inset-0 w-full h-full opacity-35" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Sweep curved lines (desktop only) */}
+            <svg className="hidden md:block absolute inset-0 w-full h-full opacity-35" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M -50 200 C 150 180, 250 380, 500 280 C 750 180, 600 450, 900 400" stroke={themeMode === "singular-dark" ? "#333" : "#e2e8f0"} strokeWidth="2" />
               <path d="M 100 -50 C 200 150, 180 350, 450 300 C 720 250, 800 650, 1100 500" stroke={themeMode === "singular-dark" ? "#222" : "#f1f5f9"} strokeWidth="1.5" />
             </svg>
