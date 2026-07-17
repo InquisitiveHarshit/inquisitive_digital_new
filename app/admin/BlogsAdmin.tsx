@@ -78,7 +78,7 @@ interface BlogPost {
 
 /* ─── Component ─────────────────────────────────────────────────────────────── */
 
-export default function BlogsAdmin() {
+export default function BlogsAdmin({ onSessionExpired }: { onSessionExpired?: () => void }) {
   // ── Data ──────────────────────────────────────────────────────────────────
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -154,6 +154,11 @@ export default function BlogsAdmin() {
         cache: "no-store",
         headers: token ? { "Authorization": `Bearer ${token}` } : {}
       });
+      if (res.status === 401) {
+        // Token expired — notify parent to force logout
+        onSessionExpired?.();
+        return;
+      }
       if (res.ok) {
         const json = await res.json();
         setBlogs(json.data || []);

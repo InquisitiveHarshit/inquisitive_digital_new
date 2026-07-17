@@ -109,13 +109,32 @@ export default function AdminDashboard() {
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  /** Auto-logout helper — clears storage and resets auth state */
+  const forceLogout = (reason = "Session expired. Please log in again.") => {
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminUser");
+    setIsLoggedIn(false);
+    setAdminUser(null);
+    triggerNotification("error", reason);
+  };
+
   const fetchAdminData = async (token: string) => {
     setLoading(true);
     try {
       const headers = { "Authorization": `Bearer ${token}` };
 
+      // Helper: check each response for 401 (expired/invalid token) and bail early
+      const handle401 = (res: Response) => {
+        if (res.status === 401) {
+          forceLogout();
+          return true; // signals caller to stop
+        }
+        return false;
+      };
+
       // Fetch Jobs
       const jobsRes = await fetch(`${API_BASE}/api/admin/jobs`, { cache: "no-store", headers });
+      if (handle401(jobsRes)) return;
       let fetchedJobs: Job[] = [];
       if (jobsRes.ok) {
         const jobsJson = await jobsRes.json();
@@ -125,6 +144,7 @@ export default function AdminDashboard() {
 
       // Fetch Applications
       const appsRes = await fetch(`${API_BASE}/api/admin/applications`, { cache: "no-store", headers });
+      if (handle401(appsRes)) return;
       if (appsRes.ok) {
         const appsJson = await appsRes.json();
         const fetchedApps = appsJson.data || appsJson.applications || [];
@@ -133,6 +153,7 @@ export default function AdminDashboard() {
 
       // Fetch Audits
       const auditsRes = await fetch(`${API_BASE}/api/admin/audits`, { cache: "no-store", headers });
+      if (handle401(auditsRes)) return;
       if (auditsRes.ok) {
         const auditsJson = await auditsRes.json();
         const fetchedAudits = auditsJson.data || auditsJson.audits || [];
@@ -141,6 +162,7 @@ export default function AdminDashboard() {
 
       // Fetch Contact Leads
       const leadsRes = await fetch(`${API_BASE}/api/admin/contact-leads`, { cache: "no-store", headers });
+      if (handle401(leadsRes)) return;
       if (leadsRes.ok) {
         const leadsJson = await leadsRes.json();
         const fetchedLeads = leadsJson.data || leadsJson.leads || [];
@@ -149,6 +171,7 @@ export default function AdminDashboard() {
 
       // Fetch Blogs Count
       const blogsRes = await fetch(`${API_BASE}/api/admin/blogs`, { cache: "no-store", headers });
+      if (handle401(blogsRes)) return;
       if (blogsRes.ok) {
         const blogsJson = await blogsRes.json();
         const fetchedBlogs = blogsJson.data || [];
