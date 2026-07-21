@@ -368,73 +368,115 @@ export default function BlogDetailClient({
               </div>
 
               {/* Desktop sticky sidebar */}
-              <div
-                className={`hidden lg:block lg:sticky lg:top-32 rounded-2xl p-6 md:p-8 space-y-6 border ${isLight ? "bg-slate-50 border-slate-200" : "bg-white/5 border-white/10"
-                  }`}
-              >
-                <h3
-                  className={`text-xl font-display font-bold uppercase ${isLight ? "text-slate-900" : "text-white"
+              <div className="hidden lg:flex flex-col gap-6 lg:sticky lg:top-32">
+                <div
+                  className={`rounded-2xl p-6 md:p-8 space-y-6 border ${isLight ? "bg-slate-50 border-slate-200" : "bg-white/5 border-white/10"
                     }`}
                 >
-                  Need a Marketing Partner?
-                </h3>
-                <p
-                  className={`text-sm font-medium leading-relaxed ${isLight ? "text-slate-600" : "text-white/60"
-                    }`}
-                >
-                  Book a discovery call to learn how our creative strategies can scale your brand
-                  minus the fluff.
-                </p>
-
-                <div className="w-12 h-1 rounded-full bg-brand-accent" />
-
-                <Link
-                  href="/contact-us"
-                  className="block w-full text-center px-6 py-4 rounded-lg font-bold text-sm uppercase tracking-wider transition-all duration-300 bg-brand-accent text-slate-900 border-2 border-transparent hover:-translate-y-1"
-                  style={{ boxShadow: isLight ? "6px 6px 0px 0px #000" : "6px 6px 0px 0px #f5c200" }}
-                >
-                  Book a Call
-                </Link>
-
-                <div className={`w-full h-px ${isLight ? "bg-slate-200" : "bg-white/10"}`} />
-
-                <div>
-                  <h4
-                    className={`text-sm font-bold uppercase mb-4 ${isLight ? "text-slate-900" : "text-white"
+                  <h3
+                    className={`text-xl font-display font-bold uppercase ${isLight ? "text-slate-900" : "text-white"
                       }`}
                   >
-                    Quick Links
-                  </h4>
-                  <div className="space-y-3 font-semibold">
-                    {[
-                      { label: "Our Services", href: "/services" },
-                      { label: "About Us", href: "/about-us" },
-                      { label: "All Blogs", href: "/blogs" },
-                    ].map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className="block text-sm transition-colors duration-200 text-brand-accent hover:text-brand-accent/80"
-                      >
-                        → {link.label}
-                      </Link>
-                    ))}
+                    Need a Marketing Partner?
+                  </h3>
+                  <p
+                    className={`text-sm font-medium leading-relaxed ${isLight ? "text-slate-600" : "text-white/60"
+                      }`}
+                  >
+                    Book a discovery call to learn how our creative strategies can scale your brand
+                    minus the fluff.
+                  </p>
+
+                  <div className="w-12 h-1 rounded-full bg-brand-accent" />
+
+                  <Link
+                    href="/contact-us"
+                    className="block w-full text-center px-6 py-4 rounded-lg font-bold text-sm uppercase tracking-wider transition-all duration-300 bg-brand-accent text-slate-900 border-2 border-transparent hover:-translate-y-1"
+                    style={{ boxShadow: isLight ? "6px 6px 0px 0px #000" : "6px 6px 0px 0px #f5c200" }}
+                  >
+                    Book a Call
+                  </Link>
+
+                  <div className={`w-full h-px ${isLight ? "bg-slate-200" : "bg-white/10"}`} />
+
+                  <div>
+                    <h4
+                      className={`text-sm font-bold uppercase mb-4 ${isLight ? "text-slate-900" : "text-white"
+                        }`}
+                    >
+                      Quick Links
+                    </h4>
+                    <div className="space-y-3 font-semibold">
+                      {[
+                        { label: "Our Services", href: "/services" },
+                        { label: "About Us", href: "/about-us" },
+                        { label: "All Blogs", href: "/blogs" },
+                      ].map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className="block text-sm transition-colors duration-200 text-brand-accent hover:text-brand-accent/80"
+                        >
+                          → {link.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="text-center pt-4">
+                    <p
+                      className={`text-xs font-bold uppercase mb-2 ${isLight ? "text-slate-500" : "text-white/40"
+                        }`}
+                    >
+                      Or reach out via email
+                    </p>
+                    <a
+                      href="mailto:info@inquisitivedigital.com"
+                      className="text-sm font-bold transition-colors text-brand-accent hover:underline underline-offset-4"
+                    >
+                      info@inquisitivedigital.com
+                    </a>
                   </div>
                 </div>
 
-                <div className="text-center pt-4">
-                  <p
-                    className={`text-xs font-bold uppercase mb-2 ${isLight ? "text-slate-500" : "text-white/40"
-                      }`}
-                  >
-                    Or reach out via email
-                  </p>
-                  <a
-                    href="mailto:info@inquisitivedigital.com"
-                    className="text-sm font-bold transition-colors text-brand-accent hover:underline underline-offset-4"
-                  >
-                    info@inquisitivedigital.com
-                  </a>
+                {/* Latest Posts */}
+                <div
+                  className={`rounded-2xl p-6 md:p-8 border ${isLight ? "bg-slate-50 border-slate-200" : "bg-white/5 border-white/10"
+                    }`}
+                >
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-1.5 h-6 rounded-full bg-brand-accent" />
+                    <h3 className={`text-xl font-display font-bold ${isLight ? "text-slate-900" : "text-white"}`}>
+                      Latest Posts
+                    </h3>
+                  </div>
+                  
+                  <div className="space-y-6">
+                    {allBlogs.filter(b => b.slug !== blog.slug).slice(0, 5).map((post) => (
+                      <Link 
+                        key={post.slug}
+                        href={`/blogs/${post.slug}`}
+                        className="group flex gap-4 items-start"
+                      >
+                        <div className={`w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 border ${isLight ? "border-slate-200" : "border-white/10"}`}>
+                          <img 
+                            src={post.heroImage?.url || post.heroImageUrl || post.imageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(post.title)}&background=f5c200&color=000&size=150&font-size=0.33`} 
+                            alt={post.title}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className={`font-bold text-sm leading-snug line-clamp-2 mb-2 transition-colors ${isLight ? "text-slate-900 group-hover:text-brand-accent" : "text-white group-hover:text-brand-accent"}`}>
+                            {post.title}
+                          </h4>
+                          <div className={`text-xs font-medium ${isLight ? "text-slate-500" : "text-white/50"}`}>
+                            {post.date}
+                          </div>
+                          <div className="w-6 h-0.5 mt-3 bg-brand-accent rounded-full transition-all duration-300 group-hover:w-10" />
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             </motion.div>
