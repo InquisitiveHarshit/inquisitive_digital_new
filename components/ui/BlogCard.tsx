@@ -62,12 +62,12 @@ export const BlogCard: React.FC<BlogCardProps> = ({
           </div>
 
           {/* Title */}
-          <h3 className={`font-display text-xl font-bold uppercase mb-3 leading-snug group-hover:text-brand-accent transition-colors duration-300 line-clamp-2 ${isLight ? "text-slate-900" : "text-[#e5e2e1]"}`}>
+          <h3 className={`font-display text-xl font-bold uppercase mb-3 leading-snug group-hover:text-brand-accent transition-colors duration-300 line-clamp-2 break-words ${isLight ? "text-slate-900" : "text-[#e5e2e1]"}`}>
             {title}
           </h3>
 
           {/* Short Desc */}
-          <p className={`font-body text-sm leading-relaxed mb-8 flex-grow line-clamp-3 ${isLight ? "text-slate-600" : "text-[#d2c5ab]"}`}>
+          <p className={`font-body text-sm leading-relaxed mb-8 flex-grow line-clamp-3 break-words ${isLight ? "text-slate-600" : "text-[#d2c5ab]"}`}>
             {desc}
           </p>
 

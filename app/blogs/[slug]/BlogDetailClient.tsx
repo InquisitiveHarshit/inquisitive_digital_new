@@ -60,7 +60,7 @@ export default function BlogDetailClient({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.7 }}
-              className={`text-3xl md:text-5xl lg:text-[3.25rem] xl:text-6xl font-display font-black uppercase tracking-tight mb-8 ${isLight ? "text-slate-900" : "text-white"
+              className={`text-3xl md:text-5xl lg:text-[3.25rem] xl:text-6xl font-display font-black uppercase tracking-tight mb-8 break-words ${isLight ? "text-slate-900" : "text-white"
                 }`}
             >
               {blog.title}
@@ -88,7 +88,7 @@ export default function BlogDetailClient({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="lg:col-span-2"
+              className="lg:col-span-2 min-w-0 w-full"
             >
               {(blog.heroImage?.url || blog.heroImageUrl || blog.imageUrl) && (
                 <motion.div
@@ -108,20 +108,19 @@ export default function BlogDetailClient({
 
               {blog.excerpt && (
                 <p
-                  className={`text-base md:text-lg leading-relaxed mb-8 font-medium ${isLight ? "text-slate-700" : "text-white/80"
+                  className={`text-base md:text-lg leading-relaxed mb-8 font-medium break-words ${isLight ? "text-slate-700" : "text-white/80"
                     }`}
                 >
                   {blog.excerpt}
                 </p>
               )}
 
-              {/* Blog Markdown-like Content (Legacy fallback) */}
               {blog.content && (
                 <div
-                  className={`font-body text-sm md:text-base leading-relaxed prose max-w-none ${isLight
+                  className={`font-body text-sm md:text-base leading-relaxed prose max-w-none break-words w-full [&_*]:!max-w-full [&_*]:!whitespace-pre-wrap [&_*]:!break-words ${isLight
                     ? "prose-slate"
                     : "prose-invert prose-p:text-slate-300 prose-headings:text-white prose-li:text-slate-300"
-                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-xl prose-h2:md:text-3xl prose-h2:mt-4 prose-h2:mb-4 prose-h3:text-lg prose-h3:md:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
+                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-headings:break-words prose-h2:text-xl prose-h2:md:text-3xl prose-h2:mt-4 prose-h2:mb-4 prose-h3:text-lg prose-h3:md:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
                 >
                   {(() => {
                     const lines = blog.content.split("\n").map(l => l.trim());
@@ -191,13 +190,12 @@ export default function BlogDetailClient({
                 </div>
               )}
 
-              {/* Structured Sections */}
               {blog.sections && blog.sections.length > 0 && (
                 <div
-                  className={`blog-content font-body text-sm md:text-base leading-relaxed prose max-w-none ${isLight
+                  className={`blog-content font-body text-sm md:text-base leading-relaxed prose max-w-none break-words w-full [&_*]:!max-w-full [&_*]:!whitespace-pre-wrap [&_*]:!break-words ${isLight
                     ? "prose-slate"
                     : "prose-invert prose-p:text-slate-300 prose-headings:text-white prose-li:text-slate-300"
-                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-xl prose-h2:md:text-3xl prose-h2:mt-4 prose-h2:mb-4 prose-h3:text-lg prose-h3:md:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
+                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-headings:break-words prose-h2:text-xl prose-h2:md:text-3xl prose-h2:mt-4 prose-h2:mb-4 prose-h3:text-lg prose-h3:md:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
                 >
                   {blog.sections.map((section, index) => (
                     <div key={index} className="mb-12">
@@ -235,7 +233,7 @@ export default function BlogDetailClient({
                         >
                           <h4 className={`text-sm font-bold uppercase mb-2 ${isLight ? "text-slate-900" : "text-white"}`}>Meta Linking</h4>
                           <div
-                            className="text-brand-accent underline underline-offset-4 font-semibold"
+                            className="text-brand-accent underline underline-offset-4 font-semibold break-all"
                             dangerouslySetInnerHTML={{
                               __html: section.metaLinking.includes("<")
                                 ? section.metaLinking
@@ -277,7 +275,7 @@ export default function BlogDetailClient({
                                 >
                                   <h4 className={`text-sm font-bold uppercase mb-2 ${isLight ? "text-slate-900" : "text-white"}`}>Meta Linking</h4>
                                   <div
-                                    className="text-brand-accent underline underline-offset-4 font-semibold"
+                                    className="text-brand-accent underline underline-offset-4 font-semibold break-all"
                                     dangerouslySetInnerHTML={{
                                       __html: sub.metaLinking.includes("<")
                                         ? sub.metaLinking
@@ -319,7 +317,7 @@ export default function BlogDetailClient({
                           {faq.question}
                         </h3>
                         <div
-                          className={`text-sm md:text-base leading-relaxed ${isLight ? "text-slate-600" : "text-slate-300"}`}
+                          className={`text-sm md:text-base leading-relaxed break-words ${isLight ? "text-slate-600" : "text-slate-300"}`}
                           dangerouslySetInnerHTML={{ __html: faq.answer }}
                         />
                       </div>
@@ -367,10 +365,11 @@ export default function BlogDetailClient({
                 </div>
               </div>
 
-              {/* Desktop sticky sidebar */}
-              <div className="hidden lg:flex flex-col gap-6 lg:sticky lg:top-32">
+              {/* Sidebar Content Container */}
+              <div className="flex flex-col gap-8 lg:gap-6 lg:sticky lg:top-32 mt-8 lg:mt-0">
+                {/* Desktop CTA Box */}
                 <div
-                  className={`rounded-2xl p-6 md:p-8 space-y-6 border ${isLight ? "bg-slate-50 border-slate-200" : "bg-white/5 border-white/10"
+                  className={`hidden lg:block rounded-2xl p-6 md:p-8 space-y-6 border ${isLight ? "bg-slate-50 border-slate-200" : "bg-white/5 border-white/10"
                     }`}
                 >
                   <h3
@@ -432,7 +431,7 @@ export default function BlogDetailClient({
                     </p>
                     <a
                       href="mailto:info@inquisitivedigital.com"
-                      className="text-sm font-bold transition-colors text-brand-accent hover:underline underline-offset-4"
+                      className="block text-sm font-bold transition-colors text-brand-accent hover:underline underline-offset-4 break-all"
                     >
                       info@inquisitivedigital.com
                     </a>
@@ -441,7 +440,7 @@ export default function BlogDetailClient({
 
                 {/* Latest Posts */}
                 <div
-                  className={`rounded-2xl p-6 md:p-8 border ${isLight ? "bg-slate-50 border-slate-200" : "bg-white/5 border-white/10"
+                  className={`rounded-2xl p-5 sm:p-6 md:p-8 border ${isLight ? "bg-slate-50 border-slate-200" : "bg-white/5 border-white/10"
                     }`}
                 >
                   <div className="flex items-center gap-3 mb-6">
@@ -466,7 +465,7 @@ export default function BlogDetailClient({
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className={`font-bold text-sm leading-snug line-clamp-2 mb-2 transition-colors ${isLight ? "text-slate-900 group-hover:text-brand-accent" : "text-white group-hover:text-brand-accent"}`}>
+                          <h4 className={`font-bold text-sm leading-snug line-clamp-2 mb-2 transition-colors break-words ${isLight ? "text-slate-900 group-hover:text-brand-accent" : "text-white group-hover:text-brand-accent"}`}>
                             {post.title}
                           </h4>
                           <div className={`text-xs font-medium ${isLight ? "text-slate-500" : "text-white/50"}`}>
