@@ -88,7 +88,7 @@ export default function BlogDetailClient({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="lg:col-span-2 min-w-0 w-full"
+              className="lg:col-span-2 min-w-0"
             >
               {(blog.heroImage?.url || blog.heroImageUrl || blog.imageUrl) && (
                 <motion.div
@@ -108,7 +108,7 @@ export default function BlogDetailClient({
 
               {blog.excerpt && (
                 <p
-                  className={`text-base md:text-lg leading-relaxed mb-8 font-medium break-words ${isLight ? "text-slate-700" : "text-white/80"
+                  className={`text-base md:text-lg leading-relaxed mb-8 font-medium ${isLight ? "text-slate-700" : "text-white/80"
                     }`}
                 >
                   {blog.excerpt}
@@ -117,10 +117,10 @@ export default function BlogDetailClient({
 
               {blog.content && (
                 <div
-                  className={`font-body text-sm md:text-base leading-relaxed prose max-w-none break-words w-full [&_*]:!max-w-full [&_*]:!whitespace-pre-wrap [&_*]:!break-words ${isLight
+                  className={`font-body text-sm md:text-base leading-relaxed prose max-w-none break-words overflow-hidden ${isLight
                     ? "prose-slate"
                     : "prose-invert prose-p:text-slate-300 prose-headings:text-white prose-li:text-slate-300"
-                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-headings:break-words prose-h2:text-xl prose-h2:md:text-3xl prose-h2:mt-4 prose-h2:mb-4 prose-h3:text-lg prose-h3:md:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
+                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-xl prose-h2:md:text-3xl prose-h2:mt-4 prose-h2:mb-4 prose-h3:text-lg prose-h3:md:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
                 >
                   {(() => {
                     const lines = blog.content.split("\n").map(l => l.trim());
@@ -192,10 +192,10 @@ export default function BlogDetailClient({
 
               {blog.sections && blog.sections.length > 0 && (
                 <div
-                  className={`blog-content font-body text-sm md:text-base leading-relaxed prose max-w-none break-words w-full [&_*]:!max-w-full [&_*]:!whitespace-pre-wrap [&_*]:!break-words ${isLight
+                  className={`blog-content font-body text-sm md:text-base leading-relaxed prose max-w-none break-words overflow-hidden ${isLight
                     ? "prose-slate"
                     : "prose-invert prose-p:text-slate-300 prose-headings:text-white prose-li:text-slate-300"
-                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-headings:break-words prose-h2:text-xl prose-h2:md:text-3xl prose-h2:mt-4 prose-h2:mb-4 prose-h3:text-lg prose-h3:md:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
+                    } prose-a:text-brand-accent prose-a:underline prose-a:font-semibold hover:prose-a:text-brand-accent/80 prose-headings:font-display prose-headings:uppercase prose-headings:tracking-tight prose-h2:text-xl prose-h2:md:text-3xl prose-h2:mt-4 prose-h2:mb-4 prose-h3:text-lg prose-h3:md:text-xl prose-h3:mt-8 prose-h3:mb-4 prose-p:mb-4 prose-ul:mb-4 prose-ul:list-disc prose-ul:pl-6`}
                 >
                   {blog.sections.map((section, index) => (
                     <div key={index} className="mb-12">
