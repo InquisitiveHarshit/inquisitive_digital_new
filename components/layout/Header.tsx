@@ -273,7 +273,7 @@ export const Header: React.FC = () => {
           {/* Contact Us Button */}
           <div className="hidden lg:flex flex-col items-center gap-1.5">
             <a
-              href="/contact-us"
+              href="/audit-form"
               className={`inline-flex items-center justify-center font-body font-extrabold uppercase tracking-wider text-[11px] py-2.5 px-6 transition-all duration-300 select-none cursor-pointer border-2 hover:scale-[1.03] ${
                 isLight
                   ? "bg-brand-accent text-black border-black hover:bg-black hover:text-brand-accent hover:border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] rounded-full"
@@ -282,7 +282,7 @@ export const Header: React.FC = () => {
                     : "bg-brand-accent text-background hover:bg-white border-brand-accent hover:border-white rounded-sm shadow-[0_4px_16px_rgba(245,194,0,0.18)]"
               }`}
             >
-              Contact Us
+              Audit Form
             </a>
             <a href="tel:+917310777430" className={`text-[10px] font-body font-bold hover:underline ${isLight ? "text-slate-600" : "text-slate-400"}`}>+91 7310 777 430</a>
           </div>
@@ -400,7 +400,7 @@ export const Header: React.FC = () => {
           ))}
           <div className="mt-4 flex flex-col items-center gap-2">
             <a
-              href="/contact-us"
+              href="/audit-form"
               onClick={() => setIsOpen(false)}
               className={`inline-flex items-center justify-center font-body font-extrabold uppercase tracking-wider text-xs py-3.5 px-8 transition-all duration-300 select-none cursor-pointer border-2 hover:scale-[1.02] ${
                 isLight
@@ -410,7 +410,7 @@ export const Header: React.FC = () => {
                     : "bg-brand-accent text-background hover:bg-white border-brand-accent hover:border-white rounded-sm shadow-[0_6px_20px_rgba(245,194,0,0.2)]"
               }`}
             >
-              Contact Us
+              Audit Form
             </a>
             <a href="tel:+917310777430" className={`text-xs font-body font-bold hover:underline ${isLight ? "text-slate-600" : "text-slate-400"}`}>+91 7310 777 430</a>
           </div>

@@ -142,7 +142,7 @@ export const Contact: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  if (pathname === "/about-us" || pathname === "/careers" || pathname === "/contact-us") {
+  if (pathname === "/about-us" || pathname === "/careers" || pathname === "/contact-us" || pathname === "/audit-form") {
     return null;
   }
 
