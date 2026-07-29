@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import BlogsClient from "./BlogsClient";
 import connectDB from "@/lib/mongodb";
 import Blog from "@/lib/models/Blog";
@@ -37,5 +37,9 @@ export default async function BlogsPage() {
     console.error("[BlogsPage] Error fetching blogs:", error);
   }
 
-  return <BlogsClient initialBlogs={initialBlogs} />;
+  return (
+    <Suspense fallback={null}>
+      <BlogsClient initialBlogs={initialBlogs} />
+    </Suspense>
+  );
 }

@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 import type { BlogPost } from "../data";
-import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 
 export default function BlogDetailClient({ 
@@ -18,9 +19,24 @@ export default function BlogDetailClient({
   allBlogs: BlogPost[];
 }) {
   const { themeMode } = useTheme();
+  const router = useRouter();
 
   const isLight = themeMode === "singular-light";
   const isDarkSingular = themeMode === "singular-dark";
+
+  // Derive unique categories — normalized to Title Case so "seo" and "SEO" merge into one
+  const toTitleCase = (str: string) =>
+    str.replace(/\w\S*/g, (w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+
+  const categories = useMemo(() => {
+    const seen = new Map<string, string>(); // key = lowercase, value = Title Case label
+    allBlogs.forEach((b) => {
+      if (!b.category) return;
+      const key = b.category.trim().toLowerCase();
+      if (!seen.has(key)) seen.set(key, toTitleCase(b.category.trim()));
+    });
+    return ["All", ...Array.from(seen.values())];
+  }, [allBlogs]);
 
   if (!blog) notFound();
 
@@ -436,6 +452,69 @@ export default function BlogDetailClient({
                       info@inquisitivedigital.com
                     </a>
                   </div>
+                </div>
+
+                {/* ── CATEGORIES WIDGET ── */}
+                <div
+                  className={`rounded-2xl p-5 sm:p-6 md:p-8 border ${isLight ? "bg-slate-50 border-slate-200" : "bg-white/5 border-white/10"
+                    }`}
+                >
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-1.5 h-6 rounded-full bg-brand-accent" />
+                    <h3 className={`text-xl font-display font-bold ${isLight ? "text-slate-900" : "text-white"}`}>
+                      Categories
+                    </h3>
+                  </div>
+
+                  <ul className="space-y-2">
+                    {categories.map((cat) => {
+                      const count =
+                        cat === "All"
+                          ? allBlogs.length
+                          : allBlogs.filter(
+                              (b) => b.category?.trim().toLowerCase() === cat.trim().toLowerCase()
+                            ).length;
+
+                      return (
+                        <li key={cat}>
+                          <button
+                            onClick={() =>
+                              cat === "All"
+                                ? router.push("/blogs")
+                                : router.push(`/blogs?category=${encodeURIComponent(cat)}`)
+                            }
+                            className={`group w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all duration-300 ${
+                              isLight
+                                ? "bg-white border border-slate-200 text-slate-700 hover:border-brand-accent hover:shadow-[3px_3px_0px_0px_rgba(245,194,0,0.4)] hover:text-slate-900"
+                                : "bg-white/5 border border-white/10 text-white/80 hover:border-brand-accent/60 hover:bg-brand-accent/10 hover:text-white"
+                            }`}
+                          >
+                            <span
+                              className={`flex-shrink-0 w-6 h-6 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                                isLight
+                                  ? "bg-slate-100 group-hover:bg-brand-accent/20"
+                                  : "bg-white/10 group-hover:bg-brand-accent/20"
+                              }`}
+                            >
+                              <ArrowRight
+                                className="w-3 h-3 text-brand-accent transition-transform duration-300 group-hover:translate-x-0.5"
+                              />
+                            </span>
+                            <span className="flex-1 font-semibold text-sm">{cat}</span>
+                            <span
+                              className={`text-xs font-bold px-1.5 py-0.5 rounded-full ${
+                                isLight
+                                  ? "bg-slate-100 text-slate-500 group-hover:bg-brand-accent/20"
+                                  : "bg-white/10 text-white/50 group-hover:bg-brand-accent/20"
+                              }`}
+                            >
+                              {count}
+                            </span>
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
 
                 {/* Latest Posts */}
