@@ -10,12 +10,12 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  themeMode: "singular-light",
+  themeMode: "singular-dark",
   setTheme: () => {},
 });
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>("singular-light");
+  const [themeMode, setThemeMode] = useState<ThemeMode>("singular-dark");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -27,7 +27,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         if (currentTheme) {
           setThemeMode(currentTheme);
         } else {
-          setThemeMode("singular-light");
+          setThemeMode("singular-dark");
         }
       }
 

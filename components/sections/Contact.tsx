@@ -79,6 +79,7 @@ export const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "", // New phone field
     website: "", // For Audit Form
     service: "", // For Contact Form
     subject: "", // For Contact Form
@@ -101,6 +102,7 @@ export const Contact: React.FC = () => {
         const payload = new FormData();
         payload.append("name", formData.name);
         payload.append("email", formData.email);
+        payload.append("phone", formData.phone);
         payload.append("website", formData.website);
         payload.append("message", formData.message);
 
@@ -117,6 +119,7 @@ export const Contact: React.FC = () => {
           body: JSON.stringify({
             name: formData.name,
             email: formData.email,
+            phone: formData.phone,
             service: formData.service,
             subject: formData.subject,
             message: formData.message,
@@ -126,7 +129,7 @@ export const Contact: React.FC = () => {
       }
       
       setIsSubmitted(true);
-      setFormData({ name: "", email: "", website: "", service: "", subject: "", message: "" });
+      setFormData({ name: "", email: "", phone: "", website: "", service: "", subject: "", message: "" });
     } catch (error) {
       console.error(error);
     } finally {
@@ -288,6 +291,17 @@ export const Contact: React.FC = () => {
                     onFocus={() => setActiveField("email")}
                     onBlur={() => setActiveField(null)}
                     isActive={activeField === "email"}
+                    isLight={isLight}
+                  />
+                  <FormField
+                    id="phone"
+                    label="Phone Number"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    onFocus={() => setActiveField("phone")}
+                    onBlur={() => setActiveField(null)}
+                    isActive={activeField === "phone"}
                     isLight={isLight}
                   />
                 </div>

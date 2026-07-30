@@ -24,6 +24,7 @@ export default function ContactUsPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     service: "",
     subject: "",
     message: "",
@@ -47,7 +48,7 @@ export default function ContactUsPage() {
       });
       if (!res.ok) throw new Error("Failed to send message");
       setIsSubmitted(true);
-      setFormData({ name: "", email: "", service: "", subject: "", message: "" });
+      setFormData({ name: "", email: "", phone: "", service: "", subject: "", message: "" });
     } catch (error) {
       console.error(error);
     } finally {
@@ -284,6 +285,18 @@ export default function ContactUsPage() {
                       onFocus={() => setActiveField("email")}
                       onBlur={() => setActiveField(null)}
                       isActive={activeField === "email"}
+                      isLight={isLight}
+                    />
+                    {/* Phone */}
+                    <FormField
+                      id="phone"
+                      label="Phone Number"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      onFocus={() => setActiveField("phone")}
+                      onBlur={() => setActiveField(null)}
+                      isActive={activeField === "phone"}
                       isLight={isLight}
                     />
                   </div>

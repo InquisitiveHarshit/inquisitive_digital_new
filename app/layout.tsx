@@ -6,6 +6,8 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Contact } from "@/components/sections/Contact";
 import { Footer } from "@/components/layout/Footer";
 import { AdminExclusionWrapper } from "@/components/layout/AdminExclusionWrapper";
+import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
+import { TawkLoader } from "@/components/ui/TawkLoader";
 
 const beVietnam = localFont({
   src: [
@@ -115,20 +117,9 @@ export default function RootLayout({
           <div className="noise-overlay" />
           {children}
           <AdminExclusionWrapper>
-            <Script id="tawk-to" strategy="lazyOnload">
-              {`
-                var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-                (function(){
-                var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-                s1.async=true;
-                s1.src='https://embed.tawk.to/6a671e63e694901d4cd0678d/1juhctdfh';
-                s1.charset='UTF-8';
-                s1.setAttribute('crossorigin','*');
-                s0.parentNode.insertBefore(s1,s0);
-                })();
-              `}
-            </Script>
+            <TawkLoader />
             <Contact />
+            <FloatingWhatsApp />
             <Footer />
           </AdminExclusionWrapper>
         </ThemeProvider>

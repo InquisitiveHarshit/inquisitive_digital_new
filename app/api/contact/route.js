@@ -6,13 +6,13 @@ export async function POST(request) {
   try {
     await connectDB();
     const data = await request.json();
-    const { name, email, subject, message } = data;
+    const { name, email, phone, service, subject, message } = data;
 
     if (!name || !email || !subject || !message) {
       return NextResponse.json({ success: false, message: 'All fields are required' }, { status: 400 });
     }
 
-    const lead = await ContactLead.create({ name, email, subject, message });
+    const lead = await ContactLead.create({ name, email, phone, service, subject, message });
     return NextResponse.json({ success: true, data: { id: lead.id } }, { status: 201 });
   } catch (err) {
     console.error('[ERROR] POST /api/contact:', err);

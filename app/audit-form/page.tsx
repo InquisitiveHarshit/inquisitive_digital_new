@@ -14,6 +14,7 @@ export default function AuditFormPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "", // New phone field
     website: "",
     message: "",
   });
@@ -32,6 +33,7 @@ export default function AuditFormPage() {
       const payload = new FormData();
       payload.append("name", formData.name);
       payload.append("email", formData.email);
+      payload.append("phone", formData.phone);
       payload.append("website", formData.website);
       payload.append("message", formData.message);
 
@@ -42,7 +44,7 @@ export default function AuditFormPage() {
       if (!res.ok) throw new Error("Failed to submit audit request");
       
       setIsSubmitted(true);
-      setFormData({ name: "", email: "", website: "", message: "" });
+      setFormData({ name: "", email: "", phone: "", website: "", message: "" });
     } catch (error) {
       console.error(error);
     } finally {
@@ -267,6 +269,18 @@ export default function AuditFormPage() {
                       isActive={activeField === "email"}
                       isLight={isLight}
                     />
+                    {/* Phone Number */}
+                    <FormField
+                      id="phone"
+                      label="Phone Number"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      onFocus={() => setActiveField("phone")}
+                      onBlur={() => setActiveField(null)}
+                      isActive={activeField === "phone"}
+                      isLight={isLight}
+                    />
                   </div>
 
                   {/* Website */}
@@ -380,7 +394,6 @@ export default function AuditFormPage() {
           </motion.div>
         </div>
       </main>
-      <FloatingWhatsApp />
     </>
   );
 }
