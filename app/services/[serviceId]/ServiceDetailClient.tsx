@@ -20,6 +20,7 @@ import {
   Mail,
   User,
   Globe,
+  Phone,
   Search,
   Share2,
   TrendingUp as TrendingUpIcon,
@@ -173,7 +174,7 @@ export default function ServiceDetailClient({ initialService }: { initialService
   // Form State
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({ fullName: "", email: "", website: "", challenge: "" });
+  const [formData, setFormData] = useState({ fullName: "", email: "", phone: "", website: "", challenge: "" });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -189,6 +190,7 @@ export default function ServiceDetailClient({ initialService }: { initialService
       const payload = new FormData();
       payload.append("name", formData.fullName);
       payload.append("email", formData.email);
+      payload.append("phone", formData.phone);
       payload.append("website", formData.website);
       payload.append("message", formData.challenge);
 
@@ -1165,6 +1167,13 @@ export default function ServiceDetailClient({ initialService }: { initialService
 
                     <div className="space-y-1.5">
                       <div className="relative">
+                        <Phone className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant opacity-70" />
+                        <input type="tel" name="phone" required value={formData.phone} onChange={handleInputChange} placeholder="Phone Number" className="w-full bg-surface-container-low border border-outline-variant rounded-full px-12 py-3 text-xs font-body text-on-surface placeholder-on-surface-variant/70 focus:border-brand-accent/50 focus:bg-background focus:ring-4 focus:ring-brand-accent/10 focus:outline-none transition-all duration-300" />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <div className="relative">
                         <Globe className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant opacity-70" />
                         <input type="url" name="website" required value={formData.website} onChange={handleInputChange} placeholder="Website URL" className="w-full bg-surface-container-low border border-outline-variant rounded-full px-12 py-3 text-xs font-body text-on-surface placeholder-on-surface-variant/70 focus:border-brand-accent/50 focus:bg-background focus:ring-4 focus:ring-brand-accent/10 focus:outline-none transition-all duration-300" />
                       </div>
@@ -1189,7 +1198,7 @@ export default function ServiceDetailClient({ initialService }: { initialService
                       Your custom report will be delivered to <span className="text-on-surface font-bold">{formData.email}</span> within 48 hours.
                     </p>
                     <div className="pt-4">
-                      <button onClick={() => { setFormSubmitted(false); setFormData({ fullName: "", email: "", website: "", challenge: "" }) }} className="font-display text-[10px] font-bold text-brand-accent uppercase tracking-widest hover:underline bg-surface-container-low border border-outline-variant px-4 py-1.5 rounded-full shadow-sm">Submit another</button>
+                      <button onClick={() => { setFormSubmitted(false); setFormData({ fullName: "", email: "", phone: "", website: "", challenge: "" }) }} className="font-display text-[10px] font-bold text-brand-accent uppercase tracking-widest hover:underline bg-surface-container-low border border-outline-variant px-4 py-1.5 rounded-full shadow-sm">Submit another</button>
                     </div>
                   </div>
                 )}

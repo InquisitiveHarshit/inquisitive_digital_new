@@ -8,6 +8,7 @@ export async function POST(request) {
     const formData = await request.formData();
     const name = formData.get('name');
     const email = formData.get('email');
+    const phone = formData.get('phone');
     const website = formData.get('website');
     const message = formData.get('message');
 
@@ -15,7 +16,7 @@ export async function POST(request) {
       return NextResponse.json({ success: false, message: 'All fields are required' }, { status: 400 });
     }
 
-    const audit = await Audit.create({ name, email, website, message });
+    const audit = await Audit.create({ name, email, phone, website, message });
     return NextResponse.json({ success: true, data: { id: audit.id } }, { status: 201 });
   } catch (err) {
     console.error('[ERROR] POST /api/audit:', err);

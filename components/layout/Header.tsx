@@ -44,41 +44,41 @@ export const Header: React.FC = () => {
   ];
 
   const dropdownServices = [
-    { 
-      title: "SEO, AEO & GEO", 
-      desc: "Rank higher on Google and AI search", 
+    {
+      title: "SEO, AEO & GEO",
+      desc: "Rank higher on Google and AI search",
       href: "/services/seo-services",
-      icon: Search 
+      icon: Search
     },
-    { 
-      title: "Social Media Marketing", 
-      desc: "Build brand awareness & engagement", 
+    {
+      title: "Social Media Marketing",
+      desc: "Build brand awareness & engagement",
       href: "/services/social-media-marketing",
-      icon: Share2 
+      icon: Share2
     },
-    { 
-      title: "Performance Marketing", 
-      desc: "Data-driven ROI campaigns", 
+    {
+      title: "Performance Marketing",
+      desc: "Data-driven ROI campaigns",
       href: "/services/performance-marketing",
-      icon: TrendingUp 
+      icon: TrendingUp
     },
-    { 
-      title: "Web Development", 
-      desc: "Blazing fast Next.js & React sites", 
+    {
+      title: "Web Development",
+      desc: "Blazing fast Next.js & React sites",
       href: "/services/web-development",
-      icon: Code 
+      icon: Code
     },
-    { 
-      title: "Content Marketing & Blogging", 
-      desc: "SEO optimized authoritative content", 
+    {
+      title: "Content Marketing & Blogging",
+      desc: "SEO optimized authoritative content",
       href: "/services/content-marketing",
-      icon: FileText 
+      icon: FileText
     },
-    { 
-      title: "Creative Services", 
-      desc: "Design, branding & video production", 
+    {
+      title: "Creative Services",
+      desc: "Design, branding & video production",
       href: "/services/creative-services",
-      icon: Palette 
+      icon: Palette
     },
   ];
 
@@ -135,19 +135,17 @@ export const Header: React.FC = () => {
           >
             <a
               href="/services"
-              className={`font-body text-xs uppercase tracking-wider font-semibold transition-all duration-300 relative flex items-center gap-1.5 after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[2px] hover:after:w-full after:transition-all after:duration-300 ${
-                isLight
-                  ? "text-slate-700 hover:text-brand-accent after:bg-brand-accent"
-                  : isDarkSingular
-                    ? "text-slate-300 hover:text-brand-accent after:bg-brand-accent"
-                    : "text-on-surface-variant hover:text-brand-accent after:bg-brand-accent"
-              }`}
+              className={`font-body text-xs uppercase tracking-wider font-semibold transition-all duration-300 relative flex items-center gap-1.5 after:content-[''] after:absolute after:-bottom-2 after:left-0 after:w-0 after:h-[2px] hover:after:w-full after:transition-all after:duration-300 ${isLight
+                ? "text-slate-700 hover:text-brand-accent after:bg-brand-accent"
+                : isDarkSingular
+                  ? "text-slate-300 hover:text-brand-accent after:bg-brand-accent"
+                  : "text-on-surface-variant hover:text-brand-accent after:bg-brand-accent"
+                }`}
             >
               Services
               <svg
-                className={`w-3.5 h-3.5 transition-transform duration-300 ${
-                  dropdownOpen ? "rotate-180" : ""
-                }`}
+                className={`w-3.5 h-3.5 transition-transform duration-300 ${dropdownOpen ? "rotate-180" : ""
+                  }`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -169,13 +167,12 @@ export const Header: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.2 }}
-                  className={`absolute left-1/2 -translate-x-1/2 mt-2 w-72 rounded-xl border p-2 shadow-2xl z-50 transition-colors duration-300 ${
-                    isLight
-                      ? "bg-white border-slate-100 text-slate-800"
-                      : isDarkSingular
-                        ? "bg-[#141414] border-white/10 text-white"
-                        : "bg-surface border-outline-variant text-on-surface shadow-[4px_4px_0px_rgba(0,0,0,1)]"
-                  }`}
+                  className={`absolute left-1/2 -translate-x-1/2 mt-2 w-72 rounded-xl border p-2 shadow-2xl z-50 transition-colors duration-300 ${isLight
+                    ? "bg-white border-slate-100 text-slate-800"
+                    : isDarkSingular
+                      ? "bg-[#141414] border-white/10 text-white"
+                      : "bg-surface border-outline-variant text-on-surface shadow-[4px_4px_0px_rgba(0,0,0,1)]"
+                    }`}
                 >
                   <div className="grid grid-cols-1 gap-1">
                     {dropdownServices.map((service) => {
@@ -184,26 +181,23 @@ export const Header: React.FC = () => {
                         <a
                           key={service.title}
                           href={service.href}
-                          className={`flex items-center gap-3 p-2.5 rounded-lg text-left transition-all duration-200 ${
-                            isLight
-                              ? "hover:bg-slate-50 hover:text-brand-accent"
-                              : isDarkSingular
-                                ? "hover:bg-white/5 hover:text-brand-accent"
-                                : "hover:bg-brand-accent hover:text-black"
-                          }`}
+                          className={`flex items-center gap-3 p-2.5 rounded-lg text-left transition-all duration-200 ${isLight
+                            ? "hover:bg-slate-50 hover:text-brand-accent"
+                            : isDarkSingular
+                              ? "hover:bg-white/5 hover:text-brand-accent"
+                              : "hover:bg-brand-accent hover:text-black"
+                            }`}
                         >
-                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-                            isLight ? "bg-slate-100 text-brand-accent" : "bg-white/5 text-brand-accent"
-                          }`}>
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${isLight ? "bg-slate-100 text-brand-accent" : "bg-white/5 text-brand-accent"
+                            }`}>
                             <Icon className="w-4 h-4 stroke-[2]" />
                           </div>
                           <div>
                             <div className="text-[11px] font-display font-extrabold uppercase tracking-wider leading-none">
                               {service.title}
                             </div>
-                            <div className={`text-[9px] mt-1 font-body font-medium line-clamp-1 ${
-                              isLight ? "text-slate-400" : "text-slate-500"
-                            }`}>
+                            <div className={`text-[9px] mt-1 font-body font-medium line-clamp-1 ${isLight ? "text-slate-400" : "text-slate-500"
+                              }`}>
                               {service.desc}
                             </div>
                           </div>
@@ -236,34 +230,31 @@ export const Header: React.FC = () => {
         {/* Actions & Theme Switcher */}
         <div className="flex items-center gap-4 relative z-20">
           {/* Dynamic Theme Switcher (Icon-only) */}
-          <div className={`flex items-center rounded-full p-0.5 border transition-all duration-300 ${
-            isLight
-              ? "bg-slate-100 border-slate-200"
-              : "bg-black/40 backdrop-blur-md border-white/10"
-          }`}>
+          <div className={`flex items-center rounded-full p-0.5 border transition-all duration-300 ${isLight
+            ? "bg-slate-100 border-slate-200"
+            : "bg-black/40 backdrop-blur-md border-white/10"
+            }`}>
 
             <button
               onClick={() => handleThemeSwitch("singular-light")}
-              className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ${
-                themeMode === "singular-light"
-                  ? "bg-white text-black border border-slate-200 shadow-sm"
-                  : isLight
-                    ? "text-slate-400 hover:text-slate-700"
-                    : "text-white/50 hover:text-white"
-              }`}
+              className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ${themeMode === "singular-light"
+                ? "bg-white text-black border border-slate-200 shadow-sm"
+                : isLight
+                  ? "text-slate-400 hover:text-slate-700"
+                  : "text-white/50 hover:text-white"
+                }`}
               title="Light Mode"
             >
               <Sun className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => handleThemeSwitch("singular-dark")}
-              className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ${
-                themeMode === "singular-dark"
-                  ? "bg-brand-accent text-black border border-brand-accent shadow-sm"
-                  : isLight
-                    ? "text-slate-400 hover:text-slate-700"
-                    : "text-white/50 hover:text-white"
-              }`}
+              className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ${themeMode === "singular-dark"
+                ? "bg-brand-accent text-black border border-brand-accent shadow-sm"
+                : isLight
+                  ? "text-slate-400 hover:text-slate-700"
+                  : "text-white/50 hover:text-white"
+                }`}
               title="Dark Mode"
             >
               <Moon className="w-3.5 h-3.5" />
@@ -274,15 +265,14 @@ export const Header: React.FC = () => {
           <div className="hidden lg:flex flex-col items-center gap-1.5">
             <a
               href="/audit-form"
-              className={`inline-flex items-center justify-center font-body font-extrabold uppercase tracking-wider text-[11px] py-2.5 px-6 transition-all duration-300 select-none cursor-pointer border-2 hover:scale-[1.03] ${
-                isLight
-                  ? "bg-brand-accent text-black border-black hover:bg-black hover:text-brand-accent hover:border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] rounded-full"
-                  : isDarkSingular
-                    ? "bg-brand-accent text-black border-brand-accent hover:bg-white hover:text-black hover:border-white shadow-[3px_3px_0px_rgba(255,255,255,0.2)] rounded-full"
-                    : "bg-brand-accent text-background hover:bg-white border-brand-accent hover:border-white rounded-sm shadow-[0_4px_16px_rgba(245,194,0,0.18)]"
-              }`}
+              className={`inline-flex items-center justify-center font-body font-extrabold uppercase tracking-wider text-[11px] py-2.5 px-6 transition-all duration-300 select-none cursor-pointer border-2 hover:scale-[1.03] ${isLight
+                ? "bg-brand-accent text-black border-black hover:bg-black hover:text-brand-accent hover:border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] rounded-full"
+                : isDarkSingular
+                  ? "bg-brand-accent text-black border-brand-accent hover:bg-white hover:text-black hover:border-white shadow-[3px_3px_0px_rgba(255,255,255,0.2)] rounded-full"
+                  : "bg-brand-accent text-background hover:bg-white border-brand-accent hover:border-white rounded-sm shadow-[0_4px_16px_rgba(245,194,0,0.18)]"
+                }`}
             >
-              Audit Form
+              Free Audit Form
             </a>
             <a href="tel:+917310777430" className={`text-[10px] font-body font-bold hover:underline ${isLight ? "text-slate-600" : "text-slate-400"}`}>+91 7310 777 430</a>
           </div>
@@ -339,16 +329,16 @@ export const Header: React.FC = () => {
                 }`}
             >
               Services
-              <svg 
-                className={`w-4 h-4 transition-transform duration-300 ${mobileServicesOpen ? "rotate-180" : ""}`} 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className={`w-4 h-4 transition-transform duration-300 ${mobileServicesOpen ? "rotate-180" : ""}`}
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            
+
             {/* Collapsible Mobile Sub-Services */}
             <AnimatePresence>
               {mobileServicesOpen && (
@@ -363,9 +353,8 @@ export const Header: React.FC = () => {
                       key={service.title}
                       href={service.href}
                       onClick={() => setIsOpen(false)}
-                      className={`text-xs font-body font-bold uppercase tracking-wide transition-colors ${
-                        isLight ? "text-slate-500 hover:text-brand-accent" : "text-slate-400 hover:text-brand-accent"
-                      }`}
+                      className={`text-xs font-body font-bold uppercase tracking-wide transition-colors ${isLight ? "text-slate-500 hover:text-brand-accent" : "text-slate-400 hover:text-brand-accent"
+                        }`}
                     >
                       {service.title}
                     </a>
@@ -402,15 +391,14 @@ export const Header: React.FC = () => {
             <a
               href="/audit-form"
               onClick={() => setIsOpen(false)}
-              className={`inline-flex items-center justify-center font-body font-extrabold uppercase tracking-wider text-xs py-3.5 px-8 transition-all duration-300 select-none cursor-pointer border-2 hover:scale-[1.02] ${
-                isLight
-                  ? "bg-brand-accent text-black border-black hover:bg-black hover:text-brand-accent hover:border-brand-accent shadow-[4px_4px_0px_rgba(0,0,0,1)] rounded-full"
-                  : isDarkSingular
-                    ? "bg-brand-accent text-black border-brand-accent hover:bg-white hover:text-black hover:border-white shadow-[4px_4px_0px_rgba(255,255,255,0.2)] rounded-full"
-                    : "bg-brand-accent text-background hover:bg-white border-brand-accent hover:border-white rounded-sm shadow-[0_6px_20px_rgba(245,194,0,0.2)]"
-              }`}
+              className={`inline-flex items-center justify-center font-body font-extrabold uppercase tracking-wider text-xs py-3.5 px-8 transition-all duration-300 select-none cursor-pointer border-2 hover:scale-[1.02] ${isLight
+                ? "bg-brand-accent text-black border-black hover:bg-black hover:text-brand-accent hover:border-brand-accent shadow-[4px_4px_0px_rgba(0,0,0,1)] rounded-full"
+                : isDarkSingular
+                  ? "bg-brand-accent text-black border-brand-accent hover:bg-white hover:text-black hover:border-white shadow-[4px_4px_0px_rgba(255,255,255,0.2)] rounded-full"
+                  : "bg-brand-accent text-background hover:bg-white border-brand-accent hover:border-white rounded-sm shadow-[0_6px_20px_rgba(245,194,0,0.2)]"
+                }`}
             >
-              Audit Form
+              Free Audit Form
             </a>
             <a href="tel:+917310777430" className={`text-xs font-body font-bold hover:underline ${isLight ? "text-slate-600" : "text-slate-400"}`}>+91 7310 777 430</a>
           </div>
