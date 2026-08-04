@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
-import { Send, CheckCircle2, Sparkles } from "lucide-react";
+import { Send, CheckCircle2, Sparkles, MapPin, Phone, Mail } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { useTheme } from "@/components/ThemeProvider";
 
@@ -181,8 +181,118 @@ export default function ContactUsPage() {
           </motion.p>
         </div>
 
-        {/* ── Contact Form ── */}
-        <div className="relative max-w-3xl mx-auto px-6 z-10">
+        {/* ── Contact Info & Form ── */}
+        <div className="relative max-w-3xl mx-auto px-6 z-10 flex flex-col-reverse gap-12">
+          {/* Bottom Section: Office Location & Map (due to flex-col-reverse) */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className={`relative rounded-2xl overflow-hidden border p-8 sm:p-12 transition-colors duration-300 flex flex-col justify-between h-full ${
+              isLight
+                ? "bg-white border-slate-200 shadow-lg"
+                : "border-brand-accent/25 bg-[#121212] shadow-2xl"
+            }`}
+          >
+            {/* Ambient glows for the Info Card */}
+            {!isLight && (
+              <>
+                <div
+                  className="pointer-events-none absolute top-0 left-0 right-0 h-[1px]"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, transparent 0%, rgba(245,194,0,0.6) 40%, rgba(255,255,255,0.3) 60%, rgba(245,194,0,0.6) 80%, transparent 100%)",
+                  }}
+                />
+                <div
+                  className="pointer-events-none absolute -top-20 -left-20 w-56 h-56 rounded-full opacity-20"
+                  style={{
+                    background:
+                      "radial-gradient(circle, rgba(245,194,0,0.4) 0%, transparent 70%)",
+                  }}
+                />
+              </>
+            )}
+            {isLight && (
+              <div
+                className="pointer-events-none absolute top-0 left-0 right-0 h-[1px]"
+                style={{
+                  background:
+                    "linear-gradient(90deg, transparent 0%, rgba(245,194,0,0.3) 50%, transparent 100%)",
+                }}
+              />
+            )}
+
+            <div className="space-y-8 z-10">
+              <div>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-accent/10 border border-brand-accent/20 text-brand-accent text-[10px] font-bold uppercase tracking-wider mb-4">
+                  <MapPin className="w-3.5 h-3.5" />
+                  Our Location
+                </span>
+                <h2 className={`font-display text-2xl md:text-3xl font-black uppercase tracking-tight mb-4 ${isLight ? "text-slate-900" : "text-white"}`}>
+                  VISIT OUR OFFICE
+                </h2>
+                <p className={`font-body text-sm sm:text-base leading-relaxed ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+                  Suite 001, H-36, Sector 63,<br />
+                  Noida, Uttar Pradesh 201301
+                </p>
+              </div>
+
+              {/* Direct links to other channels */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4 border-t border-brand-accent/10">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center bg-brand-accent/10 border border-brand-accent/30 text-brand-accent shrink-0">
+                    <Phone className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Call / WhatsApp</p>
+                    <a href="tel:+917310777430" className={`font-body font-bold text-sm hover:text-brand-accent transition-colors ${isLight ? "text-slate-800" : "text-slate-200"}`}>
+                      +91 7310 777 430
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center bg-brand-accent/10 border border-brand-accent/30 text-brand-accent shrink-0">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Email Us</p>
+                    <a href="mailto:info@inquisitivedigital.com" className={`font-body font-bold text-sm hover:text-brand-accent transition-colors ${isLight ? "text-slate-800" : "text-slate-200"}`}>
+                      info@inquisitivedigital.com
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Embedded Google Map */}
+            <div className="mt-8 rounded-xl overflow-hidden border border-brand-accent/20 h-[320px] sm:h-[400px] w-full relative z-10 shadow-inner group">
+              <iframe
+                title="Inquisitive Digital Noida Office Map"
+                src="https://maps.google.com/maps?q=Green%20Leafers%20Business%20Park,%20Sector%2063,%20Noida&t=&z=16&ie=UTF8&iwloc=B&output=embed"
+                className={`absolute inset-0 w-full h-full border-0 transition-opacity duration-300 ${isLight ? "" : "invert-[0.9] hue-rotate-[180deg] contrast-[1.2] brightness-[0.9] opacity-85"}`}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+
+
+              <div className="absolute bottom-3 right-3 z-30">
+                <a
+                  href="https://maps.google.com/maps?q=Green%20Leafers%20Business%20Park,%20Sector%2063,%20Noida"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/80 hover:bg-brand-accent text-white hover:text-black font-body text-xs font-bold transition-all duration-300 shadow-md"
+                >
+                  <MapPin className="w-3.5 h-3.5" />
+                  Open in Maps
+                </a>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Top Section: Contact Form (due to flex-col-reverse) */}
           <motion.div
             animate={
               isFormActive
@@ -202,8 +312,8 @@ export default function ContactUsPage() {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className={`relative rounded-2xl overflow-hidden border p-8 sm:p-12 transition-colors duration-300 ${
               isLight
-                ? "bg-white border-slate-200"
-                : "border-brand-accent/25 bg-[#121212]"
+                ? "bg-white border-slate-200 shadow-lg"
+                : "border-brand-accent/25 bg-[#121212] shadow-2xl"
             }`}
           >
             {/* Shiny gradient overlay on form card */}
