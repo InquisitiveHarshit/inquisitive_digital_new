@@ -7,7 +7,7 @@ import { Contact } from "@/components/sections/Contact";
 import { Footer } from "@/components/layout/Footer";
 import { AdminExclusionWrapper } from "@/components/layout/AdminExclusionWrapper";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
-import { TawkLoader } from "@/components/ui/TawkLoader";
+
 
 const beVietnam = localFont({
   src: [
@@ -134,7 +134,7 @@ export default function RootLayout({
           <div className="noise-overlay" />
           {children}
           <AdminExclusionWrapper>
-            <TawkLoader />
+
             <Contact />
             <FloatingWhatsApp />
             <Footer />
