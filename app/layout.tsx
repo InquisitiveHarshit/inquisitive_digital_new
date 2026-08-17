@@ -123,7 +123,7 @@ export default function RootLayout({
             __html: `
               (function() {
                 try {
-                  var theme = localStorage.getItem('theme-mode') || 'singular-light';
+                  var theme = localStorage.getItem('theme-mode') || 'singular-dark';
                   document.documentElement.setAttribute('data-theme', theme);
                 } catch (e) {}
               })();
