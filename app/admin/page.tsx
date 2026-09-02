@@ -33,6 +33,7 @@ interface Audit {
   email: string;
   website: string;
   message: string;
+  phone?: string;
   created_at: string;
 }
 
@@ -43,6 +44,7 @@ interface ContactLead {
   email: string;
   subject: string;
   message: string;
+  phone?: string;
   created_at: string;
 }
 import BlogsAdmin from "./BlogsAdmin";
@@ -1707,9 +1709,13 @@ export default function AdminDashboard() {
                     <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Website</span>
                     <p className="text-base font-bold text-brand-accent mt-1">{selectedAudit.website}</p>
                   </div>
-                  <div className="sm:col-span-2">
+                  <div>
                     <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Email Address</span>
                     <p className="text-sm font-semibold text-white mt-1 break-all">{selectedAudit.email}</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Phone Number</span>
+                    <p className="text-sm font-semibold text-white mt-1 break-all">{selectedAudit.phone || "N/A"}</p>
                   </div>
                 </div>
 
@@ -1777,9 +1783,13 @@ export default function AdminDashboard() {
                     <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Subject</span>
                     <p className="text-base font-bold text-brand-accent mt-1">{selectedLead.subject}</p>
                   </div>
-                  <div className="sm:col-span-2">
+                  <div>
                     <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Email Address</span>
                     <p className="text-sm font-semibold text-white mt-1 break-all">{selectedLead.email}</p>
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Phone Number</span>
+                    <p className="text-sm font-semibold text-white mt-1 break-all">{selectedLead.phone || "N/A"}</p>
                   </div>
                 </div>
 
