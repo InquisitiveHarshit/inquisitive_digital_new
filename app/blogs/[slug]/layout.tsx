@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { headers } from "next/headers";
 
 type Props = {
-  params: Promise<{ slug: string }> | { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 export async function generateMetadata(props: Props): Promise<Metadata> {

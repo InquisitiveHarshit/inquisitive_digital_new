@@ -31,6 +31,7 @@ export default async function BlogsPage() {
           : "Recently",
         readTime: b.readTime || "5 min read",
         category: b.category || "Insight",
+        author: b.author || "Inquisitive Digital",
       }));
     }
   } catch (error) {

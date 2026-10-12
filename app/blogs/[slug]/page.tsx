@@ -37,6 +37,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         category: (dbBlog as any).category || "Insight",
         sections: (dbBlog as any).sections || [],
         faqs: (dbBlog as any).faqs || [],
+        author: (dbBlog as any).author || "Inquisitive Digital",
       } as BlogPost;
     } else {
       // Fallback to static blog
@@ -46,7 +47,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
     // Fetch all blogs for prev/next
     const fetchedBlogs = await Blog.find({ isActive: true })
-      .select("slug title excerpt imageUrl heroImageUrl heroImage createdAt readTime category")
+      .select("slug title excerpt imageUrl heroImageUrl heroImage createdAt readTime category author")
       .sort({ createdAt: -1 })
       .lean();
 
@@ -64,6 +65,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           : "Recently",
         readTime: b.readTime || "5 min read",
         category: b.category || "Insight",
+        author: b.author || "Inquisitive Digital",
       }));
     }
   } catch (error) {

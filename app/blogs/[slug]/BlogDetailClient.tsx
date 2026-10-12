@@ -86,9 +86,17 @@ export default function BlogDetailClient({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className={`flex items-center justify-center gap-4 text-sm font-semibold ${isLight ? "text-slate-500" : "text-white/50"
+              className={`flex items-center justify-center gap-4 text-sm font-semibold flex-wrap ${isLight ? "text-slate-500" : "text-white/50"
                 }`}
             >
+              {blog.author && (
+                <>
+                  <span className={`font-bold ${isLight ? "text-slate-900" : "text-white"}`}>
+                    By {blog.author}
+                  </span>
+                  <span className="w-1 h-1 rounded-full bg-brand-accent opacity-50" />
+                </>
+              )}
               <span>{blog.date}</span>
               <span className="w-1 h-1 rounded-full bg-brand-accent opacity-50" />
               <span>{blog.readTime}</span>

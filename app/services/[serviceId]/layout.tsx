@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { headers } from "next/headers";
 
 type Props = {
-  params: Promise<{ serviceId: string }> | { serviceId: string };
+  params: Promise<{ serviceId: string }>;
 };
 
 export async function generateMetadata(props: Props): Promise<Metadata> {

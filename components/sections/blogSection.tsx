@@ -84,6 +84,7 @@ export const Insights: React.FC = () => {
                   title={article.title}
                   desc={article.excerpt}
                   image={article.imageUrl || FALLBACK_IMAGES[index % 3]}
+                  author={article.author}
                   delay={index * 0.1}
                 />
               </div>

@@ -1302,6 +1302,7 @@ export default function ServiceDetailClient({ initialService }: { initialService
                     "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
                     "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=600&q=80"
                   ][index % 3]}
+                  author={blog.author}
                   delay={0.1 * (index + 1)}
                 />
               </div>

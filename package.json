@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "zip": "npx bestzip ../hostinger-deploy-fixed.zip app assets backend components lib public package.json package-lock.json next.config.ts postcss.config.mjs eslint.config.mjs tsconfig.json .env.local"
@@ -17,19 +17,20 @@
     "lucide-react": "^1.16.0",
     "mongoose": "^9.6.3",
     "next": "^16.2.9",
+    "postcss": "^8.5.29",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "slugify": "^1.6.9"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "archiver": "^8.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
-    "tailwindcss": "^4",
+    "tailwindcss": "^4.3.3",
     "typescript": "^5"
   }
 }

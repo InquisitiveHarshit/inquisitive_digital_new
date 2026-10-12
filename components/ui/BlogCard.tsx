@@ -14,6 +14,7 @@ interface BlogCardProps {
   title: string;
   desc: string;
   image: string;
+  author?: string;
   delay?: number;
 }
 
@@ -25,6 +26,7 @@ export const BlogCard: React.FC<BlogCardProps> = ({
   title,
   desc,
   image,
+  author,
   delay = 0,
 }) => {
   const { themeMode } = useTheme();
@@ -73,8 +75,15 @@ export const BlogCard: React.FC<BlogCardProps> = ({
 
           {/* Footer / Action */}
           <div className={`flex justify-between items-center pt-5 border-t text-sm mt-auto ${isLight ? "border-slate-200" : "border-[#2a2a2a]"}`}>
-            <span className={isLight ? "text-slate-600" : "text-[#d2c5ab]"}>{date}</span>
-            <span className="text-brand-accent uppercase tracking-wider font-bold text-xs flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
+            <div className="flex flex-col gap-0.5 min-w-0 pr-2">
+              {author && (
+                <span className={`text-xs font-bold truncate max-w-[140px] sm:max-w-[180px] ${isLight ? "text-slate-900" : "text-[#e5e2e1]"}`}>
+                  By {author}
+                </span>
+              )}
+              <span className={`text-xs ${isLight ? "text-slate-500" : "text-[#d2c5ab]"}`}>{date}</span>
+            </div>
+            <span className="text-brand-accent uppercase tracking-wider font-bold text-xs flex items-center gap-1 group-hover:gap-2 transition-all duration-300 flex-shrink-0">
               READ MORE <ArrowRight className="w-3.5 h-3.5" />
             </span>
           </div>

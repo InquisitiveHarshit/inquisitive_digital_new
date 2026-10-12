@@ -144,6 +144,7 @@ export default function BlogsClient({ initialBlogs }: { initialBlogs: BlogPost[]
                       title={blog.title}
                       desc={blog.excerpt}
                       image={blog.imageUrl || FALLBACK_IMAGES[index % 3]}
+                      author={blog.author}
                       delay={index * 0.07}
                     />
                   </div>
