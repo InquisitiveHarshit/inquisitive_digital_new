@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
+import LocationsWeServe from "@/components/sections/LocationsWeServe";
 import {
   ArrowRight,
   Check,
@@ -31,6 +32,11 @@ import {
 } from "lucide-react";
 import { BlogCard } from "@/components/ui/BlogCard";
 import { blogs } from "@/app/blogs/data";
+import { LocationCountryData } from "@/lib/data/locations";
+
+// ─── Location Section Config ──────────────────────────────────────────────────
+// FEATURE FLAG: set to false to hide the section globally
+const ENABLE_LOCATION_PAGES = true;
 
 // Maps icon string from MongoDB to Lucide component
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -158,6 +164,8 @@ interface ServiceData {
     heading?: string;
     benefits?: LeadBenefit[];
   };
+
+  locations?: LocationCountryData[];
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1269,6 +1277,14 @@ export default function ServiceDetailClient({ initialService }: { initialService
           </div>
         </div>
       </section>
+
+      {/* ── LOCATIONS WE SERVE (additive, feature-flagged) ─────────── */}
+      {ENABLE_LOCATION_PAGES && service.locations && service.locations.length > 0 && (
+        <LocationsWeServe
+          serviceSlug={service.slug}
+          locations={service.locations}
+        />
+      )}
 
       {/* SECTION 9 — RELATED INSIGHTS */}
       <section className="py-12 px-4 md:px-margin-desktop relative border-t border-outline-variant/30">

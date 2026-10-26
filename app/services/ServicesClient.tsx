@@ -28,6 +28,9 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Palette,
 };
 
+import LocationsWeServe from "@/components/sections/LocationsWeServe";
+import { LocationCountryData } from "@/lib/data/locations";
+
 interface ServiceCard {
   _id: string;
   slug: string;
@@ -38,7 +41,17 @@ interface ServiceCard {
   ctaText: string;
 }
 
-export default function ServicesClient({ initialServices }: { initialServices: ServiceCard[] }) {
+interface ServicesClientProps {
+  initialServices: ServiceCard[];
+  primaryServiceSlug?: string;
+  locations?: LocationCountryData[];
+}
+
+export default function ServicesClient({
+  initialServices,
+  primaryServiceSlug = "seo-services",
+  locations = [],
+}: ServicesClientProps) {
   const { themeMode } = useTheme();
 
   const isLight = themeMode === "singular-light";
@@ -283,6 +296,16 @@ export default function ServicesClient({ initialServices }: { initialServices: S
 
             </div>
           </motion.div>
+
+          {/* LOCATIONS WE SERVE */}
+          {locations && locations.length > 0 && (
+            <div className="mt-20">
+              <LocationsWeServe
+                serviceSlug={primaryServiceSlug}
+                locations={locations}
+              />
+            </div>
+          )}
 
         </div>
       </main>

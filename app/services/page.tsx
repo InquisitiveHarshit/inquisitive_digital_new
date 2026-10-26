@@ -7,11 +7,13 @@ export const revalidate = 3600; // Revalidate every hour
 
 export default async function ServicesPage() {
   let initialServices: any[] = [];
+  let primaryServiceSlug = "seo-services";
+  let locations: any[] = [];
 
   try {
     await connectDB();
     const fetchedServices = await Service.find({ isActive: true })
-      .select("_id slug title category shortDescription icon ctaText")
+      .select("_id slug title category shortDescription icon ctaText locations")
       .sort({ order: 1 })
       .lean();
 
@@ -25,10 +27,26 @@ export default async function ServicesPage() {
         icon: s.icon,
         ctaText: s.ctaText || "Explore Solution",
       }));
+
+      // Find service with configured locations
+      const configuredService = fetchedServices.find(
+        (s: any) => Array.isArray(s.locations) && s.locations.length > 0
+      );
+
+      if (configuredService) {
+        primaryServiceSlug = configuredService.slug;
+        locations = JSON.parse(JSON.stringify(configuredService.locations));
+      }
     }
   } catch (error) {
     console.error("[ServicesPage] Error fetching services:", error);
   }
 
-  return <ServicesClient initialServices={initialServices} />;
+  return (
+    <ServicesClient
+      initialServices={initialServices}
+      primaryServiceSlug={primaryServiceSlug}
+      locations={locations}
+    />
+  );
 }

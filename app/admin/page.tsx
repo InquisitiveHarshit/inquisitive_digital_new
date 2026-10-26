@@ -20,7 +20,8 @@ import {
   Inbox,
   AlertTriangle,
   Loader2,
-  BookOpen
+  BookOpen,
+  MapPin
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { mockJobs, mockApplications, Job, Application } from "../careers/data";
@@ -48,10 +49,11 @@ interface ContactLead {
   created_at: string;
 }
 import BlogsAdmin from "./BlogsAdmin";
+import LocationsAdmin from "./LocationsAdmin";
 
 const API_BASE = "";
 
-type ActiveTab = "overview" | "jobs" | "applications" | "blogs" | "audits" | "contactLeads";
+type ActiveTab = "overview" | "jobs" | "applications" | "blogs" | "locations" | "audits" | "contactLeads";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("overview");
@@ -763,6 +765,17 @@ export default function AdminDashboard() {
             Blogs
           </button>
           <button
+            onClick={() => setActiveTab("locations")}
+            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-xs uppercase tracking-wider font-extrabold transition-all ${
+              activeTab === "locations"
+                ? "bg-brand-accent/10 text-brand-accent border border-brand-accent/20"
+                : "text-white/50 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <MapPin className="w-4 h-4" />
+            Locations
+          </button>
+          <button
             onClick={() => setActiveTab("audits")}
             className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-xs uppercase tracking-wider font-extrabold transition-all ${
               activeTab === "audits"
@@ -849,6 +862,15 @@ export default function AdminDashboard() {
         >
           <BookOpen className="w-5 h-5" />
           Blogs
+        </button>
+        <button
+          onClick={() => setActiveTab("locations")}
+          className={`flex flex-col items-center gap-1 text-[9px] uppercase tracking-wider font-bold transition-all ${
+            activeTab === "locations" ? "text-brand-accent" : "text-white/40"
+          }`}
+        >
+          <MapPin className="w-5 h-5" />
+          Locations
         </button>
         <button
           onClick={() => setIsAddAdminDrawerOpen(true)}
@@ -1207,6 +1229,11 @@ export default function AdminDashboard() {
             {/* TAB 4: BLOGS */}
             {activeTab === "blogs" && (
               <BlogsAdmin />
+            )}
+
+            {/* TAB: LOCATIONS */}
+            {activeTab === "locations" && (
+              <LocationsAdmin />
             )}
             {activeTab === "audits" && (
               <div className="space-y-6">
