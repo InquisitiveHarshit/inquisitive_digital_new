@@ -31,9 +31,12 @@ async function getServiceAndCountry(serviceId: string, countrySlug: string) {
       }
       const dbLocations: LocationCountryData[] = (dbService as any).locations;
       if (Array.isArray(dbLocations) && dbLocations.length > 0) {
-        country = dbLocations.find(
+        const found = dbLocations.find(
           (c) => c.slug.toLowerCase() === countrySlug.toLowerCase()
         );
+        if (found) {
+          country = JSON.parse(JSON.stringify(found));
+        }
       }
     }
   } catch (err) {
@@ -55,26 +58,32 @@ export async function generateMetadata({
     };
   }
 
-  const title = `${serviceTitle} in ${country.name} | Regional Search Optimization`;
-  const description = `Discover top-tier ${serviceTitle} across ${country.name}. Explore customized organic search campaigns for leading cities including ${country.cities.map((c) => c.name).slice(0, 3).join(", ")}.`;
+  const pageTitle =
+    country.seoTitle ||
+    `${country.headline || `${serviceTitle} in ${country.name}`} | Regional Search Optimization`;
+  const pageDescription =
+    country.seoDescription ||
+    (country.description
+      ? country.description
+      : `Discover top-tier ${serviceTitle} across ${country.name}. Explore customized organic search campaigns for leading cities including ${country.cities.map((c) => c.name).slice(0, 3).join(", ")}.`);
   const canonicalUrl = `https://www.inquisitivedigital.com/services/${serviceId}/${country.slug}`;
 
   return {
-    title,
-    description,
+    title: pageTitle,
+    description: pageDescription,
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title,
-      description,
+      title: pageTitle,
+      description: pageDescription,
       url: canonicalUrl,
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
+      title: pageTitle,
+      description: pageDescription,
     },
   };
 }

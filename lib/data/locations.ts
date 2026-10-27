@@ -21,6 +21,12 @@ export interface LocationCountryData {
   slug: string; // e.g. "usa"
   flag: string; // "🇺🇸"
   description: string;
+  headline?: string;
+  ctaTitle?: string;
+  ctaDescription?: string;
+  highlights?: string[];
+  seoTitle?: string;
+  seoDescription?: string;
   cities: LocationCityData[];
 }
 

@@ -51,6 +51,13 @@ export async function PUT(request, { params }) {
     // Revalidate all affected pages
     revalidatePath("/services");
     revalidatePath(`/services/${service.slug}`);
+    if (Array.isArray(locations)) {
+      for (const loc of locations) {
+        if (loc?.slug) {
+          revalidatePath(`/services/${service.slug}/${loc.slug}`);
+        }
+      }
+    }
 
     return NextResponse.json({ success: true, data: service.locations });
   } catch (err) {

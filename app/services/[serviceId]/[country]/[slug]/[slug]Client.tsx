@@ -122,9 +122,8 @@ export default function CityPageClient({
       <Header />
 
       <main
-        className={`overflow-x-hidden transition-colors duration-500 ${
-          isLight ? "bg-white" : isDarkSingular ? "bg-[#0a0a0a]" : "bg-[#0f0e0e]"
-        }`}
+        className={`overflow-x-hidden transition-colors duration-500 ${isLight ? "bg-white" : isDarkSingular ? "bg-[#0a0a0a]" : "bg-[#0f0e0e]"
+          }`}
         style={{ minHeight: "100vh" }}
       >
         {/* ── BLOG-STYLE EDITORIAL HERO HEADER ──────────────────────────── */}
@@ -158,9 +157,8 @@ export default function CityPageClient({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.7 }}
-              className={`text-3xl md:text-5xl lg:text-[3.25rem] xl:text-6xl font-display font-black uppercase tracking-tight mb-8 break-words ${
-                isLight ? "text-slate-900" : "text-white"
-              }`}
+              className={`text-3xl md:text-5xl lg:text-[3.25rem] xl:text-6xl font-display font-black uppercase tracking-tight mb-8 break-words ${isLight ? "text-slate-900" : "text-white"
+                }`}
             >
               {serviceTitle} in <span className="text-brand-accent">{city.name}</span>
             </motion.h1>
@@ -170,9 +168,8 @@ export default function CityPageClient({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className={`flex items-center justify-center gap-4 text-xs sm:text-sm font-semibold flex-wrap ${
-                isLight ? "text-slate-500" : "text-white/60"
-              }`}
+              className={`flex items-center justify-center gap-4 text-xs sm:text-sm font-semibold flex-wrap ${isLight ? "text-slate-500" : "text-white/60"
+                }`}
             >
               <span className={`font-bold ${isLight ? "text-slate-900" : "text-white"}`}>
                 By Inquisitive Digital Search Team
@@ -229,9 +226,8 @@ export default function CityPageClient({
             >
               {/* Featured Hero City Visual */}
               <div
-                className={`w-full mb-10 rounded-2xl overflow-hidden shadow-2xl h-[280px] sm:h-[360px] md:h-[420px] relative border ${
-                  isLight ? "border-slate-200" : "border-white/10"
-                }`}
+                className={`w-full mb-10 rounded-2xl overflow-hidden shadow-2xl h-[280px] sm:h-[360px] md:h-[420px] relative border ${isLight ? "border-slate-200" : "border-white/10"
+                  }`}
               >
                 <img
                   src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
@@ -251,9 +247,8 @@ export default function CityPageClient({
 
               {/* Lead Paragraph / Excerpt */}
               <p
-                className={`text-base sm:text-lg md:text-xl leading-relaxed mb-10 font-medium ${
-                  isLight ? "text-slate-700" : "text-white/85"
-                }`}
+                className={`text-base sm:text-lg md:text-xl leading-relaxed mb-10 font-medium ${isLight ? "text-slate-700" : "text-white/85"
+                  }`}
               >
                 {city.description ||
                   `In a fast-moving commercial market like ${city.name}, high-intent organic search engine visibility is the single most sustainable acquisition channel your brand can build. Our regional strategy is engineered to capture high-value queries before your competitors do.`}
@@ -261,16 +256,14 @@ export default function CityPageClient({
 
               {/* ── Table of Contents Box ────────────────────────────── */}
               <div
-                className={`p-6 sm:p-8 rounded-2xl mb-12 border ${
-                  isLight ? "bg-slate-50 border-slate-200" : "bg-[#181818] border-white/10"
-                }`}
+                className={`p-6 sm:p-8 rounded-2xl mb-12 border ${isLight ? "bg-slate-50 border-slate-200" : "bg-[#181818] border-white/10"
+                  }`}
               >
                 <div className="flex items-center gap-2.5 mb-4">
                   <BookOpen className="w-4 h-4 text-brand-accent" />
                   <h3
-                    className={`font-display text-base font-bold uppercase tracking-wider ${
-                      isLight ? "text-slate-900" : "text-white"
-                    }`}
+                    className={`font-display text-base font-bold uppercase tracking-wider ${isLight ? "text-slate-900" : "text-white"
+                      }`}
                   >
                     What You&apos;ll Discover in This Guide
                   </h3>
@@ -296,9 +289,8 @@ export default function CityPageClient({
                   1. The Competitive Search Landscape in {city.name}
                 </h2>
                 <div
-                  className={`font-body text-sm sm:text-base leading-relaxed space-y-4 ${
-                    isLight ? "text-slate-700" : "text-slate-300"
-                  }`}
+                  className={`font-body text-sm sm:text-base leading-relaxed space-y-4 ${isLight ? "text-slate-700" : "text-slate-300"
+                    }`}
                 >
                   <p>
                     Ranking in {city.name} isn&apos;t simply a matter of stuffing &ldquo;{city.name}&rdquo; into your title tags. Search algorithms utilize sophisticated proximity factors, localized entity graph verification, and user behavioral signals to surface businesses.
@@ -309,63 +301,6 @@ export default function CityPageClient({
                 </div>
               </div>
 
-              {/* ── Section 2: Local Strategy Pillars ────────────────── */}
-              <div className="mb-12">
-                <h2 className="text-brand-accent text-2xl sm:text-3xl font-display font-black uppercase mb-4 tracking-tight">
-                  2. Our 4-Phase {city.name} Organic Roadmap
-                </h2>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-                  {[
-                    {
-                      icon: Target,
-                      title: "Geo-Intent Keyword Discovery",
-                      desc: `We identify the exact phrases buyers in ${city.name} use when ready to transact, focusing on high commercial intent.`,
-                    },
-                    {
-                      icon: TrendingUp,
-                      title: "Google Map Pack Dominance",
-                      desc: "Structured citations, localized category optimization, and review velocity that elevates you to the Top 3.",
-                    },
-                    {
-                      icon: Shield,
-                      title: "Technical Search Health",
-                      desc: "Core Web Vitals tuning, canonical structure, clean schema markup, and rapid crawl architecture.",
-                    },
-                    {
-                      icon: BarChart3,
-                      title: "Local Authority Acquisition",
-                      desc: `Securing contextual editorial mentions and industry links within ${country.name} to bolster localized trust.`,
-                    },
-                  ].map((pillar, idx) => {
-                    const IconComp = pillar.icon;
-                    return (
-                      <div
-                        key={idx}
-                        className={`p-5 rounded-xl border ${
-                          isLight
-                            ? "bg-slate-50 border-slate-200"
-                            : "bg-[#181818] border-white/10"
-                        }`}
-                      >
-                        <div className="w-8 h-8 rounded-lg bg-brand-accent/15 border border-brand-accent/30 flex items-center justify-center text-brand-accent mb-3">
-                          <IconComp className="w-4 h-4" />
-                        </div>
-                        <h4
-                          className={`font-display font-bold text-sm uppercase mb-1.5 ${
-                            isLight ? "text-slate-900" : "text-white"
-                          }`}
-                        >
-                          {pillar.title}
-                        </h4>
-                        <p className="text-xs text-on-surface-variant leading-relaxed">
-                          {pillar.desc}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
 
               {/* ── Section 3: Mid-Article Callout Box ─────────────────── */}
               <div
@@ -380,16 +315,14 @@ export default function CityPageClient({
                   <span>Pro Tip for {city.name} Brands</span>
                 </div>
                 <h3
-                  className={`text-lg sm:text-xl font-display font-black uppercase mb-3 ${
-                    isLight ? "text-slate-900" : "text-white"
-                  }`}
+                  className={`text-lg sm:text-xl font-display font-black uppercase mb-3 ${isLight ? "text-slate-900" : "text-white"
+                    }`}
                 >
                   Never run duplicate content across sister cities
                 </h3>
                 <p
-                  className={`text-xs sm:text-sm leading-relaxed mb-5 ${
-                    isLight ? "text-slate-700" : "text-white/80"
-                  }`}
+                  className={`text-xs sm:text-sm leading-relaxed mb-5 ${isLight ? "text-slate-700" : "text-white/80"
+                    }`}
                 >
                   Search engines penalize doorway pages that only swap out the city name. Each market page must contain localized case studies, region-specific customer pain points, and distinct geo-coordinates.
                 </p>
@@ -414,11 +347,10 @@ export default function CityPageClient({
                     return (
                       <div
                         key={idx}
-                        className={`border rounded-xl overflow-hidden ${
-                          isLight
+                        className={`border rounded-xl overflow-hidden ${isLight
                             ? "bg-slate-50 border-slate-200"
                             : "bg-[#181818] border-white/10"
-                        }`}
+                          }`}
                       >
                         <button
                           onClick={() => toggleFaq(idx)}
@@ -428,9 +360,8 @@ export default function CityPageClient({
                             {faq.q}
                           </span>
                           <ChevronDown
-                            className={`w-4 h-4 text-brand-accent transition-transform duration-200 flex-shrink-0 ml-3 ${
-                              isOpen ? "rotate-180" : ""
-                            }`}
+                            className={`w-4 h-4 text-brand-accent transition-transform duration-200 flex-shrink-0 ml-3 ${isOpen ? "rotate-180" : ""
+                              }`}
                           />
                         </button>
                         <AnimatePresence>
@@ -443,9 +374,8 @@ export default function CityPageClient({
                               className="overflow-hidden"
                             >
                               <div
-                                className={`px-5 pb-5 text-xs sm:text-sm leading-relaxed ${
-                                  isLight ? "text-slate-600" : "text-slate-300"
-                                }`}
+                                className={`px-5 pb-5 text-xs sm:text-sm leading-relaxed ${isLight ? "text-slate-600" : "text-slate-300"
+                                  }`}
                               >
                                 {faq.a}
                               </div>
@@ -461,20 +391,18 @@ export default function CityPageClient({
               {/* ── Section 5: Interactive Audit Form ─────────────────── */}
               <div id="audit-form" className="mt-14 scroll-mt-36">
                 <div
-                  className={`p-6 sm:p-8 rounded-2xl border ${
-                    isLight
+                  className={`p-6 sm:p-8 rounded-2xl border ${isLight
                       ? "bg-slate-50 border-slate-200 shadow-lg"
                       : "bg-[#181818] border-white/10 shadow-2xl"
-                  }`}
+                    }`}
                 >
                   <div className="mb-6">
                     <span className="text-xs font-bold uppercase tracking-widest text-brand-accent block mb-2">
                       Ready to Scale in {city.name}?
                     </span>
                     <h3
-                      className={`text-xl sm:text-2xl font-display font-black uppercase ${
-                        isLight ? "text-slate-900" : "text-white"
-                      }`}
+                      className={`text-xl sm:text-2xl font-display font-black uppercase ${isLight ? "text-slate-900" : "text-white"
+                        }`}
                     >
                       Get Your Free {city.name} Search Audit
                     </h3>
@@ -593,9 +521,8 @@ export default function CityPageClient({
 
               {/* 1. Primary CTA Box (Blog-style neo-brutalist) */}
               <div
-                className={`rounded-2xl p-6 md:p-8 space-y-6 border ${
-                  isLight ? "bg-slate-50 border-slate-200" : "bg-[#181818] border-white/10"
-                }`}
+                className={`rounded-2xl p-6 md:p-8 space-y-6 border ${isLight ? "bg-slate-50 border-slate-200" : "bg-[#181818] border-white/10"
+                  }`}
               >
                 <div className="flex items-center gap-2 text-brand-accent text-xs font-bold uppercase tracking-widest">
                   <Globe className="w-3.5 h-3.5" />
@@ -603,17 +530,15 @@ export default function CityPageClient({
                 </div>
 
                 <h3
-                  className={`text-xl font-display font-bold uppercase ${
-                    isLight ? "text-slate-900" : "text-white"
-                  }`}
+                  className={`text-xl font-display font-bold uppercase ${isLight ? "text-slate-900" : "text-white"
+                    }`}
                 >
                   Scale Your {city.name} Organic Share
                 </h3>
 
                 <p
-                  className={`text-xs sm:text-sm font-medium leading-relaxed ${
-                    isLight ? "text-slate-600" : "text-white/60"
-                  }`}
+                  className={`text-xs sm:text-sm font-medium leading-relaxed ${isLight ? "text-slate-600" : "text-white/60"
+                    }`}
                 >
                   Book a strategic discovery call to review keyword volume, competitor weaknesses, and ranking roadmaps in {city.name}.
                 </p>
@@ -637,9 +562,8 @@ export default function CityPageClient({
                 {/* Quick Navigation Links */}
                 <div>
                   <h4
-                    className={`text-xs font-bold uppercase tracking-wider mb-3 ${
-                      isLight ? "text-slate-900" : "text-white"
-                    }`}
+                    className={`text-xs font-bold uppercase tracking-wider mb-3 ${isLight ? "text-slate-900" : "text-white"
+                      }`}
                   >
                     Quick Navigation
                   </h4>
@@ -667,9 +591,8 @@ export default function CityPageClient({
 
                 <div className="text-center pt-2">
                   <p
-                    className={`text-[10px] font-bold uppercase mb-1 ${
-                      isLight ? "text-slate-500" : "text-white/40"
-                    }`}
+                    className={`text-[10px] font-bold uppercase mb-1 ${isLight ? "text-slate-500" : "text-white/40"
+                      }`}
                   >
                     Direct Consultation
                   </p>
@@ -685,16 +608,14 @@ export default function CityPageClient({
               {/* 2. Sister Cities Widget (Internal Linking) */}
               {otherCities.length > 0 && (
                 <div
-                  className={`rounded-2xl p-6 border ${
-                    isLight ? "bg-slate-50 border-slate-200" : "bg-[#181818] border-white/10"
-                  }`}
+                  className={`rounded-2xl p-6 border ${isLight ? "bg-slate-50 border-slate-200" : "bg-[#181818] border-white/10"
+                    }`}
                 >
                   <div className="flex items-center gap-2.5 mb-4">
                     <div className="w-1.5 h-5 rounded-full bg-brand-accent" />
                     <h3
-                      className={`text-base font-display font-bold uppercase tracking-tight ${
-                        isLight ? "text-slate-900" : "text-white"
-                      }`}
+                      className={`text-base font-display font-bold uppercase tracking-tight ${isLight ? "text-slate-900" : "text-white"
+                        }`}
                     >
                       Other {country.name} Cities
                     </h3>
@@ -705,11 +626,10 @@ export default function CityPageClient({
                       <li key={otherCity.slug}>
                         <Link
                           href={`/services/${serviceSlug}/${country.slug}/${otherCity.slug}`}
-                          className={`flex items-center justify-between p-2.5 rounded-lg text-xs font-medium transition-colors ${
-                            isLight
+                          className={`flex items-center justify-between p-2.5 rounded-lg text-xs font-medium transition-colors ${isLight
                               ? "hover:bg-slate-200/60 text-slate-700"
                               : "hover:bg-white/10 text-slate-300"
-                          }`}
+                            }`}
                         >
                           <span className="flex items-center gap-2">
                             <MapPin className="w-3 h-3 text-brand-accent" />

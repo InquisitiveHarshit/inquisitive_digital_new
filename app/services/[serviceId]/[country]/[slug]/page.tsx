@@ -33,11 +33,12 @@ async function getServiceCountryAndCity(serviceId: string, countrySlug: string, 
       }
       const dbLocations: LocationCountryData[] = (dbService as any).locations;
       if (Array.isArray(dbLocations) && dbLocations.length > 0) {
-        country = dbLocations.find(
+        const foundCountry = dbLocations.find(
           (c) => c.slug.toLowerCase() === countrySlug.toLowerCase()
         );
-        if (country) {
-          city = country.cities.find(
+        if (foundCountry) {
+          country = JSON.parse(JSON.stringify(foundCountry));
+          city = country?.cities?.find(
             (ci) => ci.slug.toLowerCase() === citySlug.toLowerCase()
           );
         }

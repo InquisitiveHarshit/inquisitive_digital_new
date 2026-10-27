@@ -19,6 +19,8 @@ import {
   ChevronDown,
   RefreshCw,
   Sparkles,
+  CheckCircle2,
+  TrendingUp,
 } from "lucide-react";
 
 /* ─── Types ─────────────────────────────────────────────────────────────────── */
@@ -353,6 +355,11 @@ export default function LocationsAdmin() {
   const [countryList, setCountryList] = useState<any[]>([]);
   const [countryFetching, setCountryFetching] = useState(false);
   const [countrySaving, setCountrySaving] = useState(false);
+  const [openSeoIndexes, setOpenSeoIndexes] = useState<Record<number, boolean>>({});
+
+  const selectedCountryManageService = useMemo(() => {
+    return serviceOptions.find((s) => s._id === countryManageServiceId);
+  }, [serviceOptions, countryManageServiceId]);
 
   useEffect(() => {
     if (serviceOptions.length > 0 && !countryManageServiceId) {
@@ -367,7 +374,17 @@ export default function LocationsAdmin() {
       const res = await fetch(`/api/admin/services/${sId}/locations`);
       const json = await res.json();
       if (json.success) {
-        setCountryList(json.data || []);
+        const rawCountries = json.data || [];
+        const normalized = rawCountries.map((c: any) => ({
+          ...c,
+          headline: c.headline || "",
+          description: c.description || "",
+          ctaTitle: c.ctaTitle || "",
+          ctaDescription: c.ctaDescription || "",
+          seoTitle: c.seoTitle || "",
+          seoDescription: c.seoDescription || "",
+        }));
+        setCountryList(normalized);
       }
     } catch (err) {
       console.error(err);
@@ -508,7 +525,7 @@ export default function LocationsAdmin() {
                     : "text-white/50 hover:text-white"
                 }`}
               >
-                Country Hubs
+                Country Hubs (Hero Content)
               </button>
             </div>
 
@@ -522,6 +539,26 @@ export default function LocationsAdmin() {
             )}
           </div>
         </div>
+
+        {/* Quick Helper Banner */}
+        {activeSubTab === "cities" && (
+          <div className="bg-brand-accent/5 border border-brand-accent/20 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-white/80">
+            <div className="flex items-center gap-2.5">
+              <Sparkles className="w-4 h-4 text-brand-accent shrink-0" />
+              <span>
+                Want to edit the Country Hub hero title, description, or badges (e.g. <strong>/services/seo-aeo-geo/india</strong>)? Switch to <strong>Country Hubs</strong>.
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setActiveSubTab("countries")}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-accent/10 hover:bg-brand-accent text-brand-accent hover:text-slate-900 font-bold tracking-wide transition-all self-start sm:self-auto shrink-0"
+            >
+              <span>Go to Country Hubs</span>
+              <span>&rarr;</span>
+            </button>
+          </div>
+        )}
 
         {/* ═════════════════════════════════════════════════════════════════════
             TAB 1: CITIES DIRECTORY (modeled like BlogsAdmin)
@@ -754,7 +791,11 @@ export default function LocationsAdmin() {
                   disabled={countrySaving}
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-accent text-slate-900 font-display text-xs uppercase font-extrabold tracking-wider hover:opacity-90 disabled:opacity-50 transition-all shadow-lg shadow-brand-accent/20"
                 >
-                  {countrySaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+                  {countrySaving ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Check className="w-4 h-4" />
+                  )}
                   {countrySaving ? "Saving..." : "Save Countries"}
                 </button>
               </div>
@@ -767,111 +808,347 @@ export default function LocationsAdmin() {
                 <p className="text-white/40 text-sm">Loading countries...</p>
               </div>
             ) : (
-              <div className="space-y-4">
-                {countryList.map((country, cIdx) => (
-                  <div
-                    key={cIdx}
-                    className="bg-[#111] border border-white/10 rounded-2xl p-5 space-y-4"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <input
-                          type="text"
-                          value={country.flag || "🌐"}
-                          onChange={(e) => {
-                            const updated = [...countryList];
-                            updated[cIdx].flag = e.target.value;
-                            setCountryList(updated);
-                          }}
-                          className="w-12 text-center text-2xl bg-white/5 border border-white/10 rounded-xl py-1.5 focus:outline-none focus:border-brand-accent"
-                          title="Country Flag emoji"
-                        />
+              <div className="space-y-6">
+                {countryList.map((country, cIdx) => {
+                  const isSeoOpen = !!openSeoIndexes[cIdx];
+                  const liveHubUrl =
+                    selectedCountryManageService?.slug && country.slug
+                      ? `/services/${selectedCountryManageService.slug}/${country.slug}`
+                      : null;
+
+                  return (
+                    <div
+                      key={cIdx}
+                      className="bg-[#111] border border-white/10 rounded-2xl p-6 space-y-5"
+                    >
+                      {/* Header Row */}
+                      <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-white/5">
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="text"
+                            value={country.flag || "🌐"}
+                            onChange={(e) => {
+                              const updated = [...countryList];
+                              updated[cIdx].flag = e.target.value;
+                              setCountryList(updated);
+                            }}
+                            className="w-12 text-center text-2xl bg-white/5 border border-white/10 rounded-xl py-1.5 focus:outline-none focus:border-brand-accent"
+                            title="Country Flag emoji"
+                          />
+                          <div>
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-white/40">
+                              Country Hub #{cIdx + 1}
+                            </p>
+                            <p className="text-base font-extrabold text-white">
+                              {country.name || "Unnamed country"}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs px-2.5 py-1 rounded-lg bg-white/5 text-white/60 border border-white/5 font-mono">
+                            {country.cities?.length || 0} cities configured
+                          </span>
+
+                          {liveHubUrl && (
+                            <a
+                              href={liveHubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-accent hover:text-slate-900 border border-white/10 text-xs font-bold text-white transition-all shadow-sm"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                              <span>Preview Live Hub</span>
+                            </a>
+                          )}
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setCountryList(
+                                countryList.filter((_, i) => i !== cIdx)
+                              );
+                            }}
+                            className="p-2 rounded-lg text-red-400/60 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                            title="Delete Country"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Basic Identity & Headline */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                          <p className="text-xs font-bold uppercase tracking-wider text-white/40">
-                            Country #{cIdx + 1}
-                          </p>
-                          <p className="text-base font-extrabold text-white">
-                            {country.name || "Unnamed country"}
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
+                            Country Name *
+                          </label>
+                          <input
+                            type="text"
+                            value={country.name || ""}
+                            onChange={(e) => {
+                              const updated = [...countryList];
+                              updated[cIdx].name = e.target.value;
+                              if (
+                                !country.slug ||
+                                country.slug === toSlug(country.name)
+                              ) {
+                                updated[cIdx].slug = toSlug(e.target.value);
+                              }
+                              setCountryList(updated);
+                            }}
+                            className="w-full mt-1.5 bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand-accent"
+                            placeholder="e.g. India"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
+                            URL Slug *
+                          </label>
+                          <input
+                            type="text"
+                            value={country.slug || ""}
+                            onChange={(e) => {
+                              const updated = [...countryList];
+                              updated[cIdx].slug = toSlug(e.target.value);
+                              setCountryList(updated);
+                            }}
+                            className="w-full mt-1.5 bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand-accent"
+                            placeholder="e.g. india"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
+                            Hero Headline (H1)
+                          </label>
+                          <input
+                            type="text"
+                            value={country.headline || ""}
+                            onChange={(e) => {
+                              const updated = [...countryList];
+                              updated[cIdx].headline = e.target.value;
+                              setCountryList(updated);
+                            }}
+                            className="w-full mt-1.5 bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand-accent"
+                            placeholder={`Default: ${selectedCountryManageService?.title || "SEO"} service in ${country.name || "Country"}`}
+                          />
+                          <p className="text-[10px] text-white/30 mt-1">
+                            Leave empty to use &ldquo;{selectedCountryManageService?.title || "Service"} service in {country.name || "Country"}&rdquo;
                           </p>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs px-2.5 py-1 rounded-lg bg-white/5 text-white/50 border border-white/5">
-                          {country.cities?.length || 0} cities configured
-                        </span>
+                      {/* Description (Lead Paragraph) */}
+                      <div>
+                        <div className="flex items-center justify-between">
+                          <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
+                            Hero Description (Lead Paragraph)
+                          </label>
+                          <span className="text-[10px] text-white/30">
+                            Displayed beneath the main title
+                          </span>
+                        </div>
+                        <textarea
+                          rows={3}
+                          value={country.description || ""}
+                          onChange={(e) => {
+                            const updated = [...countryList];
+                            updated[cIdx].description = e.target.value;
+                            setCountryList(updated);
+                          }}
+                          placeholder="Select your city below to explore localized keyword targets, market competitive insights, and dedicated SEO tactics engineered for your area."
+                          className="w-full mt-1.5 bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand-accent leading-relaxed resize-y"
+                        />
+                      </div>
+
+                      {/* Right-Side Hero CTA Box Settings */}
+                      <div className="bg-white/5 border border-white/5 p-4 rounded-xl space-y-3">
+                        <div className="flex items-center justify-between">
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-brand-accent">
+                            Right-Side Hero CTA Card
+                          </p>
+                          <span className="text-[10px] text-white/30">
+                            Appears opposite the headline on the country hub
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div>
+                            <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
+                              CTA Title
+                            </label>
+                            <input
+                              type="text"
+                              value={country.ctaTitle || ""}
+                              onChange={(e) => {
+                                const updated = [...countryList];
+                                updated[cIdx].ctaTitle = e.target.value;
+                                setCountryList(updated);
+                              }}
+                              placeholder={`Need Custom Organic Growth in ${country.name || "Country"}?`}
+                              className="w-full mt-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-accent"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
+                              CTA Description
+                            </label>
+                            <textarea
+                              rows={2}
+                              value={country.ctaDescription || ""}
+                              onChange={(e) => {
+                                const updated = [...countryList];
+                                updated[cIdx].ctaDescription = e.target.value;
+                                setCountryList(updated);
+                              }}
+                              placeholder={`Whether you are expanding nationally across ${country.name || "Country"} or targeting high-conversion local niches...`}
+                              className="w-full mt-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-accent resize-none leading-relaxed"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Collapsible SEO Metadata */}
+                      <div className="border-t border-white/5 pt-3">
                         <button
                           type="button"
                           onClick={() => {
-                            setCountryList(countryList.filter((_, i) => i !== cIdx));
+                            setOpenSeoIndexes((prev) => ({
+                              ...prev,
+                              [cIdx]: !prev[cIdx],
+                            }));
                           }}
-                          className="p-2 rounded-lg text-red-400/60 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                          className="inline-flex items-center gap-2 text-xs text-brand-accent hover:underline font-bold"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <ChevronDown
+                            className={`w-3.5 h-3.5 transition-transform ${
+                              isSeoOpen ? "rotate-180" : ""
+                            }`}
+                          />
+                          <span>
+                            {isSeoOpen
+                              ? "Hide SEO & Meta Tags"
+                              : "Edit SEO & Meta Tags for this Country Hub"}
+                          </span>
                         </button>
-                      </div>
-                    </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
-                          Country Name *
-                        </label>
-                        <input
-                          type="text"
-                          value={country.name}
-                          onChange={(e) => {
-                            const updated = [...countryList];
-                            updated[cIdx].name = e.target.value;
-                            if (!country.slug || country.slug === toSlug(country.name)) {
-                              updated[cIdx].slug = toSlug(e.target.value);
-                            }
-                            setCountryList(updated);
-                          }}
-                          className="w-full mt-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-accent"
-                        />
+                        {isSeoOpen && (
+                          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <div>
+                              <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
+                                SEO Meta Title
+                              </label>
+                              <input
+                                type="text"
+                                value={country.seoTitle || ""}
+                                onChange={(e) => {
+                                  const updated = [...countryList];
+                                  updated[cIdx].seoTitle = e.target.value;
+                                  setCountryList(updated);
+                                }}
+                                placeholder={`${country.headline || `${selectedCountryManageService?.title || "SEO"} in ${country.name || "Country"}`} | Regional Search Optimization`}
+                                className="w-full mt-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-accent"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
+                                SEO Meta Description
+                              </label>
+                              <textarea
+                                rows={2}
+                                value={country.seoDescription || ""}
+                                onChange={(e) => {
+                                  const updated = [...countryList];
+                                  updated[cIdx].seoDescription = e.target.value;
+                                  setCountryList(updated);
+                                }}
+                                placeholder="Discover top-tier search marketing across..."
+                                className="w-full mt-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-accent resize-none"
+                              />
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      <div>
-                        <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
-                          URL Slug *
-                        </label>
-                        <input
-                          type="text"
-                          value={country.slug}
-                          onChange={(e) => {
-                            const updated = [...countryList];
-                            updated[cIdx].slug = toSlug(e.target.value);
-                            setCountryList(updated);
-                          }}
-                          className="w-full mt-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-accent"
-                        />
-                      </div>
-                    </div>
 
-                    <div>
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
-                        Country Hub Description
-                      </label>
-                      <textarea
-                        rows={2}
-                        value={country.description || ""}
-                        onChange={(e) => {
-                          const updated = [...countryList];
-                          updated[cIdx].description = e.target.value;
-                          setCountryList(updated);
-                        }}
-                        className="w-full mt-1 bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-accent resize-none"
-                      />
+                      {/* Live Preview Box (matches user screenshot with 2-column layout) */}
+                      <div className="p-4 rounded-xl bg-black/50 border border-white/10 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-mono uppercase tracking-wider text-brand-accent flex items-center gap-1.5 font-bold">
+                            <Sparkles className="w-3 h-3 text-brand-accent" />
+                            Live Website Preview (Hero + Right CTA)
+                          </span>
+                          {liveHubUrl && (
+                            <span className="text-[10px] font-mono text-white/40">
+                              {liveHubUrl}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 border-t border-white/10 pt-4 items-center">
+                          {/* Left Column Preview */}
+                          <div className="md:col-span-7 space-y-2">
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-brand-accent uppercase tracking-wider">
+                              <Globe className="w-3 h-3" />
+                              <span>
+                                Regional Coverage Hub &bull; {country.name || "Country"}
+                              </span>
+                            </div>
+                            <h4 className="text-xl sm:text-2xl font-display font-extrabold text-white">
+                              {country.headline ? (
+                                country.headline
+                              ) : (
+                                <span>
+                                  {selectedCountryManageService?.title || "SEO / AEO / GEO"} service in{" "}
+                                  <span className="text-brand-accent">
+                                    {country.name || "India"}
+                                  </span>
+                                </span>
+                              )}
+                            </h4>
+                            <p className="text-xs text-white/70 leading-relaxed">
+                              {country.description ||
+                                "Select your city below to explore localized keyword targets, market competitive insights, and dedicated SEO tactics engineered for your area."}
+                            </p>
+                          </div>
+
+                          {/* Right Column CTA Preview */}
+                          <div className="md:col-span-5 bg-white/5 border border-white/10 rounded-2xl p-4 space-y-2.5">
+                            <h5 className="font-display font-extrabold text-sm text-white">
+                              {country.ctaTitle || `Need Custom Organic Growth in ${country.name || "Country"}?`}
+                            </h5>
+                            <p className="text-[11px] text-white/60 leading-relaxed">
+                              {country.ctaDescription ||
+                                `Whether you are expanding nationally across ${country.name || "Country"} or targeting high-conversion local niches, our SEO strategists are ready to audit your presence.`}
+                            </p>
+                            <div className="space-y-2 pt-1">
+                              <div className="w-full text-center py-2 rounded-full bg-brand-accent text-slate-900 font-extrabold text-[10px] uppercase tracking-wider">
+                                Schedule Country Strategy Call
+                              </div>
+                              <div className="w-full text-center py-1.5 rounded-full bg-white/5 border border-white/10 text-white/70 text-[10px] uppercase font-bold">
+                                Back to {selectedCountryManageService?.title || "Services"}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
 
                 <button
                   type="button"
                   onClick={() => {
                     setCountryList([
                       ...countryList,
-                      { name: "", slug: "", flag: "🌐", description: "", cities: [] },
+                      {
+                        name: "",
+                        slug: "",
+                        flag: "🌐",
+                        headline: "",
+                        description: "",
+                        ctaTitle: "",
+                        ctaDescription: "",
+                        cities: [],
+                      },
                     ]);
                   }}
                   className="w-full py-4 rounded-2xl border border-dashed border-white/20 text-white/50 hover:text-brand-accent hover:border-brand-accent/40 hover:bg-brand-accent/5 transition-all text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2"
