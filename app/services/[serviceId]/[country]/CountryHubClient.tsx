@@ -262,7 +262,7 @@ export default function CountryHubClient({
                         </h3>
 
                         {/* City Description */}
-                        <p className="font-body text-xs sm:text-sm text-on-surface-variant leading-relaxed mb-5">
+                        <p className="font-body text-xs sm:text-sm text-on-surface-variant leading-relaxed mb-5 line-clamp-3">
                           {city.description ||
                             `Tailored ${serviceTitle} designed to rank on page #1 for top competitive search terms in ${city.name}.`}
                         </p>

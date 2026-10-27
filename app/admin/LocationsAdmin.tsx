@@ -1913,21 +1913,21 @@ export default function LocationsAdmin() {
                       </div>
                     )}
 
-                    <p className="text-xs text-white/70 leading-relaxed font-body">
-                      {formDescription || "No description entered yet. Describe your local service strategy..."}
-                    </p>
+                      <p className="text-xs text-white/70 leading-relaxed font-body line-clamp-3">
+                        {formDescription || "No description entered yet. Describe your local service strategy..."}
+                      </p>
 
-                    <div className="flex flex-wrap gap-2 pt-2">
-                      <span className="px-2.5 py-1 rounded-lg bg-brand-accent/10 border border-brand-accent/20 text-brand-accent text-[11px] font-bold">
-                        {formSections.length} Editorial Content Sections
-                      </span>
-                      <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-white/60 text-[11px] font-mono">
-                        {formFaqs.length} Custom FAQs
-                      </span>
-                      <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-white/60 text-[11px] font-mono">
-                        {formPopularServices.length} Capability Tags
-                      </span>
-                    </div>
+                      <div className="flex flex-wrap gap-2 pt-2">
+                        <span className="px-2.5 py-1 rounded-lg bg-brand-accent/10 border border-brand-accent/20 text-brand-accent text-[11px] font-bold">
+                          {formSections.length} Editorial Content Sections
+                        </span>
+                        <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-white/60 text-[11px] font-mono">
+                          {formFaqs.length} Custom FAQs
+                        </span>
+                        <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-white/60 text-[11px] font-mono">
+                          {formPopularServices.length} Capability Tags
+                        </span>
+                      </div>
                   </div>
                 </div>
 
