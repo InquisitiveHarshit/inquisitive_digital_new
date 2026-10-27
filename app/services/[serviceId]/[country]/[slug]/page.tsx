@@ -14,7 +14,8 @@ interface CityPageProps {
   }>;
 }
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 async function getServiceCountryAndCity(serviceId: string, countrySlug: string, citySlug: string) {
   let serviceTitle = "SEO Services";
@@ -38,9 +39,15 @@ async function getServiceCountryAndCity(serviceId: string, countrySlug: string, 
         );
         if (foundCountry) {
           country = JSON.parse(JSON.stringify(foundCountry));
-          city = country?.cities?.find(
-            (ci) => ci.slug.toLowerCase() === citySlug.toLowerCase()
-          );
+          const searchCity = citySlug.toLowerCase();
+          city = country?.cities?.find((ci) => {
+            const s = ci.slug.toLowerCase();
+            return (
+              s === searchCity ||
+              s === `seo-in-${searchCity}` ||
+              `seo-in-${s}` === searchCity
+            );
+          });
         }
       }
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus,
@@ -21,7 +21,12 @@ import {
   Sparkles,
   CheckCircle2,
   TrendingUp,
+  Code2,
+  UploadCloud,
+  Image as ImageIcon,
 } from "lucide-react";
+import GoogleDocsPasteModal from "@/components/admin/GoogleDocsPasteModal";
+import { parseGoogleDocsHtml } from "@/lib/utils/htmlParser";
 
 /* ─── Types ─────────────────────────────────────────────────────────────────── */
 
@@ -41,6 +46,7 @@ interface CityItem {
   countryFlag: string;
   name: string;
   slug: string;
+  imageUrl?: string;
   description: string;
   headline?: string;
   popularServices: string[];
@@ -103,6 +109,9 @@ export default function LocationsAdmin() {
   const [formName, setFormName] = useState("");
   const [formSlug, setFormSlug] = useState("");
   const [formHeadline, setFormHeadline] = useState("");
+  const [formImageUrl, setFormImageUrl] = useState("");
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [formDescription, setFormDescription] = useState("");
   const [formPopularServices, setFormPopularServices] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
@@ -110,6 +119,10 @@ export default function LocationsAdmin() {
   const [formSeoTitle, setFormSeoTitle] = useState("");
   const [formSeoDesc, setFormSeoDesc] = useState("");
   const [formFaqs, setFormFaqs] = useState<CityFAQ[]>([]);
+  const [formSections, setFormSections] = useState<any[]>([]);
+
+  // ── Google Docs HTML Paste Modal ────────────────────────────────────────────
+  const [isPasteModalOpen, setIsPasteModalOpen] = useState(false);
 
   // ── Delete Confirmation ─────────────────────────────────────────────────────
   const [deleteCityTarget, setDeleteCityTarget] = useState<CityItem | null>(null);
@@ -168,11 +181,13 @@ export default function LocationsAdmin() {
       setFormName(city.name);
       setFormSlug(city.slug);
       setFormHeadline(city.headline || "");
+      setFormImageUrl(city.imageUrl || "");
       setFormDescription(city.description || "");
       setFormPopularServices([...city.popularServices]);
       setFormSeoTitle(city.seoTitle || "");
       setFormSeoDesc(city.seoDescription || "");
       setFormFaqs(city.faqs && city.faqs.length > 0 ? [...city.faqs] : []);
+      setFormSections(city.sections && city.sections.length > 0 ? [...city.sections] : []);
     } else {
       // Create defaults
       const defaultServiceId =
@@ -191,6 +206,7 @@ export default function LocationsAdmin() {
       setFormName("");
       setFormSlug("");
       setFormHeadline("");
+      setFormImageUrl("");
       setFormDescription("");
       setFormPopularServices(["Local Map Pack Dominance", "Enterprise SEO", "Local Citations"]);
       setFormSeoTitle("");
@@ -201,6 +217,7 @@ export default function LocationsAdmin() {
           answer: "Local map pack and high-intent local keywords typically begin ranking within 60 to 90 days with our targeted geo-optimization.",
         },
       ]);
+      setFormSections([]);
     }
     setIsDrawerOpen(true);
   };
@@ -248,6 +265,115 @@ export default function LocationsAdmin() {
     setFormFaqs(formFaqs.filter((_, i) => i !== index));
   };
 
+  // ── Section Handlers ────────────────────────────────────────────────────────
+  const addSection = () => {
+    setFormSections([
+      ...formSections,
+      { heading: "", subheading: "", text: "", listItems: [] },
+    ]);
+  };
+
+  const updateSection = (index: number, key: string, val: any) => {
+    const updated = [...formSections];
+    updated[index] = { ...updated[index], [key]: val };
+    setFormSections(updated);
+  };
+
+  const removeSection = (index: number) => {
+    setFormSections(formSections.filter((_, i) => i !== index));
+  };
+
+  // ── Cloudinary Image Upload Handler ─────────────────────────────────────────
+  const handleCityImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const token = typeof window !== "undefined" ? localStorage.getItem("adminToken") : null;
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.success && data.url) {
+        setFormImageUrl(data.url);
+        notify("success", "City image uploaded to Cloudinary successfully!");
+      } else {
+        throw new Error(data.message || "Upload failed");
+      }
+    } catch (err: any) {
+      notify("error", err.message || "Image upload failed");
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  // ── Google Docs HTML Parse Handler ──────────────────────────────────────────
+  const handleGoogleDocsParse = (html: string) => {
+    try {
+      const parsed = parseGoogleDocsHtml(html);
+
+      if (parsed.title) {
+        setFormHeadline(parsed.title);
+        // Extract clean city name if formatted as "SEO in Jaipur" or "SEO Services in London"
+        const cleanName = parsed.title
+          .replace(/^(SEO(\s*\/\s*AEO\s*\/\s*GEO)?(\s+services?)?\s+in\s+)/i, "")
+          .replace(/\s*\|.*$/, "")
+          .trim();
+        if (!formName || formName === "Unnamed city") {
+          setFormName(cleanName || parsed.title);
+        }
+        if (!formSlug) {
+          const genSlug = toSlug(cleanName || parsed.title);
+          setFormSlug(genSlug ? `seo-in-${genSlug}` : "");
+        }
+      }
+
+      if (parsed.slug) {
+        setFormSlug(toSlug(parsed.slug));
+      }
+
+      if (parsed.intro || parsed.excerpt) {
+        const raw = parsed.intro || parsed.excerpt;
+        const cleanDesc = raw.replace(/<[^>]+>/g, "").trim();
+        setFormDescription(cleanDesc);
+      }
+
+      if (parsed.seoTitle) {
+        setFormSeoTitle(parsed.seoTitle);
+      }
+
+      if (parsed.seoDescription) {
+        setFormSeoDesc(parsed.seoDescription);
+      }
+
+      if (parsed.sections && parsed.sections.length > 0) {
+        setFormSections((prev) => [...prev, ...parsed.sections]);
+      }
+
+      if (parsed.faqs && parsed.faqs.length > 0) {
+        const formattedFaqs: CityFAQ[] = parsed.faqs.map((f: any) => ({
+          question: f.question,
+          answer: typeof f.answer === "string"
+            ? f.answer.replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, "").trim()
+            : f.answer,
+          tag: f.tag || "FAQ",
+        }));
+        setFormFaqs((prev) => [...prev, ...formattedFaqs]);
+      }
+
+      notify("success", "Successfully parsed city content from HTML / Google Docs!");
+    } catch (err: any) {
+      console.error(err);
+      notify("error", "Failed to parse HTML content: " + (err.message || "Unknown error"));
+    }
+  };
+
   // ── Save City (Create / Edit) ───────────────────────────────────────────────
   const handleSaveCity = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -277,11 +403,13 @@ export default function LocationsAdmin() {
         name: formName.trim(),
         slug: formSlug.trim(),
         headline: formHeadline.trim(),
+        imageUrl: formImageUrl.trim(),
         description: formDescription.trim(),
         popularServices: formPopularServices,
         seoTitle: formSeoTitle.trim(),
         seoDescription: formSeoDesc.trim(),
         faqs: formFaqs.filter((f) => f.question.trim()),
+        sections: formSections,
       };
 
       if (isCustomCountry && newCountryName.trim()) {
@@ -349,6 +477,15 @@ export default function LocationsAdmin() {
       setIsDeleting(false);
     }
   };
+
+  const currentDrawerService = useMemo(() => {
+    return serviceOptions.find((s) => s._id === formServiceId);
+  }, [serviceOptions, formServiceId]);
+
+  const currentLiveCityUrl = useMemo(() => {
+    if (!currentDrawerService?.slug || !formCountrySlug || !formSlug) return null;
+    return `/services/${currentDrawerService.slug}/${formCountrySlug}/${formSlug}`;
+  }, [currentDrawerService, formCountrySlug, formSlug]);
 
   // ── Countries Subtab State & Handlers ───────────────────────────────────────
   const [countryManageServiceId, setCountryManageServiceId] = useState<string>("");
@@ -508,34 +645,45 @@ export default function LocationsAdmin() {
               <button
                 type="button"
                 onClick={() => setActiveSubTab("cities")}
-                className={`px-4 py-2 rounded-lg text-xs font-extrabold uppercase tracking-wider transition-all ${
-                  activeSubTab === "cities"
-                    ? "bg-brand-accent text-slate-900 shadow-sm"
-                    : "text-white/50 hover:text-white"
-                }`}
+                className={`px-4 py-2 rounded-lg text-xs font-extrabold uppercase tracking-wider transition-all ${activeSubTab === "cities"
+                  ? "bg-brand-accent text-slate-900 shadow-sm"
+                  : "text-white/50 hover:text-white"
+                  }`}
               >
                 Cities Directory
               </button>
               <button
                 type="button"
                 onClick={() => setActiveSubTab("countries")}
-                className={`px-4 py-2 rounded-lg text-xs font-extrabold uppercase tracking-wider transition-all ${
-                  activeSubTab === "countries"
-                    ? "bg-brand-accent text-slate-900 shadow-sm"
-                    : "text-white/50 hover:text-white"
-                }`}
+                className={`px-4 py-2 rounded-lg text-xs font-extrabold uppercase tracking-wider transition-all ${activeSubTab === "countries"
+                  ? "bg-brand-accent text-slate-900 shadow-sm"
+                  : "text-white/50 hover:text-white"
+                  }`}
               >
                 Country Hubs (Hero Content)
               </button>
             </div>
 
             {activeSubTab === "cities" && (
-              <button
-                onClick={() => openDrawer(null)}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-brand-accent text-slate-900 font-display text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-all shadow-xl shadow-brand-accent/20"
-              >
-                <Plus className="w-4 h-4" /> New City
-              </button>
+              <div className="flex items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    openDrawer(null);
+                    setIsPasteModalOpen(true);
+                  }}
+                  className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white font-display text-xs uppercase font-extrabold tracking-wider hover:bg-white/20 transition-all shadow-xl"
+                >
+                  <Code2 className="w-4 h-4 text-brand-accent" />
+                  Paste from Google Docs
+                </button>
+                <button
+                  onClick={() => openDrawer(null)}
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-brand-accent text-slate-900 font-display text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-all shadow-xl shadow-brand-accent/20"
+                >
+                  <Plus className="w-4 h-4" /> New City
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -1020,9 +1168,8 @@ export default function LocationsAdmin() {
                           className="inline-flex items-center gap-2 text-xs text-brand-accent hover:underline font-bold"
                         >
                           <ChevronDown
-                            className={`w-3.5 h-3.5 transition-transform ${
-                              isSeoOpen ? "rotate-180" : ""
-                            }`}
+                            className={`w-3.5 h-3.5 transition-transform ${isSeoOpen ? "rotate-180" : ""
+                              }`}
                           />
                           <span>
                             {isSeoOpen
@@ -1195,12 +1342,34 @@ export default function LocationsAdmin() {
                     Configure localized content, capabilities, and SEO tags.
                   </p>
                 </div>
-                <button
-                  onClick={closeDrawer}
-                  className="p-2 rounded-lg text-white/40 hover:text-white hover:bg-white/5 transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+                <div className="flex items-center gap-2">
+                  {currentLiveCityUrl && (
+                    <a
+                      href={currentLiveCityUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-brand-accent hover:text-slate-900 border border-white/10 text-xs font-bold text-white transition-all shadow-sm"
+                      title="Open live page in new tab"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Live Page</span>
+                    </a>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setIsPasteModalOpen(true)}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-brand-accent/15 border border-brand-accent/30 text-brand-accent text-xs font-bold uppercase tracking-wider hover:bg-brand-accent hover:text-slate-900 transition-all"
+                  >
+                    <Code2 className="w-3.5 h-3.5" />
+                    Paste HTML
+                  </button>
+                  <button
+                    onClick={closeDrawer}
+                    className="p-2 rounded-lg text-white/40 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
 
               {/* Drawer Form Body */}
@@ -1357,10 +1526,77 @@ export default function LocationsAdmin() {
                   </div>
                 </div>
 
-                {/* 3. POPULAR SERVICES / PILLS */}
+                {/* 3. FEATURED CITY IMAGE (CLOUDINARY) */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                    <div>
+                      <h4 className="text-xs font-black font-display uppercase tracking-widest text-brand-accent">
+                        3. Featured City Image (Cloudinary)
+                      </h4>
+                      <p className="text-[10px] text-white/40 mt-0.5">
+                        Displayed at the top of the city article page. Upload directly to Cloudinary or paste an image URL.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-3">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        ref={fileInputRef}
+                        onChange={handleCityImageUpload}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploadingImage}
+                        className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold uppercase tracking-wider transition-colors disabled:opacity-50 shrink-0"
+                      >
+                        {uploadingImage ? (
+                          <Loader2 className="w-4 h-4 animate-spin text-brand-accent" />
+                        ) : (
+                          <UploadCloud className="w-4 h-4 text-brand-accent" />
+                        )}
+                        {uploadingImage ? "Uploading to Cloudinary..." : "Upload from Computer"}
+                      </button>
+                      <span className="text-white/30 text-xs text-center sm:text-left">OR</span>
+                      <input
+                        type="text"
+                        value={formImageUrl}
+                        onChange={(e) => setFormImageUrl(e.target.value)}
+                        placeholder="Paste Cloudinary or image URL..."
+                        className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-white/20 focus:outline-none focus:border-brand-accent"
+                      />
+                    </div>
+
+                    {formImageUrl && (
+                      <div className="rounded-xl overflow-hidden border border-white/10 h-48 relative bg-black/50 group">
+                        <img
+                          src={formImageUrl}
+                          alt="City preview"
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <button
+                            type="button"
+                            onClick={() => setFormImageUrl("")}
+                            className="p-2 bg-red-500/90 hover:bg-red-500 text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 shadow-lg transition-colors"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>Remove Image</span>
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* 4. POPULAR SERVICES / PILLS */}
                 <div className="space-y-4">
                   <h4 className="text-xs font-black font-display uppercase tracking-widest text-brand-accent border-b border-white/10 pb-2">
-                    3. Capabilities & Service Tags
+                    4. Capabilities & Service Tags
                   </h4>
 
                   <div className="flex flex-wrap gap-2">
@@ -1429,11 +1665,11 @@ export default function LocationsAdmin() {
                   </div>
                 </div>
 
-                {/* 4. LOCAL MARKET FAQS */}
+                {/* 5. LOCAL MARKET FAQS */}
                 <div className="space-y-4">
                   <div className="flex items-center justify-between border-b border-white/10 pb-2">
                     <h4 className="text-xs font-black font-display uppercase tracking-widest text-brand-accent">
-                      4. Local Market FAQs
+                      5. Local Market FAQs
                     </h4>
                     <button
                       type="button"
@@ -1492,10 +1728,114 @@ export default function LocationsAdmin() {
                   </div>
                 </div>
 
-                {/* 5. SEO METADATA */}
+                {/* 6. EDITORIAL CONTENT SECTIONS */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                    <div>
+                      <h4 className="text-xs font-black font-display uppercase tracking-widest text-brand-accent">
+                        6. Editorial Content Sections
+                      </h4>
+                      <p className="text-[10px] text-white/40 mt-0.5">
+                        Rich content sections parsed from Google Docs / HTML or created manually.
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setIsPasteModalOpen(true)}
+                        className="text-[11px] font-bold text-white/60 hover:text-white bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5"
+                      >
+                        <Code2 className="w-3.5 h-3.5 text-brand-accent" />
+                        Paste HTML
+                      </button>
+                      <button
+                        type="button"
+                        onClick={addSection}
+                        className="text-[11px] font-extrabold text-slate-900 bg-brand-accent hover:opacity-90 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 uppercase tracking-wider"
+                      >
+                        <Plus className="w-3.5 h-3.5" /> Add Section
+                      </button>
+                    </div>
+                  </div>
+
+                  {formSections.length === 0 && (
+                    <div className="text-center py-8 bg-white/[0.02] border border-dashed border-white/10 rounded-xl p-4">
+                      <p className="text-xs text-white/40 mb-2">
+                        No custom content sections added yet.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setIsPasteModalOpen(true)}
+                        className="inline-flex items-center gap-1.5 text-xs text-brand-accent font-bold hover:underline"
+                      >
+                        <Sparkles className="w-3.5 h-3.5" />
+                        Paste Google Docs / HTML to populate automatically
+                      </button>
+                    </div>
+                  )}
+
+                  <div className="space-y-4">
+                    {formSections.map((sec, sIdx) => (
+                      <div
+                        key={sIdx}
+                        className="bg-white/[0.03] border border-white/10 rounded-xl p-4 space-y-3 relative group"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => removeSection(sIdx)}
+                          className="absolute top-3 right-3 p-1 rounded-lg text-white/30 hover:text-red-400 hover:bg-red-400/10 transition-colors"
+                          title="Remove Section"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+
+                        <div className="pr-8">
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-white/50">
+                            Section #{sIdx + 1} Heading (H2)
+                          </label>
+                          <input
+                            type="text"
+                            value={sec.heading || ""}
+                            onChange={(e) => updateSection(sIdx, "heading", e.target.value)}
+                            placeholder="e.g. 1. The Competitive Search Landscape in Chicago"
+                            className="w-full mt-1 bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-accent font-bold"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-white/50">
+                            Subheading (Optional H3)
+                          </label>
+                          <input
+                            type="text"
+                            value={sec.subheading || ""}
+                            onChange={(e) => updateSection(sIdx, "subheading", e.target.value)}
+                            placeholder="e.g. Local Map Pack Proximity Factors"
+                            className="w-full mt-1 bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-accent"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold uppercase tracking-wider text-white/50">
+                            Section Content (HTML or Paragraphs)
+                          </label>
+                          <textarea
+                            rows={4}
+                            value={sec.text || ""}
+                            onChange={(e) => updateSection(sIdx, "text", e.target.value)}
+                            placeholder="Write or paste paragraph content here (HTML tags like <p>, <strong>, <a> are supported)..."
+                            className="w-full mt-1 bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-accent font-mono leading-relaxed resize-y"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 7. SEO METADATA */}
                 <div className="space-y-4">
                   <h4 className="text-xs font-black font-display uppercase tracking-widest text-brand-accent border-b border-white/10 pb-2">
-                    5. Search Engine Optimization (SEO)
+                    7. Search Engine Optimization (SEO)
                   </h4>
 
                   <div className="flex flex-col gap-1.5">
@@ -1531,6 +1871,66 @@ export default function LocationsAdmin() {
                   </div>
                 </div>
 
+                {/* 8. LIVE PAGE PREVIEW CARD */}
+                <div className="p-5 rounded-2xl bg-black/60 border border-white/10 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-brand-accent flex items-center gap-1.5 font-bold">
+                      <Sparkles className="w-3.5 h-3.5 text-brand-accent" />
+                      Live City Landing Page Preview
+                    </span>
+                    {currentLiveCityUrl && (
+                      <a
+                        href={currentLiveCityUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[11px] font-mono text-brand-accent hover:underline flex items-center gap-1"
+                      >
+                        <span>{currentLiveCityUrl}</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                  </div>
+
+                  <div className="border-t border-white/10 pt-4 space-y-3">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-brand-accent uppercase tracking-wider">
+                      <MapPin className="w-3 h-3" />
+                      <span>
+                        {formName || "City Name"} &bull; {formCountrySlug.toUpperCase()}
+                      </span>
+                    </div>
+
+                    <h4 className="text-xl sm:text-2xl font-display font-extrabold text-white">
+                      {formHeadline || `${currentDrawerService?.title || "SEO"} in ${formName || "City"}`}
+                    </h4>
+
+                    {formImageUrl && (
+                      <div className="rounded-xl overflow-hidden border border-white/10 h-36 relative bg-black/40">
+                        <img
+                          src={formImageUrl}
+                          alt="City visual"
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+
+                    <p className="text-xs text-white/70 leading-relaxed font-body">
+                      {formDescription || "No description entered yet. Describe your local service strategy..."}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      <span className="px-2.5 py-1 rounded-lg bg-brand-accent/10 border border-brand-accent/20 text-brand-accent text-[11px] font-bold">
+                        {formSections.length} Editorial Content Sections
+                      </span>
+                      <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-white/60 text-[11px] font-mono">
+                        {formFaqs.length} Custom FAQs
+                      </span>
+                      <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-white/60 text-[11px] font-mono">
+                        {formPopularServices.length} Capability Tags
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Bottom Actions inside Form */}
                 <div className="pt-6 border-t border-white/10 flex items-center justify-end gap-3">
                   <button
@@ -1553,8 +1953,8 @@ export default function LocationsAdmin() {
                     {drawerSaving
                       ? "Saving..."
                       : editingCity
-                      ? "Update City"
-                      : "Publish City"}
+                        ? "Update City"
+                        : "Publish City"}
                   </button>
                 </div>
               </form>
@@ -1630,6 +2030,15 @@ export default function LocationsAdmin() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Google Docs / Raw HTML Paste Modal */}
+      <GoogleDocsPasteModal
+        isOpen={isPasteModalOpen}
+        onClose={() => setIsPasteModalOpen(false)}
+        onParse={handleGoogleDocsParse}
+        title="Paste City Content (HTML / Google Docs)"
+        populateLabel="Populate City Form"
+      />
     </>
   );
 }

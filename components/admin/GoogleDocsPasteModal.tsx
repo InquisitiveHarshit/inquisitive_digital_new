@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { X, Zap, Eye, Code2, ArrowRight, ChevronDown, ChevronUp, Info } from "lucide-react";
 
 interface GoogleDocsPasteModalProps {
   isOpen: boolean;
   onClose: () => void;
   onParse: (html: string) => void;
+  title?: string;
+  populateLabel?: string;
 }
 
 type Step = "paste" | "preview";
@@ -102,11 +104,23 @@ export default function GoogleDocsPasteModal({
   isOpen,
   onClose,
   onParse,
+  title,
+  populateLabel,
 }: GoogleDocsPasteModalProps) {
   const [inputHtml, setInputHtml] = useState("");
   const [step, setStep] = useState<Step>("paste");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [showRules, setShowRules] = useState(false);
+
+  const previewHtml = useMemo(() => {
+    if (!inputHtml) return "";
+    // Strip <style> tags and inline black/dark font colors from Google Docs
+    let cleaned = inputHtml.replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "");
+    cleaned = cleaned.replace(/color:\s*#[0-9a-fA-F]{3,6}/gi, "");
+    cleaned = cleaned.replace(/background-color:\s*#[0-9a-fA-F]{3,6}/gi, "");
+    cleaned = cleaned.replace(/color:\s*rgb\([^)]+\)/gi, "");
+    return cleaned;
+  }, [inputHtml]);
 
   if (!isOpen) return null;
 
@@ -147,7 +161,7 @@ export default function GoogleDocsPasteModal({
         <div className="flex items-center justify-between border-b border-white/10 px-6 py-4 shrink-0">
           <div className="flex items-center gap-4">
             <h3 className="text-lg font-display font-black uppercase tracking-tight text-white">
-              {step === "paste" ? "Paste HTML Content" : "Preview & Confirm"}
+              {step === "paste" ? (title || "Paste HTML Content") : "Preview & Confirm"}
             </h3>
             <div className="hidden sm:flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
               <span className={`px-2.5 py-1 rounded-full transition-colors ${step === "paste" ? "bg-brand-accent text-slate-900" : "bg-white/10 text-white/40"}`}>
@@ -293,24 +307,26 @@ export default function GoogleDocsPasteModal({
                   <div
                     className="
                       max-w-none text-white/80
-                      [&_h1]:text-2xl [&_h1]:font-black [&_h1]:text-white [&_h1]:mb-4 [&_h1]:mt-2 [&_h1]:leading-tight
-                      [&_h2]:text-lg [&_h2]:font-bold [&_h2]:text-brand-accent [&_h2]:mb-3 [&_h2]:mt-8 [&_h2]:border-b [&_h2]:border-white/10 [&_h2]:pb-1
-                      [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-white [&_h3]:mb-2 [&_h3]:mt-5
-                      [&_h4]:text-sm [&_h4]:font-semibold [&_h4]:text-white/80 [&_h4]:mb-1 [&_h4]:mt-4
-                      [&_p]:text-white/70 [&_p]:mb-3 [&_p]:leading-relaxed [&_p]:text-sm
+                      [&_*]:!text-slate-200
+                      [&_span]:!text-slate-200
+                      [&_h1]:!text-2xl [&_h1]:!font-black [&_h1]:!text-white [&_h1]:mb-4 [&_h1]:mt-2 [&_h1]:leading-tight
+                      [&_h2]:!text-lg [&_h2]:!font-bold [&_h2]:!text-brand-accent [&_h2]:mb-3 [&_h2]:mt-8 [&_h2]:border-b [&_h2]:border-white/10 [&_h2]:pb-1
+                      [&_h3]:!text-base [&_h3]:!font-semibold [&_h3]:!text-white [&_h3]:mb-2 [&_h3]:mt-5
+                      [&_h4]:!text-sm [&_h4]:!font-semibold [&_h4]:!text-white/80 [&_h4]:mb-1 [&_h4]:mt-4
+                      [&_p]:!text-white/80 [&_p]:mb-3 [&_p]:leading-relaxed [&_p]:text-sm
                       [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ul]:text-white/70 [&_ul]:text-sm
                       [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_ol]:text-white/70 [&_ol]:text-sm
                       [&_li]:mb-1
-                      [&_strong]:text-white [&_strong]:font-bold
+                      [&_strong]:!text-white [&_strong]:!font-bold
                       [&_em]:text-white/60 [&_em]:italic
-                      [&_a]:text-brand-accent [&_a]:underline
+                      [&_a]:!text-brand-accent [&_a]:underline
                       [&_table]:w-full [&_table]:text-sm [&_table]:border-collapse [&_table]:mb-4
                       [&_td]:border [&_td]:border-white/10 [&_td]:p-2 [&_td]:text-white/60
                       [&_th]:border [&_th]:border-white/10 [&_th]:p-2 [&_th]:bg-white/10 [&_th]:font-bold [&_th]:text-white/80
                       [&_hr]:border-white/10 [&_hr]:my-4
                       [&_blockquote]:border-l-4 [&_blockquote]:border-brand-accent [&_blockquote]:pl-4 [&_blockquote]:text-white/50 [&_blockquote]:italic
                     "
-                    dangerouslySetInnerHTML={{ __html: inputHtml }}
+                    dangerouslySetInnerHTML={{ __html: previewHtml }}
                   />
                 </div>
               </div>
@@ -325,7 +341,7 @@ export default function GoogleDocsPasteModal({
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-brand-accent text-slate-900 font-display text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-all shadow-xl"
               >
                 <Zap className="w-4 h-4" />
-                Populate Blog Form
+                {populateLabel || "Populate Form"}
               </button>
             </div>
           </>

@@ -7,6 +7,7 @@ export interface CityFaq {
 export interface LocationCityData {
   name: string;
   slug: string; // e.g. "seo-in-new-york-city"
+  imageUrl?: string;
   description?: string;
   headline?: string;
   popularServices?: string[];
