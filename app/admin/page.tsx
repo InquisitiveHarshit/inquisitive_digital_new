@@ -21,7 +21,8 @@ import {
   AlertTriangle,
   Loader2,
   BookOpen,
-  MapPin
+  MapPin,
+  Layers
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { mockJobs, mockApplications, Job, Application } from "../careers/data";
@@ -50,10 +51,11 @@ interface ContactLead {
 }
 import BlogsAdmin from "./BlogsAdmin";
 import LocationsAdmin from "./LocationsAdmin";
+import SubServicesAdmin from "./SubServicesAdmin";
 
 const API_BASE = "";
 
-type ActiveTab = "overview" | "jobs" | "applications" | "blogs" | "locations" | "audits" | "contactLeads";
+type ActiveTab = "overview" | "jobs" | "applications" | "blogs" | "subServices" | "locations" | "audits" | "contactLeads";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<ActiveTab>("overview");
@@ -83,6 +85,7 @@ export default function AdminDashboard() {
   const [audits, setAudits] = useState<Audit[]>([]);
   const [contactLeads, setContactLeads] = useState<ContactLead[]>([]);
   const [blogsCount, setBlogsCount] = useState<number>(0);
+  const [subServicesCount, setSubServicesCount] = useState<number>(0);
   const [loading, setLoading] = useState(true);
 
   // Filter States
@@ -180,6 +183,15 @@ export default function AdminDashboard() {
         const blogsJson = await blogsRes.json();
         const fetchedBlogs = blogsJson.data || [];
         setBlogsCount(fetchedBlogs.length);
+      }
+
+      // Fetch Sub-Services Count
+      const subRes = await fetch(`${API_BASE}/api/admin/sub-services`, { cache: "no-store", headers });
+      if (handle401(subRes)) return;
+      if (subRes.ok) {
+        const subJson = await subRes.json();
+        const fetchedSubs = subJson.data || [];
+        setSubServicesCount(fetchedSubs.length);
       }
     } catch (err) {
       console.warn("Backend admin endpoints not reachable. Using fallback mock database.");
@@ -335,6 +347,7 @@ export default function AdminDashboard() {
     const totalAudits = audits.length;
     const totalContactLeads = contactLeads.length;
     const totalBlogs = blogsCount;
+    const totalSubServices = subServicesCount;
 
     // Applications in the last 7 days
     const sevenDaysAgo = new Date();
@@ -343,8 +356,8 @@ export default function AdminDashboard() {
       (app) => new Date(app.applied_at) >= sevenDaysAgo
     ).length;
 
-    return { totalJobs, activeJobs, totalApps, newThisWeek, totalAudits, totalContactLeads, totalBlogs };
-  }, [jobs, applications, audits, contactLeads, blogsCount]);
+    return { totalJobs, activeJobs, totalApps, newThisWeek, totalAudits, totalContactLeads, totalBlogs, totalSubServices };
+  }, [jobs, applications, audits, contactLeads, blogsCount, subServicesCount]);
 
   // --- RECENT APPLICATIONS (LAST 10) ---
   const recentApplications = useMemo(() => {
@@ -754,6 +767,17 @@ export default function AdminDashboard() {
             Applications
           </button>
           <button
+            onClick={() => setActiveTab("subServices")}
+            className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-xs uppercase tracking-wider font-extrabold transition-all ${
+              activeTab === "subServices"
+                ? "bg-brand-accent/10 text-brand-accent border border-brand-accent/20"
+                : "text-white/50 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <Layers className="w-4 h-4" />
+            Sub Services
+          </button>
+          <button
             onClick={() => setActiveTab("blogs")}
             className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-xs uppercase tracking-wider font-extrabold transition-all ${
               activeTab === "blogs"
@@ -855,6 +879,15 @@ export default function AdminDashboard() {
           Applications
         </button>
         <button
+          onClick={() => setActiveTab("subServices")}
+          className={`flex flex-col items-center gap-1 text-[9px] uppercase tracking-wider font-bold transition-all ${
+            activeTab === "subServices" ? "text-brand-accent" : "text-white/40"
+          }`}
+        >
+          <Layers className="w-5 h-5" />
+          Sub Services
+        </button>
+        <button
           onClick={() => setActiveTab("blogs")}
           className={`flex flex-col items-center gap-1 text-[9px] uppercase tracking-wider font-bold transition-all ${
             activeTab === "blogs" ? "text-brand-accent" : "text-white/40"
@@ -915,6 +948,7 @@ export default function AdminDashboard() {
                     { label: "Total Jobs", val: stats.totalJobs, hasTrend: true },
                     { label: "Total Applications", val: stats.totalApps, hasTrend: true },
                     { label: "Total Blogs", val: stats.totalBlogs, hasTrend: true },
+                    { label: "Sub Services", val: stats.totalSubServices, hasTrend: true },
                   ].map((card, idx) => (
                     <div
                       key={idx}
@@ -1224,6 +1258,11 @@ export default function AdminDashboard() {
                   </table>
                 </div>
               </div>
+            )}
+
+            {/* TAB: SUB SERVICES */}
+            {activeTab === "subServices" && (
+              <SubServicesAdmin onSessionExpired={forceLogout} />
             )}
 
             {/* TAB 4: BLOGS */}
