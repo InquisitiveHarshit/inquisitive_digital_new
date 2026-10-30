@@ -9,6 +9,7 @@ import { contentMarketingData } from "@/app/services/data/content-marketing";
 import { socialMediaData } from "@/app/services/data/social-media";
 import { webDevelopmentData } from "@/app/services/data/web-development";
 import { creativeServicesData } from "@/app/services/data/creative-services";
+import { dataEngineeringData } from "@/app/services/data/data-engineering";
 import { sitemapState } from "@/lib/sitemapCache";
 
 export async function GET(request) {
@@ -22,7 +23,8 @@ export async function GET(request) {
       { ...contentMarketingData, icon: "FileText" },
       { ...socialMediaData, icon: "Share2" },
       { ...webDevelopmentData, icon: "Code" },
-      { ...creativeServicesData, icon: "Palette" }
+      { ...creativeServicesData, icon: "Palette" },
+      { ...dataEngineeringData, icon: "Database" }
     ];
 
     const results = [];

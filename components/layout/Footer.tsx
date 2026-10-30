@@ -93,8 +93,10 @@ export const Footer: React.FC = () => {
             <a className={linkClass} href="/services/performance-marketing">Performance Marketing</a>
             <a className={linkClass} href="/services/social-media-marketing">Social Media Marketing</a>
             <a className={linkClass} href="/services/web-development">Web Development</a>
+            <a className={linkClass} href="/services/data-engineering">Data Engineering</a>
             <a className={linkClass} href="/services/content-marketing">Content Marketing</a>
             <a className={linkClass} href="/services/creative-services">Creative Services</a>
+            <a className={linkClass} href="/services/data-engineering">Data Engineering</a>
           </div>
         </div>
 
@@ -114,13 +116,25 @@ export const Footer: React.FC = () => {
           <h4 className={headingClass}>Contact</h4>
           <div className="flex flex-col gap-5">
 
-            {/* Address */}
+            {/* Address: Noida Office */}
             <div className="flex gap-3">
               <MapPin className="w-4 h-4 text-brand-accent shrink-0 mt-0.5" />
-              <p className={`font-body text-sm leading-relaxed ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+              <div className={`font-body text-sm leading-relaxed ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+                <span className="font-semibold text-xs uppercase tracking-wider block text-brand-accent mb-0.5">Noida Office</span>
                 Suite 001, H-36, Sector 63,<br />
                 Noida, Uttar Pradesh 201301
-              </p>
+              </div>
+            </div>
+
+            {/* Address: Bengaluru Office */}
+            <div className="flex gap-3">
+              <MapPin className="w-4 h-4 text-brand-accent shrink-0 mt-0.5" />
+              <div className={`font-body text-sm leading-relaxed ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+                <span className="font-semibold text-xs uppercase tracking-wider block text-brand-accent mb-0.5">Bengaluru Office</span>
+                UDBHAV@678, 11th Main Rd,<br />
+                4th Block, Jayanagar,<br />
+                Bengaluru, Karnataka 560041
+              </div>
             </div>
 
             {/* Phone */}
@@ -166,7 +180,7 @@ export const Footer: React.FC = () => {
             © {new Date().getFullYear()} Inquisitive Digital. All rights reserved.
           </p>
           <p className={`font-body text-xs ${isLight ? "text-slate-400" : "text-slate-600"}`}>
-            Built with ❤️ in Noida, India.
+            Built with ❤️ in India.
           </p>
         </div>
       </div>

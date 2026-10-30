@@ -11,7 +11,7 @@ import {
   Code,
   FileText,
   Award,
-  Megaphone,
+  Database,
 } from "lucide-react";
 
 interface ServiceItem {
@@ -90,12 +90,12 @@ export const Services: React.FC = () => {
     },
     {
       id: 8,
-      title: "Lead Generation",
-      shortDesc: "Generate high-quality leads that convert into customers.",
-      detailedDesc: "We build conversion paths, landing pages, and smart lead forms optimized for capture, bringing high-intent prospects straight to your pipeline.",
-      icon: Megaphone,
+      title: "Data Engineering",
+      shortDesc: "Pipelines, Airflow orchestration, and cloud cost optimisation.",
+      detailedDesc: "We design reliable pipelines, cut cloud processing costs, migrate legacy platforms safely and keep your data trustworthy. We tune Spark and SQL jobs, automate Airflow workflows, enforce automated data contracts, and deploy enterprise RAG documentation assistants so your teams get accurate data on time.",
+      icon: Database,
       spanClass: "lg:col-span-1",
-      slug: "performance-marketing"
+      slug: "data-engineering"
     },
   ];
 

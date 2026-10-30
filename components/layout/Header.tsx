@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { Menu, X, Sparkles, Sun, Moon, Search, Share2, TrendingUp, Code, FileText, Palette } from "lucide-react";
+import { Menu, X, Sparkles, Sun, Moon, Search, Share2, TrendingUp, Code, FileText, Palette, Database } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme, ThemeMode } from "@/components/ThemeProvider";
 
@@ -79,6 +79,12 @@ export const Header: React.FC = () => {
       desc: "Design, branding & video production",
       href: "/services/creative-services",
       icon: Palette
+    },
+    {
+      title: "Data Engineering",
+      desc: "Pipelines, orchestration & RAG agents",
+      href: "/services/data-engineering",
+      icon: Database
     },
   ];
 

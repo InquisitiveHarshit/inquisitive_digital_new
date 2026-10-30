@@ -29,6 +29,7 @@ import {
   FileText,
   Palette,
   Loader2,
+  Database,
 } from "lucide-react";
 import { BlogCard } from "@/components/ui/BlogCard";
 import { blogs } from "@/app/blogs/data";
@@ -46,6 +47,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   Code,
   FileText,
   Palette,
+  Database,
 };
 
 // ─── TypeScript interfaces for the MongoDB service document ───────────────────
@@ -713,8 +715,8 @@ export default function ServiceDetailClient({ initialService }: { initialService
         </div>
       </section>
 
-      {/* SECTION 3 — OUR PROCESS */}
-      {service.processSection && (
+      {/* SECTION 3 — OUR PROCESS (<= 4 Steps) */}
+      {service.processSection && service.processSection.steps.length <= 4 && (
         <section className="py-12 px-4 md:px-margin-desktop relative">
           <div className="max-w-container-max mx-auto relative z-10">
             <div className="text-center mb-10">
@@ -831,8 +833,8 @@ export default function ServiceDetailClient({ initialService }: { initialService
         </div>
       </section>
 
-      {/* SECTION 4.1 — PROCESS SECTION */}
-      {service.processSection && (
+      {/* SECTION 4.1 — PROCESS SECTION (> 4 Steps) */}
+      {service.processSection && service.processSection.steps.length > 4 && (
         <section className="py-12 px-4 md:px-margin-desktop relative">
           <div className="max-w-container-max mx-auto relative z-10">
             <div className="text-center mb-10">
