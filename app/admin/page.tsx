@@ -205,6 +205,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     // Attempt auto-seed first just in case DB is fresh
     fetch(`${API_BASE}/api/admin/auth/seed`).catch(() => {});
+    fetch(`${API_BASE}/api/admin/services/seed`).catch(() => {});
 
     const token = localStorage.getItem("adminToken");
     const storedUser = localStorage.getItem("adminUser");

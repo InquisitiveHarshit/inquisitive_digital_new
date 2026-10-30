@@ -4,12 +4,43 @@ import connectDB from "@/lib/mongodb";
 import Service from "@/lib/models/Service";
 import slugify from "slugify";
 import { sitemapState } from "@/lib/sitemapCache";
+import { dataEngineeringData } from "@/app/services/data/data-engineering";
 
 export async function GET(request) {
   try {
     await connectDB();
 
-    const services = await Service.find().sort({ order: 1, createdAt: -1 });
+    let services = await Service.find().sort({ order: 1, createdAt: -1 });
+
+    const hasDataEngineering = services.some((s) => s.slug === "data-engineering");
+    if (!hasDataEngineering) {
+      try {
+        const { id, shortDesc, detailedDesc, ...rest } = dataEngineeringData;
+        const newDE = await Service.findOneAndUpdate(
+          { slug: "data-engineering" },
+          {
+            $set: {
+              ...rest,
+              slug: "data-engineering",
+              title: "Data Engineering Services",
+              category: "Data & AI",
+              shortDescription: shortDesc,
+              description: detailedDesc,
+              icon: "Database",
+              order: 7,
+              isActive: true,
+            },
+          },
+          { upsert: true, new: true, runValidators: true }
+        );
+        if (newDE) {
+          services.push(newDE);
+        }
+      } catch (upsertErr) {
+        console.warn("[WARN] Could not auto-upsert data-engineering in admin services:", upsertErr.message);
+      }
+    }
+
     return NextResponse.json({ success: true, count: services.length, data: services });
   } catch (err) {
     console.error("[ERROR] GET /api/admin/services:", err.message);
@@ -40,7 +71,7 @@ export async function POST(request) {
     return NextResponse.json({ success: true, data: service }, { status: 201 });
   } catch (err) {
     console.error("[ERROR] POST /api/admin/services:", err.message);
-    
+
     if (err.message.includes("Not authorised") || err.message.includes("token")) {
       return NextResponse.json({ success: false, message: err.message }, { status: 401 });
     }
@@ -58,4 +89,3 @@ export async function POST(request) {
     );
   }
 }
-

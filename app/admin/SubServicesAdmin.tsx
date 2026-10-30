@@ -84,6 +84,7 @@ const DEFAULT_PARENT_SERVICES = [
   { slug: "social-media-marketing", name: "Social Media Marketing" },
   { slug: "performance-marketing", name: "Performance Marketing" },
   { slug: "web-development", name: "Web Design & Development" },
+  { slug: "data-engineering", name: "Data Engineering Services" },
   { slug: "content-marketing", name: "Content Writing & Blogging" },
   { slug: "creative-services", name: "Graphic Design & Branding" },
 ];
@@ -172,12 +173,23 @@ export default function SubServicesAdmin({ onSessionExpired }: { onSessionExpire
             slug: s.slug || s._id,
             name: s.title || s.name || s.slug,
           }));
-          setParentServiceList(mapped);
+
+          // Merge with DEFAULT_PARENT_SERVICES to guarantee all core services (like Data Engineering) are present
+          const existingSlugs = new Set(mapped.map((s: any) => s.slug));
+          const combined = [...mapped];
+          DEFAULT_PARENT_SERVICES.forEach((def) => {
+            if (!existingSlugs.has(def.slug)) {
+              combined.push(def);
+            }
+          });
+          setParentServiceList(combined);
+          return;
         }
       }
     } catch {
       // fallback to DEFAULT_PARENT_SERVICES
     }
+    setParentServiceList(DEFAULT_PARENT_SERVICES);
   };
 
   const fetchSubServices = async () => {
