@@ -332,6 +332,20 @@ export default function SubServicesAdmin({ onSessionExpired }: { onSessionExpire
     if (parsed.seoTitle) setFormSeoTitle(parsed.seoTitle);
     if (parsed.seoDescription) setFormSeoDesc(parsed.seoDescription);
 
+    if (parsed.parentService) {
+      const match = parentServiceList.find(
+        (p) =>
+          p.slug.toLowerCase() === parsed.parentService?.toLowerCase() ||
+          p.name.toLowerCase() === parsed.parentService?.toLowerCase() ||
+          p.slug.replace(/-/g, " ").toLowerCase() === parsed.parentService?.toLowerCase()
+      );
+      if (match) {
+        setFormParentService(match.slug);
+      } else {
+        setFormParentService(parsed.parentService);
+      }
+    }
+
     if (parsed.intro) {
       setFormIntro((prev) => (prev ? prev + "\n\n" + parsed.intro : parsed.intro));
     }
@@ -703,15 +717,13 @@ export default function SubServicesAdmin({ onSessionExpired }: { onSessionExpire
                   <td className="py-4 px-6 text-center">
                     <button
                       onClick={() => handleToggleActive(item)}
-                      className={`relative w-11 h-6 rounded-full transition-colors focus:outline-none cursor-pointer ${
-                        item.isActive ? "bg-brand-accent" : "bg-white/10"
-                      }`}
+                      className={`relative w-11 h-6 rounded-full transition-colors focus:outline-none cursor-pointer ${item.isActive ? "bg-brand-accent" : "bg-white/10"
+                        }`}
                       title={item.isActive ? "Click to set as Draft" : "Click to Publish"}
                     >
                       <span
-                        className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform ${
-                          item.isActive ? "translate-x-5" : "translate-x-0"
-                        }`}
+                        className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform ${item.isActive ? "translate-x-5" : "translate-x-0"
+                          }`}
                       />
                     </button>
                   </td>
@@ -1009,286 +1021,301 @@ export default function SubServicesAdmin({ onSessionExpired }: { onSessionExpire
                         <h4 className="text-sm font-black font-display uppercase tracking-widest text-brand-accent">
                           3. Content Sections
                         </h4>
-                        <button
-                          type="button"
-                          onClick={addSection}
-                          className="text-xs uppercase font-bold text-brand-accent hover:text-white flex items-center gap-1 cursor-pointer"
-                        >
-                          <Plus className="w-3 h-3" /> Add Section
-                        </button>
+                        <div className="flex items-center gap-3">
+                          <button
+                            type="button"
+                            onClick={() => setIsPasteModalOpen(true)}
+                            className="text-xs uppercase font-bold text-white/70 hover:text-brand-accent flex items-center gap-1.5 cursor-pointer transition-colors"
+                          >
+                            <FileText className="w-3.5 h-3.5 text-brand-accent" /> Paste from Google Docs
+                          </button>
+                          <button
+                            type="button"
+                            onClick={addSection}
+                            className="text-xs uppercase font-bold text-brand-accent hover:text-white flex items-center gap-1 cursor-pointer"
+                          >
+                            <Plus className="w-3 h-3" /> Add Section
+                          </button>
+                        </div>
                       </div>
 
                       {formSections.length === 0 && (
-                        <div className="text-center py-10 bg-white/5 border border-white/10 border-dashed rounded-2xl text-white/30 text-sm">
-                          No sections added yet. Click &quot;Add Section&quot; or &quot;Paste from Google Docs&quot; to import content.
-                        </div>
-                      )}
-
-                      {formSections.map((sec, sIdx) => (
-                        <div
-                          key={sIdx}
-                          className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-5 relative group"
-                        >
-                          <button
-                            type="button"
-                            onClick={() => removeSection(sIdx)}
-                            className="absolute top-4 right-4 p-2 text-white/20 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors cursor-pointer"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-
-                          <div className="flex flex-col gap-2 w-full pr-10">
-                            <label className="text-[10px] uppercase tracking-wider font-bold text-white/50">
-                              Section {sIdx + 1} Heading (H2)
-                            </label>
-                            <input
-                              type="text"
-                              value={sec.heading}
-                              onChange={(e) => updateSection(sIdx, "heading", e.target.value)}
-                              placeholder="e.g. How Our Methodology Works"
-                              className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent"
-                            />
-                          </div>
-
-                          <div className="flex flex-col gap-2">
-                            <label className="text-[10px] uppercase tracking-wider font-bold text-white/50">
-                              Paragraph Text (HTML allowed)
-                            </label>
-                            <textarea
-                              rows={4}
-                              value={sec.text}
-                              onChange={(e) => updateSection(sIdx, "text", e.target.value)}
-                              placeholder="Section narrative text..."
-                              className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent resize-y"
-                            />
-                          </div>
-
-                          {/* Bullet Points */}
-                          <div className="space-y-2 pl-4 border-l-2 border-white/10">
-                            <label className="text-[10px] uppercase tracking-wider font-bold text-white/50">
-                              Bullet Points (One per line)
-                            </label>
-                            <textarea
-                              rows={3}
-                              value={sec.listItems ? sec.listItems.join("\n") : ""}
-                              onChange={(e) =>
-                                updateSection(sIdx, "listItems", e.target.value.split("\n"))
-                              }
-                              placeholder="Key deliverable or bullet point per line..."
-                              className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent resize-y"
-                            />
-                          </div>
-
-                          {/* Subsections */}
-                          <div className="space-y-4 pt-4 border-t border-white/10">
-                            <div className="flex justify-between items-center">
-                              <label className="text-xs uppercase tracking-wider font-bold text-white/70">
-                                Subsections (H3)
-                              </label>
-                              <button
-                                type="button"
-                                onClick={() => addSubsection(sIdx)}
-                                className="text-[10px] uppercase font-bold bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg text-white transition-colors flex items-center gap-1 cursor-pointer"
-                              >
-                                <Plus className="w-3 h-3" /> Add Subsection
-                              </button>
-                            </div>
-                            {sec.subsections.map((sub, subIdx) => (
-                              <div
-                                key={subIdx}
-                                className="bg-black/40 border border-white/5 rounded-xl p-4 space-y-3 relative"
-                              >
-                                <button
-                                  type="button"
-                                  onClick={() => removeSubsection(sIdx, subIdx)}
-                                  className="absolute top-2 right-2 p-1.5 text-white/20 hover:text-red-400 transition-colors cursor-pointer"
-                                >
-                                  <X className="w-4 h-4" />
-                                </button>
-                                <div className="flex flex-col gap-1 pr-8">
-                                  <label className="text-[9px] uppercase tracking-wider font-bold text-white/40">
-                                    Subheading (H3)
-                                  </label>
-                                  <input
-                                    type="text"
-                                    value={sub.subheading}
-                                    onChange={(e) =>
-                                      updateSubsection(sIdx, subIdx, "subheading", e.target.value)
-                                    }
-                                    className="w-full bg-transparent border-b border-white/10 px-2 py-1 text-sm focus:outline-none focus:border-brand-accent"
-                                  />
-                                </div>
-                                <div className="flex flex-col gap-1">
-                                  <label className="text-[9px] uppercase tracking-wider font-bold text-white/40">
-                                    Text
-                                  </label>
-                                  <textarea
-                                    rows={2}
-                                    value={sub.text}
-                                    onChange={(e) =>
-                                      updateSubsection(sIdx, subIdx, "text", e.target.value)
-                                    }
-                                    className="w-full bg-white/5 border border-white/5 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent resize-y"
-                                  />
-                                </div>
-                                <div className="flex flex-col gap-1 mt-2">
-                                  <label className="text-[9px] uppercase tracking-wider font-bold text-white/40">
-                                    Bullet Points (One per line)
-                                  </label>
-                                  <textarea
-                                    rows={2}
-                                    value={sub.listItems ? sub.listItems.join("\n") : ""}
-                                    onChange={(e) =>
-                                      updateSubsection(sIdx, subIdx, "listItems", e.target.value.split("\n"))
-                                    }
-                                    placeholder="Paste or type bullet points here..."
-                                    className="w-full bg-white/5 border border-white/5 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent resize-y"
-                                  />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* 4. FAQS */}
-                    <div className="space-y-6">
-                      <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                        <h4 className="text-sm font-black font-display uppercase tracking-widest text-brand-accent">
-                          4. FAQs
-                        </h4>
-                        <button
-                          type="button"
-                          onClick={addFaq}
-                          className="text-xs uppercase font-bold text-brand-accent hover:text-white flex items-center gap-1 cursor-pointer"
-                        >
-                          <Plus className="w-3 h-3" /> Add FAQ
-                        </button>
-                      </div>
-                      <div className="space-y-3">
-                        {formFaqs.map((faq, fIdx) => (
-                          <div
-                            key={fIdx}
-                            className="flex gap-3 bg-white/5 border border-white/10 rounded-xl p-4 relative pr-12"
-                          >
+                          <div className="text-center py-10 bg-white/5 border border-white/10 border-dashed rounded-2xl text-white/50 text-sm flex flex-col items-center justify-center gap-3">
+                            <p>No sections added yet.</p>
                             <button
                               type="button"
-                              onClick={() => removeFaq(fIdx)}
-                              className="absolute top-4 right-4 p-1.5 text-white/20 hover:text-red-400 rounded-lg transition-colors cursor-pointer"
+                              onClick={() => setIsPasteModalOpen(true)}
+                              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-accent/15 border border-brand-accent/30 text-brand-accent text-xs font-bold uppercase tracking-wider hover:bg-brand-accent hover:text-slate-900 transition-all cursor-pointer"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <FileText className="w-3.5 h-3.5" />
+                              Paste from Google Docs
                             </button>
-                            <div className="flex-1 space-y-3">
-                              <input
-                                type="text"
-                                placeholder="Question..."
-                                value={faq.question}
-                                onChange={(e) => updateFaq(fIdx, "question", e.target.value)}
-                                className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm font-bold focus:outline-none focus:border-brand-accent"
-                              />
-                              <textarea
-                                placeholder="Answer..."
-                                rows={2}
-                                value={faq.answer}
-                                onChange={(e) => updateFaq(fIdx, "answer", e.target.value)}
-                                className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent resize-none"
-                              />
-                            </div>
                           </div>
-                        ))}
-                      </div>
-                    </div>
+                      )}
 
-                    {/* 5. SEO & PUBLISH */}
-                    <div className="space-y-6">
-                      <h4 className="text-sm font-black font-display uppercase tracking-widest text-brand-accent border-b border-white/10 pb-2">
-                        5. SEO & Settings
-                      </h4>
-                      <div className="flex flex-col gap-2">
-                        <label className="text-xs uppercase tracking-wider font-bold text-white/50">
-                          SEO Meta Title
-                        </label>
-                        <input
-                          type="text"
-                          value={formSeoTitle}
-                          onChange={(e) => setFormSeoTitle(e.target.value)}
-                          placeholder="e.g. Expert Generative Engine Optimization Services | Inquisitive Digital"
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-accent"
-                        />
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <label className="text-xs uppercase tracking-wider font-bold text-white/50">
-                          SEO Meta Description
-                        </label>
-                        <textarea
-                          rows={2}
-                          value={formSeoDesc}
-                          onChange={(e) => setFormSeoDesc(e.target.value)}
-                          placeholder="Compelling meta description for search snippets..."
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-accent resize-none"
-                        />
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <label className="text-xs uppercase tracking-wider font-bold text-white/50">
-                          Structured Data / Script (JSON-LD)
-                        </label>
-                        <textarea
-                          rows={3}
-                          value={formScript}
-                          onChange={(e) => setFormScript(e.target.value)}
-                          placeholder='{"@context": "https://schema.org", "@type": "Service", ...}'
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-brand-accent resize-y"
-                        />
-                      </div>
-                      <div className="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl p-4">
-                        <div>
-                          <p className="text-sm font-bold text-white">Publish Status</p>
-                          <p className="text-xs text-white/40 mt-0.5">
-                            {formIsActive ? "Live to public" : "Saved as draft"}
-                          </p>
+                          {formSections.map((sec, sIdx) => (
+                            <div
+                              key={sIdx}
+                              className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-5 relative group"
+                            >
+                              <button
+                                type="button"
+                                onClick={() => removeSection(sIdx)}
+                                className="absolute top-4 right-4 p-2 text-white/20 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors cursor-pointer"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+
+                              <div className="flex flex-col gap-2 w-full pr-10">
+                                <label className="text-[10px] uppercase tracking-wider font-bold text-white/50">
+                                  Section {sIdx + 1} Heading (H2)
+                                </label>
+                                <input
+                                  type="text"
+                                  value={sec.heading}
+                                  onChange={(e) => updateSection(sIdx, "heading", e.target.value)}
+                                  placeholder="e.g. How Our Methodology Works"
+                                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent"
+                                />
+                              </div>
+
+                              <div className="flex flex-col gap-2">
+                                <label className="text-[10px] uppercase tracking-wider font-bold text-white/50">
+                                  Paragraph Text (HTML allowed)
+                                </label>
+                                <textarea
+                                  rows={4}
+                                  value={sec.text}
+                                  onChange={(e) => updateSection(sIdx, "text", e.target.value)}
+                                  placeholder="Section narrative text..."
+                                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent resize-y"
+                                />
+                              </div>
+
+                              {/* Bullet Points */}
+                              <div className="space-y-2 pl-4 border-l-2 border-white/10">
+                                <label className="text-[10px] uppercase tracking-wider font-bold text-white/50">
+                                  Bullet Points (One per line)
+                                </label>
+                                <textarea
+                                  rows={3}
+                                  value={sec.listItems ? sec.listItems.join("\n") : ""}
+                                  onChange={(e) =>
+                                    updateSection(sIdx, "listItems", e.target.value.split("\n"))
+                                  }
+                                  placeholder="Key deliverable or bullet point per line..."
+                                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent resize-y"
+                                />
+                              </div>
+
+                              {/* Subsections */}
+                              <div className="space-y-4 pt-4 border-t border-white/10">
+                                <div className="flex justify-between items-center">
+                                  <label className="text-xs uppercase tracking-wider font-bold text-white/70">
+                                    Subsections (H3)
+                                  </label>
+                                  <button
+                                    type="button"
+                                    onClick={() => addSubsection(sIdx)}
+                                    className="text-[10px] uppercase font-bold bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-lg text-white transition-colors flex items-center gap-1 cursor-pointer"
+                                  >
+                                    <Plus className="w-3 h-3" /> Add Subsection
+                                  </button>
+                                </div>
+                                {sec.subsections.map((sub, subIdx) => (
+                                  <div
+                                    key={subIdx}
+                                    className="bg-black/40 border border-white/5 rounded-xl p-4 space-y-3 relative"
+                                  >
+                                    <button
+                                      type="button"
+                                      onClick={() => removeSubsection(sIdx, subIdx)}
+                                      className="absolute top-2 right-2 p-1.5 text-white/20 hover:text-red-400 transition-colors cursor-pointer"
+                                    >
+                                      <X className="w-4 h-4" />
+                                    </button>
+                                    <div className="flex flex-col gap-1 pr-8">
+                                      <label className="text-[9px] uppercase tracking-wider font-bold text-white/40">
+                                        Subheading (H3)
+                                      </label>
+                                      <input
+                                        type="text"
+                                        value={sub.subheading}
+                                        onChange={(e) =>
+                                          updateSubsection(sIdx, subIdx, "subheading", e.target.value)
+                                        }
+                                        className="w-full bg-transparent border-b border-white/10 px-2 py-1 text-sm focus:outline-none focus:border-brand-accent"
+                                      />
+                                    </div>
+                                    <div className="flex flex-col gap-1">
+                                      <label className="text-[9px] uppercase tracking-wider font-bold text-white/40">
+                                        Text
+                                      </label>
+                                      <textarea
+                                        rows={2}
+                                        value={sub.text}
+                                        onChange={(e) =>
+                                          updateSubsection(sIdx, subIdx, "text", e.target.value)
+                                        }
+                                        className="w-full bg-white/5 border border-white/5 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent resize-y"
+                                      />
+                                    </div>
+                                    <div className="flex flex-col gap-1 mt-2">
+                                      <label className="text-[9px] uppercase tracking-wider font-bold text-white/40">
+                                        Bullet Points (One per line)
+                                      </label>
+                                      <textarea
+                                        rows={2}
+                                        value={sub.listItems ? sub.listItems.join("\n") : ""}
+                                        onChange={(e) =>
+                                          updateSubsection(sIdx, subIdx, "listItems", e.target.value.split("\n"))
+                                        }
+                                        placeholder="Paste or type bullet points here..."
+                                        className="w-full bg-white/5 border border-white/5 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent resize-y"
+                                      />
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => setFormIsActive(!formIsActive)}
-                          className={`relative w-12 h-7 rounded-full transition-colors focus:outline-none cursor-pointer ${
-                            formIsActive ? "bg-brand-accent" : "bg-white/10"
-                          }`}
-                        >
-                          <span
-                            className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-white transition-transform ${
-                              formIsActive ? "translate-x-5" : "translate-x-0"
-                            }`}
-                          />
-                        </button>
+
+                    {/* 4. FAQS */}
+                      <div className="space-y-6">
+                        <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                          <h4 className="text-sm font-black font-display uppercase tracking-widest text-brand-accent">
+                            4. FAQs
+                          </h4>
+                          <button
+                            type="button"
+                            onClick={addFaq}
+                            className="text-xs uppercase font-bold text-brand-accent hover:text-white flex items-center gap-1 cursor-pointer"
+                          >
+                            <Plus className="w-3 h-3" /> Add FAQ
+                          </button>
+                        </div>
+                        <div className="space-y-3">
+                          {formFaqs.map((faq, fIdx) => (
+                            <div
+                              key={fIdx}
+                              className="flex gap-3 bg-white/5 border border-white/10 rounded-xl p-4 relative pr-12"
+                            >
+                              <button
+                                type="button"
+                                onClick={() => removeFaq(fIdx)}
+                                className="absolute top-4 right-4 p-1.5 text-white/20 hover:text-red-400 rounded-lg transition-colors cursor-pointer"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                              <div className="flex-1 space-y-3">
+                                <input
+                                  type="text"
+                                  placeholder="Question..."
+                                  value={faq.question}
+                                  onChange={(e) => updateFaq(fIdx, "question", e.target.value)}
+                                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm font-bold focus:outline-none focus:border-brand-accent"
+                                />
+                                <textarea
+                                  placeholder="Answer..."
+                                  rows={2}
+                                  value={faq.answer}
+                                  onChange={(e) => updateFaq(fIdx, "answer", e.target.value)}
+                                  className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-accent resize-none"
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  </>
+
+                      {/* 5. SEO & PUBLISH */}
+                      <div className="space-y-6">
+                        <h4 className="text-sm font-black font-display uppercase tracking-widest text-brand-accent border-b border-white/10 pb-2">
+                          5. SEO & Settings
+                        </h4>
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs uppercase tracking-wider font-bold text-white/50">
+                            SEO Meta Title
+                          </label>
+                          <input
+                            type="text"
+                            value={formSeoTitle}
+                            onChange={(e) => setFormSeoTitle(e.target.value)}
+                            placeholder="e.g. Expert Generative Engine Optimization Services"
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-accent"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs uppercase tracking-wider font-bold text-white/50">
+                            SEO Meta Description
+                          </label>
+                          <textarea
+                            rows={2}
+                            value={formSeoDesc}
+                            onChange={(e) => setFormSeoDesc(e.target.value)}
+                            placeholder="Compelling meta description for search snippets..."
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand-accent resize-none"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <label className="text-xs uppercase tracking-wider font-bold text-white/50">
+                            Structured Data / Script (JSON-LD)
+                          </label>
+                          <textarea
+                            rows={3}
+                            value={formScript}
+                            onChange={(e) => setFormScript(e.target.value)}
+                            placeholder='{"@context": "https://schema.org", "@type": "Service", ...}'
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs font-mono focus:outline-none focus:border-brand-accent resize-y"
+                          />
+                        </div>
+                        <div className="flex items-center justify-between bg-white/5 border border-white/10 rounded-xl p-4">
+                          <div>
+                            <p className="text-sm font-bold text-white">Publish Status</p>
+                            <p className="text-xs text-white/40 mt-0.5">
+                              {formIsActive ? "Live to public" : "Saved as draft"}
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setFormIsActive(!formIsActive)}
+                            className={`relative w-12 h-7 rounded-full transition-colors focus:outline-none cursor-pointer ${formIsActive ? "bg-brand-accent" : "bg-white/10"
+                              }`}
+                          >
+                            <span
+                              className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-white transition-transform ${formIsActive ? "translate-x-5" : "translate-x-0"
+                                }`}
+                            />
+                          </button>
+                        </div>
+                      </div>
+                    </>
                 )}
 
-                {/* Hidden submit trigger */}
-                <button type="submit" className="hidden" id="subservice-form-submit-trigger" />
-              </form>
+                    {/* Hidden submit trigger */}
+                    <button type="submit" className="hidden" id="subservice-form-submit-trigger" />
+                  </form>
 
-              {/* Drawer Footer Actions */}
-              <div className="p-6 border-t border-white/10 flex gap-4 shrink-0 bg-[#0d0d0d]">
-                <button
-                  type="button"
-                  onClick={() =>
-                    document.getElementById("subservice-form-submit-trigger")?.click()
-                  }
-                  className="flex-1 py-4 rounded-xl bg-brand-accent text-slate-900 font-display text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-all shadow-xl cursor-pointer"
-                >
-                  {editingItem ? "Save Changes" : "Publish Sub Service"}
-                </button>
-                <button
-                  type="button"
-                  onClick={closeDrawer}
-                  className="flex-1 py-4 rounded-xl border border-white/10 text-white/60 font-display text-xs uppercase font-extrabold tracking-wider hover:border-white/30 hover:text-white transition-all cursor-pointer"
-                >
-                  Cancel
-                </button>
-              </div>
+                {/* Drawer Footer Actions */}
+                <div className="p-6 border-t border-white/10 flex gap-4 shrink-0 bg-[#0d0d0d]">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("subservice-form-submit-trigger")?.click()
+                    }
+                    className="flex-1 py-4 rounded-xl bg-brand-accent text-slate-900 font-display text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-all shadow-xl cursor-pointer"
+                  >
+                    {editingItem ? "Save Changes" : "Publish Sub Service"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={closeDrawer}
+                    className="flex-1 py-4 rounded-xl border border-white/10 text-white/60 font-display text-xs uppercase font-extrabold tracking-wider hover:border-white/30 hover:text-white transition-all cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
             </motion.div>
           </div>
         )}

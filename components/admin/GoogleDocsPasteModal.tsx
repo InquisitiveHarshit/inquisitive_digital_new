@@ -93,6 +93,12 @@ const HTML_RULES = [
     note: null,
   },
   {
+    tag: "Parent Service:- ...",
+    mapsTo: "Parent Service (for Sub-Services)",
+    example: "<p>Parent Service:- seo-services</p>",
+    note: "Matches parent service slug or name (e.g. data-engineering, seo-services).",
+  },
+  {
     tag: "Author:- ...",
     mapsTo: "Author",
     example: "<p>Author:- JK Chauffeurs Team</p>",

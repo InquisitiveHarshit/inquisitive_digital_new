@@ -5,7 +5,8 @@ import SubServiceDetailClient from "./SubServiceDetailClient";
 import connectDB from "@/lib/mongodb";
 import SubService from "@/lib/models/SubService";
 
-export const revalidate = 3600; // Revalidate every hour
+export const dynamic = "force-dynamic";
+export const revalidate = 0; // Fresh DB data on every request
 
 export async function generateMetadata({
   params,
@@ -20,7 +21,7 @@ export async function generateMetadata({
     const item = await SubService.findOne({ slug, isActive: true }).lean();
     if (item) {
       return {
-        title: (item as any).seoTitle || `${(item as any).title} | Inquisitive Digital`,
+        title: (item as any).seoTitle || `${(item as any).title}`,
         description: (item as any).seoDescription || (item as any).excerpt || (item as any).intro || "",
         openGraph: {
           title: (item as any).seoTitle || (item as any).title,
@@ -34,7 +35,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: "Sub Service | Inquisitive Digital",
+    title: "Sub Service",
     description: "Specialized digital services and solutions by Inquisitive Digital.",
   };
 }

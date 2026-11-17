@@ -22,7 +22,7 @@ export async function GET(request) {
             $set: {
               ...rest,
               slug: "data-engineering",
-              title: "Data Engineering Services",
+              title: "Data Engineering Services ",
               category: "Data & AI",
               shortDescription: shortDesc,
               description: detailedDesc,

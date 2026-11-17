@@ -21,7 +21,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
       const metaDescription = (service as any).metaDescription;
       const shortDescription = (service as any).shortDescription;
 
-      const t = metaTitle || `${title} | Inquisitive Digital`;
+      const t = metaTitle || `${title}`;
       const d = metaDescription || shortDescription;
       const canonicalUrl = `https://www.inquisitivedigital.com/services/${serviceId}`;
 
@@ -38,7 +38,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   }
 
   if (serviceId === "data-engineering") {
-    const t = "Data Engineering Services | Inquisitive Digital";
+    const t = "Data Engineering Services in noida ";
     const d = "We design reliable pipelines, cut cloud processing costs, migrate legacy platforms safely and keep your data trustworthy.";
     const canonicalUrl = `https://www.inquisitivedigital.com/services/${serviceId}`;
     return {
