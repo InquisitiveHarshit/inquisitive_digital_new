@@ -24,6 +24,7 @@ import {
   Code2,
   UploadCloud,
   Image as ImageIcon,
+  Tag,
 } from "lucide-react";
 import GoogleDocsPasteModal from "@/components/admin/GoogleDocsPasteModal";
 import { parseGoogleDocsHtml } from "@/lib/utils/htmlParser";
@@ -1155,8 +1156,8 @@ export default function LocationsAdmin() {
                         </div>
                       </div>
 
-                      {/* Collapsible SEO Metadata */}
-                      <div className="border-t border-white/5 pt-3">
+                      {/* SEO & Meta Tags Configuration Card */}
+                      <div className="bg-[#181818] border border-white/10 rounded-xl overflow-hidden">
                         <button
                           type="button"
                           onClick={() => {
@@ -1165,41 +1166,101 @@ export default function LocationsAdmin() {
                               [cIdx]: !prev[cIdx],
                             }));
                           }}
-                          className="inline-flex items-center gap-2 text-xs text-brand-accent hover:underline font-bold"
+                          className="w-full flex items-center justify-between p-4 text-left hover:bg-white/[0.02] transition-colors"
                         >
-                          <ChevronDown
-                            className={`w-3.5 h-3.5 transition-transform ${isSeoOpen ? "rotate-180" : ""
-                              }`}
-                          />
-                          <span>
-                            {isSeoOpen
-                              ? "Hide SEO & Meta Tags"
-                              : "Edit SEO & Meta Tags for this Country Hub"}
-                          </span>
+                          <div className="flex items-center gap-2.5">
+                            <Tag className="w-4 h-4 text-brand-accent shrink-0" />
+                            <div>
+                              <p className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                                <span>Country Hub SEO & Meta Tags</span>
+                                {(country.seoTitle || country.seoDescription || (country as any).seoKeywords) ? (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-mono normal-case">
+                                    Customized
+                                  </span>
+                                ) : (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-white/50 font-mono normal-case">
+                                    Auto-generated defaults
+                                  </span>
+                                )}
+                              </p>
+                              <p className="text-[10px] text-white/40">
+                                Configure page title, meta description, meta keywords & canonical URL for search engines
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[11px] font-bold text-brand-accent">
+                              {isSeoOpen ? "Hide" : "Manage"}
+                            </span>
+                            <ChevronDown
+                              className={`w-4 h-4 text-brand-accent transition-transform duration-200 ${isSeoOpen ? "rotate-180" : ""
+                                }`}
+                            />
+                          </div>
                         </button>
 
                         {isSeoOpen && (
-                          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
-                            <div>
-                              <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
-                                SEO Meta Title
-                              </label>
-                              <input
-                                type="text"
-                                value={country.seoTitle || ""}
-                                onChange={(e) => {
-                                  const updated = [...countryList];
-                                  updated[cIdx].seoTitle = e.target.value;
-                                  setCountryList(updated);
-                                }}
-                                placeholder={`${country.headline || `${selectedCountryManageService?.title || "SEO"} in ${country.name || "Country"}`} | Regional Search Optimization`}
-                                className="w-full mt-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-accent"
-                              />
+                          <div className="p-5 border-t border-white/5 space-y-4 bg-black/30">
+                            {/* Inputs Grid */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div>
+                                <div className="flex items-center justify-between mb-1">
+                                  <label className="text-[10px] font-bold uppercase tracking-widest text-white/60">
+                                    Meta Title
+                                  </label>
+                                  <span className={`text-[10px] font-mono ${(country.seoTitle?.length || 0) > 60 ? "text-amber-400" : "text-white/40"}`}>
+                                    {country.seoTitle?.length || 0}/60 chars
+                                  </span>
+                                </div>
+                                <input
+                                  type="text"
+                                  value={country.seoTitle || ""}
+                                  onChange={(e) => {
+                                    const updated = [...countryList];
+                                    updated[cIdx].seoTitle = e.target.value;
+                                    setCountryList(updated);
+                                  }}
+                                  placeholder={`${country.headline || `${selectedCountryManageService?.title || "SEO"} in ${country.name || "Country"}`} `}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand-accent"
+                                />
+                                <p className="text-[10px] text-white/30 mt-1">
+                                  Appears as the clickable headline in Google search results
+                                </p>
+                              </div>
+
+                              <div>
+                                <div className="flex items-center justify-between mb-1">
+                                  <label className="text-[10px] font-bold uppercase tracking-widest text-white/60">
+                                    Meta Keywords / Tags
+                                  </label>
+                                  <span className="text-[10px] text-white/40">Comma separated</span>
+                                </div>
+                                <input
+                                  type="text"
+                                  value={(country as any).seoKeywords || ""}
+                                  onChange={(e) => {
+                                    const updated = [...countryList];
+                                    (updated[cIdx] as any).seoKeywords = e.target.value;
+                                    setCountryList(updated);
+                                  }}
+                                  placeholder={`seo services in ${country.name || "country"}, ${selectedCountryManageService?.title || "marketing"} agency`}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand-accent"
+                                />
+                                <p className="text-[10px] text-white/30 mt-1">
+                                  Target keywords for search engine indexing
+                                </p>
+                              </div>
                             </div>
+
                             <div>
-                              <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
-                                SEO Meta Description
-                              </label>
+                              <div className="flex items-center justify-between mb-1">
+                                <label className="text-[10px] font-bold uppercase tracking-widest text-white/60">
+                                  Meta Description
+                                </label>
+                                <span className={`text-[10px] font-mono ${(country.seoDescription?.length || 0) > 160 ? "text-amber-400" : "text-white/40"}`}>
+                                  {country.seoDescription?.length || 0}/160 chars
+                                </span>
+                              </div>
                               <textarea
                                 rows={2}
                                 value={country.seoDescription || ""}
@@ -1208,9 +1269,43 @@ export default function LocationsAdmin() {
                                   updated[cIdx].seoDescription = e.target.value;
                                   setCountryList(updated);
                                 }}
-                                placeholder="Discover top-tier search marketing across..."
-                                className="w-full mt-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-accent resize-none"
+                                placeholder={`Discover top-tier ${selectedCountryManageService?.title || "search marketing"} across ${country.name || "the country"}. Explore customized regional growth campaigns for top markets.`}
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand-accent resize-none leading-relaxed"
                               />
+                            </div>
+
+                            <div>
+                              <label className="text-[10px] font-bold uppercase tracking-widest text-white/60">
+                                Canonical URL (Optional Override)
+                              </label>
+                              <input
+                                type="text"
+                                value={(country as any).canonicalUrl || ""}
+                                onChange={(e) => {
+                                  const updated = [...countryList];
+                                  (updated[cIdx] as any).canonicalUrl = e.target.value;
+                                  setCountryList(updated);
+                                }}
+                                placeholder={`https://www.inquisitivedigital.com/services/${selectedCountryManageService?.slug || "service"}/${country.slug || "country"}`}
+                                className="w-full mt-1 bg-white/5 border border-white/10 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-brand-accent font-mono"
+                              />
+                            </div>
+
+                            {/* Google SERP Live Snippet Preview */}
+                            <div className="mt-2 p-4 rounded-xl bg-[#202124] border border-white/10 space-y-1">
+                              <p className="text-[10px] font-mono text-white/40 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                <Search className="w-3 h-3 text-brand-accent" />
+                                <span>Google Search Snippet Preview</span>
+                              </p>
+                              <p className="text-xs text-white/60 truncate font-mono">
+                                https://www.inquisitivedigital.com &rsaquo; services &rsaquo; {selectedCountryManageService?.slug || "service"} &rsaquo; {country.slug || "country"}
+                              </p>
+                              <p className="text-sm font-semibold text-[#8ab4f8] hover:underline cursor-pointer truncate">
+                                {country.seoTitle || `${country.headline || `${selectedCountryManageService?.title || "SEO"} in ${country.name || "Country"}`} `}
+                              </p>
+                              <p className="text-xs text-[#bdc1c6] line-clamp-2 leading-relaxed">
+                                {country.seoDescription || country.description || `Discover top-tier ${selectedCountryManageService?.title || "marketing"} across ${country.name || "the region"}.`}
+                              </p>
                             </div>
                           </div>
                         )}
@@ -1913,21 +2008,21 @@ export default function LocationsAdmin() {
                       </div>
                     )}
 
-                      <p className="text-xs text-white/70 leading-relaxed font-body line-clamp-3">
-                        {formDescription || "No description entered yet. Describe your local service strategy..."}
-                      </p>
+                    <p className="text-xs text-white/70 leading-relaxed font-body line-clamp-3">
+                      {formDescription || "No description entered yet. Describe your local service strategy..."}
+                    </p>
 
-                      <div className="flex flex-wrap gap-2 pt-2">
-                        <span className="px-2.5 py-1 rounded-lg bg-brand-accent/10 border border-brand-accent/20 text-brand-accent text-[11px] font-bold">
-                          {formSections.length} Editorial Content Sections
-                        </span>
-                        <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-white/60 text-[11px] font-mono">
-                          {formFaqs.length} Custom FAQs
-                        </span>
-                        <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-white/60 text-[11px] font-mono">
-                          {formPopularServices.length} Capability Tags
-                        </span>
-                      </div>
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      <span className="px-2.5 py-1 rounded-lg bg-brand-accent/10 border border-brand-accent/20 text-brand-accent text-[11px] font-bold">
+                        {formSections.length} Editorial Content Sections
+                      </span>
+                      <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-white/60 text-[11px] font-mono">
+                        {formFaqs.length} Custom FAQs
+                      </span>
+                      <span className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-white/60 text-[11px] font-mono">
+                        {formPopularServices.length} Capability Tags
+                      </span>
+                    </div>
                   </div>
                 </div>
 

@@ -257,7 +257,7 @@ export default function CountryHubClient({
                         </div>
 
                         {/* City Title */}
-                        <h3 className="font-display text-xl sm:text-2xl font-extrabold text-on-surface group-hover:text-brand-accent transition-colors mb-2.5">
+                        <h3 className="font-display text-xl sm:text-2xl font-extrabold text-brand-accent mb-2.5">
                           {city.name}
                         </h3>
 

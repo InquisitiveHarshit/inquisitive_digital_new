@@ -61,17 +61,24 @@ export async function generateMetadata({
 
   const pageTitle =
     country.seoTitle ||
-    `${country.headline || `${serviceTitle} in ${country.name}`} | Regional Search Optimization`;
+    `${country.headline || `${serviceTitle} in ${country.name}`} `;
   const pageDescription =
     country.seoDescription ||
     (country.description
       ? country.description
       : `Discover top-tier ${serviceTitle} across ${country.name}. Explore customized organic search campaigns for leading cities including ${country.cities.map((c) => c.name).slice(0, 3).join(", ")}.`);
-  const canonicalUrl = `https://www.inquisitivedigital.com/services/${serviceId}/${country.slug}`;
+  const canonicalUrl =
+    country.canonicalUrl ||
+    `https://www.inquisitivedigital.com/services/${serviceId}/${country.slug}`;
+
+  const keywords = country.seoKeywords
+    ? country.seoKeywords.split(",").map((k) => k.trim()).filter(Boolean)
+    : undefined;
 
   return {
     title: pageTitle,
     description: pageDescription,
+    keywords,
     alternates: {
       canonical: canonicalUrl,
     },

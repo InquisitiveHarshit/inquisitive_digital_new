@@ -28,6 +28,8 @@ export interface LocationCountryData {
   highlights?: string[];
   seoTitle?: string;
   seoDescription?: string;
+  seoKeywords?: string;
+  canonicalUrl?: string;
   cities: LocationCityData[];
 }
 

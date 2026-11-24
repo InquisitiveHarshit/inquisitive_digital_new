@@ -230,13 +230,12 @@ export default function CityPageClient({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="lg:col-span-2 min-w-0"
+              className="lg:col-span-2 min-w-0 city-content"
             >
               {/* Featured City Visual (Custom Cloudinary Image) */}
               <div
-                className={`w-full mb-10 rounded-2xl overflow-hidden shadow-2xl h-[280px] sm:h-[360px] md:h-[420px] relative border ${
-                  isLight ? "border-slate-200" : "border-white/10"
-                }`}
+                className={`w-full mb-10 rounded-2xl overflow-hidden shadow-2xl h-[280px] sm:h-[360px] md:h-[420px] relative border ${isLight ? "border-slate-200" : "border-white/10"
+                  }`}
               >
                 <img
                   src={
@@ -259,45 +258,45 @@ export default function CityPageClient({
 
 
 
-                  {/* ── Dynamic Content Sections OR Default Playbook ───── */}
-                  {city.sections && city.sections.length > 0 ? (
-                    <div className="space-y-12 mb-12">
-                      {city.sections.map((section: any, idx: number) => (
-                        <div key={idx} className="space-y-4">
-                          {section.heading && (
-                            <h2 className="text-brand-accent text-2xl sm:text-3xl font-display font-black uppercase tracking-tight">
-                              {section.heading}
-                            </h2>
-                          )}
-                          {section.subheading && (
-                            <h3 className={`text-lg sm:text-xl font-display font-bold ${isLight ? "text-slate-800" : "text-white"}`}>
-                              {section.subheading}
-                            </h3>
-                          )}
-                          {section.text && (
-                            <div
-                              className={`font-body text-sm sm:text-base leading-relaxed space-y-4 prose max-w-none ${isLight
-                                  ? "text-slate-700 prose-p:text-slate-700 prose-headings:text-slate-900"
-                                  : "text-slate-300 prose-p:text-slate-300 prose-headings:text-white"
-                                } prose-a:text-brand-accent prose-a:underline prose-strong:text-white prose-ul:list-disc prose-ul:pl-6 prose-ol:list-decimal prose-ol:pl-6`}
-                              dangerouslySetInnerHTML={{
-                                __html: section.text.includes("<")
-                                  ? section.text
-                                  : section.text.split("\n").filter((l: string) => l.trim()).map((l: string) => `<p>${l}</p>`).join("")
-                              }}
-                            />
-                          )}
-                          {section.listItems && section.listItems.length > 0 && !(section.text && (section.text.includes("<ul>") || section.text.includes("<ol>"))) && (
-                            <ul className="list-disc pl-6 space-y-2 marker:text-brand-accent ml-4 my-4 font-body text-sm sm:text-base">
-                              {section.listItems.map((item: string, i: number) => (
-                                <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
-                              ))}
-                            </ul>
-                          )}
-                        </div>
-                      ))}
+              {/* ── Dynamic Content Sections OR Default Playbook ───── */}
+              {city.sections && city.sections.length > 0 ? (
+                <div className="space-y-12 mb-12">
+                  {city.sections.map((section: any, idx: number) => (
+                    <div key={idx} className="space-y-4">
+                      {section.heading && (
+                        <h2 className="text-brand-accent text-2xl sm:text-3xl font-display font-black uppercase tracking-tight">
+                          {section.heading}
+                        </h2>
+                      )}
+                      {section.subheading && (
+                        <h3 className={`text-lg sm:text-xl font-display font-bold uppercase tracking-wide ${isLight ? "text-slate-900" : "text-white"}`}>
+                          {section.subheading}
+                        </h3>
+                      )}
+                      {section.text && (
+                        <div
+                          className={`font-body text-sm sm:text-base leading-relaxed space-y-4 city-content max-w-none ${isLight
+                            ? "text-slate-700 [&_h3]:!text-slate-900"
+                            : "text-slate-300 [&_h3]:!text-white"
+                            } [&_h3]:!font-bold [&_h3]:font-display [&_h3]:!text-xl sm:[&_h3]:!text-2xl [&_h3]:mt-6 [&_h3]:mb-3 [&_h2]:!text-brand-accent [&_h2]:!font-black [&_h2]:font-display [&_a]:text-brand-accent [&_a]:underline [&_strong]:text-white [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6`}
+                          dangerouslySetInnerHTML={{
+                            __html: section.text.includes("<")
+                              ? section.text
+                              : section.text.split("\n").filter((l: string) => l.trim()).map((l: string) => `<p>${l}</p>`).join("")
+                          }}
+                        />
+                      )}
+                      {section.listItems && section.listItems.length > 0 && !(section.text && (section.text.includes("<ul>") || section.text.includes("<ol>"))) && (
+                        <ul className="list-disc pl-6 space-y-2 marker:text-brand-accent ml-4 my-4 font-body text-sm sm:text-base">
+                          {section.listItems.map((item: string, i: number) => (
+                            <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
+                          ))}
+                        </ul>
+                      )}
                     </div>
-                ) : (
+                  ))}
+                </div>
+              ) : (
                 <>
                   {/* ── Section 1 ────────────────────────────────────────── */}
                   <div className="mb-12">
@@ -330,8 +329,7 @@ export default function CityPageClient({
                       <span>Pro Tip for {city.name} Brands</span>
                     </div>
                     <h3
-                      className={`text-lg sm:text-xl font-display font-black uppercase mb-3 ${isLight ? "text-slate-900" : "text-white"
-                        }`}
+                      className={`text-lg sm:text-xl font-display font-black uppercase mb-3 ${isLight ? "text-slate-900" : "text-white"}`}
                     >
                       Never run duplicate content across sister cities
                     </h3>
@@ -352,185 +350,185 @@ export default function CityPageClient({
                 </>
               )}
 
-                {/* ── Section 4: Local FAQs Accordion ───────────────────── */}
-                <div className="mb-12">
-                  <h2 className="text-brand-accent text-2xl sm:text-3xl font-display font-black uppercase mb-6 tracking-tight">
-                    Frequently Asked Questions
-                  </h2>
+              {/* ── Section 4: Local FAQs Accordion ───────────────────── */}
+              <div className="mb-12">
+                <h2 className="text-brand-accent text-2xl sm:text-3xl font-display font-black uppercase mb-6 tracking-tight">
+                  Frequently Asked Questions
+                </h2>
 
-                  <div className="space-y-3">
-                    {localFaqs.map((faq, idx) => {
-                      const isOpen = openFaqIndex === idx;
-                      return (
-                        <div
-                          key={idx}
-                          className={`border rounded-xl overflow-hidden ${isLight
-                            ? "bg-slate-50 border-slate-200"
-                            : "bg-[#181818] border-white/10"
-                            }`}
-                        >
-                          <button
-                            onClick={() => toggleFaq(idx)}
-                            className="w-full flex items-center justify-between p-5 text-left font-display font-bold text-sm text-on-surface hover:text-brand-accent transition-colors"
-                          >
-                            <span className={isLight ? "text-slate-900" : "text-white"}>
-                              {faq.q}
-                            </span>
-                            <ChevronDown
-                              className={`w-4 h-4 text-brand-accent transition-transform duration-200 flex-shrink-0 ml-3 ${isOpen ? "rotate-180" : ""
-                                }`}
-                            />
-                          </button>
-                          <AnimatePresence>
-                            {isOpen && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.2 }}
-                                className="overflow-hidden"
-                              >
-                                <div
-                                  className={`px-5 pb-5 text-xs sm:text-sm leading-relaxed ${isLight ? "text-slate-600" : "text-slate-300"
-                                    }`}
-                                >
-                                  {faq.a}
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* ── Section 5: Interactive Audit Form ─────────────────── */}
-                <div id="audit-form" className="mt-14 scroll-mt-36">
-                  <div
-                    className={`p-6 sm:p-8 rounded-2xl border ${isLight
-                      ? "bg-slate-50 border-slate-200 shadow-lg"
-                      : "bg-[#181818] border-white/10 shadow-2xl"
-                      }`}
-                  >
-                    <div className="mb-6">
-                      <span className="text-xs font-bold uppercase tracking-widest text-brand-accent block mb-2">
-                        Ready to Scale in {city.name}?
-                      </span>
-                      <h3
-                        className={`text-xl sm:text-2xl font-display font-black uppercase ${isLight ? "text-slate-900" : "text-white"
+                <div className="space-y-3">
+                  {localFaqs.map((faq, idx) => {
+                    const isOpen = openFaqIndex === idx;
+                    return (
+                      <div
+                        key={idx}
+                        className={`border rounded-xl overflow-hidden ${isLight
+                          ? "bg-slate-50 border-slate-200"
+                          : "bg-[#181818] border-white/10"
                           }`}
                       >
-                        Get Your Free {city.name} Search Audit
-                      </h3>
-                      <p className="text-xs sm:text-sm text-on-surface-variant mt-1.5">
-                        We&apos;ll analyze your organic rankings, competitor gaps, and Google Map Pack visibility across {city.name}.
+                        <button
+                          onClick={() => toggleFaq(idx)}
+                          className="w-full flex items-center justify-between p-5 text-left font-display font-bold text-sm text-on-surface hover:text-brand-accent transition-colors"
+                        >
+                          <span className={isLight ? "text-slate-900" : "text-white"}>
+                            {faq.q}
+                          </span>
+                          <ChevronDown
+                            className={`w-4 h-4 text-brand-accent transition-transform duration-200 flex-shrink-0 ml-3 ${isOpen ? "rotate-180" : ""
+                              }`}
+                          />
+                        </button>
+                        <AnimatePresence>
+                          {isOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden"
+                            >
+                              <div
+                                className={`px-5 pb-5 text-xs sm:text-sm leading-relaxed ${isLight ? "text-slate-600" : "text-slate-300"
+                                  }`}
+                              >
+                                {faq.a}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* ── Section 5: Interactive Audit Form ─────────────────── */}
+              <div id="audit-form" className="mt-14 scroll-mt-36">
+                <div
+                  className={`p-6 sm:p-8 rounded-2xl border ${isLight
+                    ? "bg-slate-50 border-slate-200 shadow-lg"
+                    : "bg-[#181818] border-white/10 shadow-2xl"
+                    }`}
+                >
+                  <div className="mb-6">
+                    <span className="text-xs font-bold uppercase tracking-widest text-brand-accent block mb-2">
+                      Ready to Scale in {city.name}?
+                    </span>
+                    <h3
+                      className={`text-xl sm:text-2xl font-display font-black uppercase ${isLight ? "text-slate-900" : "text-white"
+                        }`}
+                    >
+                      Get Your Free {city.name} Search Audit
+                    </h3>
+                    <p className="text-xs sm:text-sm text-on-surface-variant mt-1.5">
+                      We&apos;ll analyze your organic rankings, competitor gaps, and Google Map Pack visibility across {city.name}.
+                    </p>
+                  </div>
+
+                  {formSubmitted ? (
+                    <div className="p-8 rounded-xl bg-brand-accent/10 border border-brand-accent/30 text-center">
+                      <CheckCircle2 className="w-10 h-10 text-brand-accent mx-auto mb-3" />
+                      <h4 className="font-display text-lg font-bold text-on-surface mb-1">
+                        Audit Request Submitted!
+                      </h4>
+                      <p className="text-xs text-on-surface-variant">
+                        Our regional search strategist for {city.name} will prepare your comprehensive report within 24 hours.
                       </p>
                     </div>
-
-                    {formSubmitted ? (
-                      <div className="p-8 rounded-xl bg-brand-accent/10 border border-brand-accent/30 text-center">
-                        <CheckCircle2 className="w-10 h-10 text-brand-accent mx-auto mb-3" />
-                        <h4 className="font-display text-lg font-bold text-on-surface mb-1">
-                          Audit Request Submitted!
-                        </h4>
-                        <p className="text-xs text-on-surface-variant">
-                          Our regional search strategist for {city.name} will prepare your comprehensive report within 24 hours.
-                        </p>
-                      </div>
-                    ) : (
-                      <form onSubmit={handleFormSubmit} className="space-y-4">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-[11px] font-display font-bold uppercase tracking-wider text-on-surface-variant mb-1">
-                              Your Name *
-                            </label>
-                            <input
-                              required
-                              type="text"
-                              name="fullName"
-                              value={formData.fullName}
-                              onChange={handleInputChange}
-                              placeholder="John Doe"
-                              className="w-full px-4 py-2.5 rounded-lg bg-background border border-outline-variant text-xs sm:text-sm text-on-surface focus:outline-none focus:border-brand-accent"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-[11px] font-display font-bold uppercase tracking-wider text-on-surface-variant mb-1">
-                              Work Email *
-                            </label>
-                            <input
-                              required
-                              type="email"
-                              name="email"
-                              value={formData.email}
-                              onChange={handleInputChange}
-                              placeholder="john@company.com"
-                              className="w-full px-4 py-2.5 rounded-lg bg-background border border-outline-variant text-xs sm:text-sm text-on-surface focus:outline-none focus:border-brand-accent"
-                            />
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-[11px] font-display font-bold uppercase tracking-wider text-on-surface-variant mb-1">
-                              Phone
-                            </label>
-                            <input
-                              type="tel"
-                              name="phone"
-                              value={formData.phone}
-                              onChange={handleInputChange}
-                              placeholder="+1 (555) 000-0000"
-                              className="w-full px-4 py-2.5 rounded-lg bg-background border border-outline-variant text-xs sm:text-sm text-on-surface focus:outline-none focus:border-brand-accent"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-[11px] font-display font-bold uppercase tracking-wider text-on-surface-variant mb-1">
-                              Website URL *
-                            </label>
-                            <input
-                              required
-                              type="url"
-                              name="website"
-                              value={formData.website}
-                              onChange={handleInputChange}
-                              placeholder="https://yourbrand.com"
-                              className="w-full px-4 py-2.5 rounded-lg bg-background border border-outline-variant text-xs sm:text-sm text-on-surface focus:outline-none focus:border-brand-accent"
-                            />
-                          </div>
-                        </div>
-
+                  ) : (
+                    <form onSubmit={handleFormSubmit} className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-[11px] font-display font-bold uppercase tracking-wider text-on-surface-variant mb-1">
-                            Primary Goal in {city.name}
+                            Your Name *
                           </label>
-                          <textarea
-                            rows={3}
-                            name="message"
-                            value={formData.message}
+                          <input
+                            required
+                            type="text"
+                            name="fullName"
+                            value={formData.fullName}
                             onChange={handleInputChange}
-                            placeholder={`Target keywords, local competitors, or issues in ${city.name}...`}
-                            className="w-full px-4 py-2.5 rounded-lg bg-background border border-outline-variant text-xs sm:text-sm text-on-surface focus:outline-none focus:border-brand-accent resize-none"
+                            placeholder="John Doe"
+                            className="w-full px-4 py-2.5 rounded-lg bg-background border border-outline-variant text-xs sm:text-sm text-on-surface focus:outline-none focus:border-brand-accent"
                           />
                         </div>
+                        <div>
+                          <label className="block text-[11px] font-display font-bold uppercase tracking-wider text-on-surface-variant mb-1">
+                            Work Email *
+                          </label>
+                          <input
+                            required
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            placeholder="john@company.com"
+                            className="w-full px-4 py-2.5 rounded-lg bg-background border border-outline-variant text-xs sm:text-sm text-on-surface focus:outline-none focus:border-brand-accent"
+                          />
+                        </div>
+                      </div>
 
-                        <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="w-full py-3.5 rounded-lg bg-brand-accent text-slate-900 font-display font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity disabled:opacity-50"
-                          style={{
-                            boxShadow: isLight
-                              ? "4px 4px 0px 0px #000"
-                              : "4px 4px 0px 0px #f5c200",
-                          }}
-                        >
-                          {isSubmitting ? "Generating Audit Request..." : `Claim Free ${city.name} Audit`}
-                        </button>
-                      </form>
-                    )}
-                  </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-[11px] font-display font-bold uppercase tracking-wider text-on-surface-variant mb-1">
+                            Phone
+                          </label>
+                          <input
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                            placeholder="+1 (555) 000-0000"
+                            className="w-full px-4 py-2.5 rounded-lg bg-background border border-outline-variant text-xs sm:text-sm text-on-surface focus:outline-none focus:border-brand-accent"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] font-display font-bold uppercase tracking-wider text-on-surface-variant mb-1">
+                            Website URL *
+                          </label>
+                          <input
+                            required
+                            type="url"
+                            name="website"
+                            value={formData.website}
+                            onChange={handleInputChange}
+                            placeholder="https://yourbrand.com"
+                            className="w-full px-4 py-2.5 rounded-lg bg-background border border-outline-variant text-xs sm:text-sm text-on-surface focus:outline-none focus:border-brand-accent"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-display font-bold uppercase tracking-wider text-on-surface-variant mb-1">
+                          Primary Goal in {city.name}
+                        </label>
+                        <textarea
+                          rows={3}
+                          name="message"
+                          value={formData.message}
+                          onChange={handleInputChange}
+                          placeholder={`Target keywords, local competitors, or issues in ${city.name}...`}
+                          className="w-full px-4 py-2.5 rounded-lg bg-background border border-outline-variant text-xs sm:text-sm text-on-surface focus:outline-none focus:border-brand-accent resize-none"
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full py-3.5 rounded-lg bg-brand-accent text-slate-900 font-display font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity disabled:opacity-50"
+                        style={{
+                          boxShadow: isLight
+                            ? "4px 4px 0px 0px #000"
+                            : "4px 4px 0px 0px #f5c200",
+                        }}
+                      >
+                        {isSubmitting ? "Generating Audit Request..." : `Claim Free ${city.name} Audit`}
+                      </button>
+                    </form>
+                  )}
                 </div>
+              </div>
             </motion.div>
 
             {/* ═══════════ EDITORIAL SIDEBAR (1/3) ═══════════ */}
@@ -547,8 +545,7 @@ export default function CityPageClient({
                 </div>
 
                 <h3
-                  className={`text-xl font-display font-bold uppercase ${isLight ? "text-slate-900" : "text-white"
-                    }`}
+                  className="text-xl font-display font-bold uppercase text-brand-accent"
                 >
                   Scale Your {city.name} Organic Share
                 </h3>
@@ -631,8 +628,7 @@ export default function CityPageClient({
                   <div className="flex items-center gap-2.5 mb-4">
                     <div className="w-1.5 h-5 rounded-full bg-brand-accent" />
                     <h3
-                      className={`text-base font-display font-bold uppercase tracking-tight ${isLight ? "text-slate-900" : "text-white"
-                        }`}
+                      className="text-base font-display font-bold uppercase tracking-tight text-brand-accent"
                     >
                       Other {country.name} Cities
                     </h3>

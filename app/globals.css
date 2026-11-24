@@ -177,3 +177,84 @@ body {
 .blog-content a:hover {
   opacity: 0.8 !important;
 }
+
+/* ─── City Page Content: Headings, Links, and Lists (Rich Text & Dynamic) ── */
+.city-content h3,
+.city-content h3 *,
+.city-page-content h3,
+[data-city-content] h3 {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-family: var(--font-display);
+  font-size: 1.25rem !important;
+  line-height: 1.4 !important;
+  margin-top: 1.75rem !important;
+  margin-bottom: 0.75rem !important;
+  letter-spacing: -0.01em !important;
+}
+
+[data-theme="singular-light"] .city-content h3,
+[data-theme="singular-light"] .city-content h3 *,
+[data-theme="singular-light"] .city-page-content h3,
+[data-theme="singular-light"] [data-city-content] h3 {
+  color: #0f172a !important;
+}
+
+.city-content h2,
+.city-content h2 *,
+.city-page-content h2,
+[data-city-content] h2 {
+  color: #f5c200 !important;
+  font-weight: 900 !important;
+  font-family: var(--font-display);
+  text-transform: uppercase !important;
+  font-size: 1.5rem !important;
+  margin-top: 2rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.city-content a,
+.city-content a * {
+  color: #f5c200 !important;
+  text-decoration: underline !important;
+  font-weight: 600 !important;
+}
+
+.city-content a:hover {
+  opacity: 0.8 !important;
+}
+
+/* ─── City Content: Bold, Italic & Underline (Google Docs / Rich Text) ───── */
+.city-content strong,
+.city-content b,
+.city-content h3 strong,
+.city-content h3 b {
+  font-weight: 700 !important;
+}
+
+.city-content span[style*="font-weight:700"],
+.city-content span[style*="font-weight: 700"],
+.city-content span[style*="font-weight:bold"],
+.city-content span[style*="font-weight: bold"],
+.city-content span[style*="font-weight:800"],
+.city-content span[style*="font-weight: 800"] {
+  font-weight: 700 !important;
+}
+
+.city-content span[style*="font-weight:600"],
+.city-content span[style*="font-weight: 600"] {
+  font-weight: 600 !important;
+}
+
+.city-content span[style*="font-style:italic"],
+.city-content span[style*="font-style: italic"],
+.city-content em {
+  font-style: italic !important;
+}
+
+.city-content span[style*="text-decoration:underline"],
+.city-content span[style*="text-decoration: underline"],
+.city-content u {
+  text-decoration: underline !important;
+}
+
