@@ -137,6 +137,17 @@ export const Footer: React.FC = () => {
               </div>
             </div>
 
+            {/* Address: Dehradun Office */}
+            <div className="flex gap-3">
+              <MapPin className="w-4 h-4 text-brand-accent shrink-0 mt-0.5" />
+              <div className={`font-body text-sm leading-relaxed ${isLight ? "text-slate-600" : "text-slate-400"}`}>
+                <span className="font-semibold text-xs uppercase tracking-wider block text-brand-accent mb-0.5">Dehradun Office</span>
+                Anand Arcade, 226, Canal Rd,<br />
+                near Rajpur Road, Kishanpur,<br />
+                Dehradun, Uttarakhand 248009
+              </div>
+            </div>
+
             {/* Phone */}
             <a
               href="tel:+917310777430"
@@ -144,28 +155,6 @@ export const Footer: React.FC = () => {
             >
               <Phone className="w-4 h-4 text-brand-accent shrink-0" />
               +91-7310-777-430
-            </a>
-
-            {/* Instagram */}
-            <a
-              href="https://www.instagram.com/inquisitivedigital"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`flex gap-3 items-center font-body text-sm transition-colors hover:text-brand-accent ${isLight ? "text-slate-600" : "text-slate-400"}`}
-            >
-              <InstagramIcon className="w-4 h-4 text-brand-accent shrink-0" />
-              @inquisitivedigital
-            </a>
-
-            {/* LinkedIn */}
-            <a
-              href="https://www.linkedin.com/company/inquisitive-digital/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`flex gap-3 items-center font-body text-sm transition-colors hover:text-brand-accent ${isLight ? "text-slate-600" : "text-slate-400"}`}
-            >
-              <LinkedinIcon className="w-4 h-4 text-brand-accent shrink-0" />
-              Inquisitive Digital
             </a>
 
           </div>

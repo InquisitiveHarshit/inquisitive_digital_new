@@ -107,6 +107,46 @@ export default async function CountryHubPage({
     notFound();
   }
 
+  // WebPage schema
+  const pageUrl =
+    country.canonicalUrl ||
+    `https://www.inquisitivedigital.com/services/${serviceId}/${country.slug}`;
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name:
+      country.seoTitle ||
+      country.headline ||
+      `${serviceTitle} in ${country.name}`,
+    description:
+      country.seoDescription ||
+      country.description ||
+      `Discover top-tier ${serviceTitle} across ${country.name}.`,
+    url: pageUrl,
+    publisher: {
+      "@type": "Organization",
+      name: "Inquisitive Digital",
+      url: "https://www.inquisitivedigital.com",
+    },
+  };
+
+  // FAQPage schema — only when country has FAQs
+  const faqSchema =
+    country.faqs && country.faqs.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: country.faqs.map((faq: any) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: faq.answer.replace(/<[^>]*>/g, ""),
+            },
+          })),
+        }
+      : null;
+
   // Breadcrumbs schema for SEO
   const breadcrumbsSchema = {
     "@context": "https://schema.org",
@@ -141,10 +181,23 @@ export default async function CountryHubPage({
 
   return (
     <>
+      {/* WebPage JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
+      {/* BreadcrumbList JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsSchema) }}
       />
+      {/* FAQPage JSON-LD — only rendered when the country has FAQs */}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       <CountryHubClient
         serviceSlug={serviceId}
         serviceTitle={serviceTitle}

@@ -521,6 +521,7 @@ export default function LocationsAdmin() {
           ctaDescription: c.ctaDescription || "",
           seoTitle: c.seoTitle || "",
           seoDescription: c.seoDescription || "",
+          faqs: c.faqs || [],
         }));
         setCountryList(normalized);
       }
@@ -1311,6 +1312,108 @@ export default function LocationsAdmin() {
                         )}
                       </div>
 
+                      {/* ── Country FAQ Editor ─────────────────────────────── */}
+                      <div className="bg-[#181818] border border-white/10 rounded-xl overflow-hidden">
+                        <div className="flex items-center justify-between p-4 border-b border-white/5">
+                          <div className="flex items-center gap-2.5">
+                            <TrendingUp className="w-4 h-4 text-brand-accent shrink-0" />
+                            <div>
+                              <p className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                                <span>Country FAQs</span>
+                                {(country.faqs as any)?.length > 0 && (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-mono normal-case">
+                                    {(country.faqs as any).length} FAQ{(country.faqs as any).length !== 1 ? "s" : ""} · FAQPage schema active
+                                  </span>
+                                )}
+                              </p>
+                              <p className="text-[10px] text-white/40">
+                                FAQs are injected as FAQPage JSON-LD schema automatically
+                              </p>
+                            </div>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = [...countryList];
+                              const faqs: any[] = updated[cIdx].faqs || [];
+                              updated[cIdx].faqs = [...faqs, { question: "", answer: "", tag: "FAQ" }];
+                              setCountryList(updated);
+                            }}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-accent/10 hover:bg-brand-accent hover:text-slate-900 text-brand-accent text-[11px] font-bold uppercase tracking-wider transition-all"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                            Add FAQ
+                          </button>
+                        </div>
+
+                        {((country.faqs as any)?.length || 0) === 0 ? (
+                          <div className="p-5 text-center text-white/30 text-xs">
+                            No FAQs yet. Click &ldquo;Add FAQ&rdquo; to add questions that will be injected as FAQPage schema.
+                          </div>
+                        ) : (
+                          <div className="p-4 space-y-3">
+                            {(country.faqs as any[]).map((faq: any, fIdx: number) => (
+                              <div
+                                key={fIdx}
+                                className="bg-black/40 border border-white/5 rounded-xl p-4 space-y-2.5"
+                              >
+                                <div className="flex items-center justify-between gap-2">
+                                  <span className="text-[10px] font-bold uppercase tracking-widest text-brand-accent">
+                                    FAQ {fIdx + 1}
+                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const updated = [...countryList];
+                                      updated[cIdx].faqs = (updated[cIdx].faqs as any[]).filter(
+                                        (_: any, i: number) => i !== fIdx
+                                      );
+                                      setCountryList(updated);
+                                    }}
+                                    className="p-1 rounded-lg text-red-400/50 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                                    title="Remove FAQ"
+                                  >
+                                    <X className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+                                <div>
+                                  <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
+                                    Question
+                                  </label>
+                                  <input
+                                    type="text"
+                                    value={faq.question || ""}
+                                    onChange={(e) => {
+                                      const updated = [...countryList];
+                                      (updated[cIdx].faqs as any[])[fIdx].question = e.target.value;
+                                      setCountryList(updated);
+                                    }}
+                                    placeholder="e.g. How long does SEO take in this country?"
+                                    className="w-full mt-1 bg-white/5 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-brand-accent"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-[10px] font-bold uppercase tracking-widest text-white/50">
+                                    Answer
+                                  </label>
+                                  <textarea
+                                    rows={2}
+                                    value={faq.answer || ""}
+                                    onChange={(e) => {
+                                      const updated = [...countryList];
+                                      (updated[cIdx].faqs as any[])[fIdx].answer = e.target.value;
+                                      setCountryList(updated);
+                                    }}
+                                    placeholder="Provide a clear, concise answer..."
+                                    className="w-full mt-1 bg-white/5 border border-white/10 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-brand-accent resize-none leading-relaxed"
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
                       {/* Live Preview Box (matches user screenshot with 2-column layout) */}
                       <div className="p-4 rounded-xl bg-black/50 border border-white/10 space-y-3">
                         <div className="flex items-center justify-between">
@@ -1389,6 +1492,7 @@ export default function LocationsAdmin() {
                         description: "",
                         ctaTitle: "",
                         ctaDescription: "",
+                        faqs: [],
                         cities: [],
                       },
                     ]);

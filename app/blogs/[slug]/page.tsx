@@ -6,6 +6,67 @@ import Blog from "@/lib/models/Blog";
 import { blogs as staticBlogs, getBlogBySlug } from "../data";
 import type { BlogPost } from "../data";
 
+/** Build Article JSON-LD schema for a blog post */
+function buildArticleSchema(blog: BlogPost) {
+  const url = `https://www.inquisitivedigital.com/blogs/${blog.slug}`;
+  const image =
+    blog.heroImage?.url || blog.heroImageUrl || blog.imageUrl || "";
+
+  // Parse a human-readable date string into ISO format for schema
+  const isoDate = (() => {
+    try {
+      return new Date(blog.date).toISOString();
+    } catch {
+      return new Date().toISOString();
+    }
+  })();
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: blog.title,
+    description: blog.excerpt || "",
+    url,
+    ...(image ? { image } : {}),
+    datePublished: isoDate,
+    dateModified: isoDate,
+    author: {
+      "@type": "Person",
+      name: blog.author || "Inquisitive Digital",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Inquisitive Digital",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://www.inquisitivedigital.com/logo_white_name.png",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": url,
+    },
+  };
+}
+
+/** Build FAQPage JSON-LD schema when FAQs exist */
+function buildFaqSchema(blog: BlogPost) {
+  if (!blog.faqs || blog.faqs.length === 0) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: blog.faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        // Strip HTML tags for clean schema text
+        text: faq.answer.replace(/<[^>]*>/g, ""),
+      },
+    })),
+  };
+}
+
 export const revalidate = 3600; // Revalidate every hour
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -79,5 +140,24 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
 
-  return <BlogDetailClient blog={JSON.parse(JSON.stringify(blog))} allBlogs={allBlogs} />;
+  const articleSchema = buildArticleSchema(blog);
+  const faqSchema = buildFaqSchema(blog);
+
+  return (
+    <>
+      {/* Article JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      {/* FAQPage JSON-LD — only rendered when the blog has FAQs */}
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
+      <BlogDetailClient blog={JSON.parse(JSON.stringify(blog))} allBlogs={allBlogs} />
+    </>
+  );
 }

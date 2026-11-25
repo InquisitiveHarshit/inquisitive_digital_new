@@ -17,6 +17,12 @@ export interface LocationCityData {
   sections?: any[];
 }
 
+export interface CountryFaq {
+  question: string;
+  answer: string;
+  tag?: string;
+}
+
 export interface LocationCountryData {
   name: string;
   slug: string; // e.g. "usa"
@@ -30,6 +36,7 @@ export interface LocationCountryData {
   seoDescription?: string;
   seoKeywords?: string;
   canonicalUrl?: string;
+  faqs?: CountryFaq[];
   cities: LocationCityData[];
 }
 
